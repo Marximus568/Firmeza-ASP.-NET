@@ -1,46 +1,22 @@
-using AdminDashboard.Infrastructure.Data;
-using Microsoft.EntityFrameworkCore;
+using AdminDashboard.Infrastructure;
+using Microsoft.AspNetCore.Builder;
 
 var builder = WebApplication.CreateBuilder(args);
-
-// ===================================================
-// LOAD .env MANUALLY (NATIVE WAY)
-// ===================================================
-var envFilePath = Path.Combine(Directory.GetCurrentDirectory(), ".env");
-
-if (File.Exists(envFilePath))
-{
-    foreach (var line in File.ReadAllLines(envFilePath))
-    {
-        if (string.IsNullOrWhiteSpace(line) || line.TrimStart().StartsWith("#"))
-            continue;
-
-        var parts = line.Split('=', 2);
-        if (parts.Length == 2)
-        {
-            Environment.SetEnvironmentVariable(parts[0].Trim(), parts[1].Trim());
-        }
-    }
-}
-
-// ===================================================
-// GET DATABASE CONNECTION
-// ===================================================
-var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION");
-
-if (string.IsNullOrWhiteSpace(connectionString))
-{
-    throw new InvalidOperationException("Missing file .env");
-}
 
 // ===================================================
 // ADD SERVICES TO CONTAINER
 // ===================================================
 builder.Services.AddRazorPages();
 
-// Connection to database
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseNpgsql(connectionString));
+// ===================================================
+// ADD INFRASTRUCTURE SERVICES
+// This includes:
+// - Loading .env via _EnvLoader
+// - Configuring DbContexts (AppDbContext & IdentityContext)
+// - Setting up Identity & Cookie Authentication
+// - Registering Domain Services and UseCases
+// ===================================================
+builder.Services.AddInfrastructure(builder.Configuration);
 
 var app = builder.Build();
 
@@ -57,6 +33,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapRazorPages();

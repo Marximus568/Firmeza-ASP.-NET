@@ -1,11 +1,11 @@
-using Microsoft.EntityFrameworkCore;
 using AdminDashboard.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 
-namespace AdminDashboard.Infrastructure.Data;
+namespace AdminDashboard.Infrastructure.Persistence.Context;
 
-public class ApplicationDbContext : DbContext
+public class AppDbContext : DbContext
 {
-    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+    public AppDbContext(DbContextOptions<AppDbContext> options)
         : base(options)
     {
     }
@@ -15,6 +15,7 @@ public class ApplicationDbContext : DbContext
     // ========================
     public DbSet<Client> Clients { get; set; }
     public DbSet<Saler> Salers { get; set; }
+    public DbSet<Product> Products { get; set; }
     public DbSet<Sales> Sales { get; set; }
     public DbSet<SaleItem> SaleItems { get; set; }
 
@@ -43,6 +44,9 @@ public class ApplicationDbContext : DbContext
 
             entity.Property(e => e.Address)
                   .HasMaxLength(200);
+            
+            entity.Property(e => e.role)
+                .HasMaxLength(15);
         });
 
         // ========== SALER ==========

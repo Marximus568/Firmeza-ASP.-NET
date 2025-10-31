@@ -1,18 +1,13 @@
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace AdminDashboard.Pages;
-
-public class IndexModel : PageModel
+namespace AdminDashboard.Pages
 {
-    private readonly ILogger<IndexModel> _logger;
-
-    public IndexModel(ILogger<IndexModel> logger)
+    public class IndexModel : PageModel
     {
-        _logger = logger;
-    }
-
-    public void OnGet()
-    {
+        public void OnGet()
+        {
+            // No need for complex logic here for the home page.
+            // Only basic welcome content.
+        }
     }
 }
