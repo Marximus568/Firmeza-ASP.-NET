@@ -43,6 +43,9 @@ public class ApplicationDbContext : DbContext
 
             entity.Property(e => e.Address)
                   .HasMaxLength(200);
+            
+            entity.Property(e => e.role)
+                .HasMaxLength(15);
         });
 
         // ========== SALER ==========
