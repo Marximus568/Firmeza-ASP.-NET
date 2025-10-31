@@ -1,0 +1,24 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AdminService", "AdminService", "{8579D6D4-EF59-4D8D-9BF7-3597AECA38B3}"
+	ProjectSection(SolutionItems) = preProject
+		.env = .env
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdminDashboard", "AdminDashboard\AdminDashboard.csproj", "{76065B96-7D4A-4624-84CF-B4EBA51D7709}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{76065B96-7D4A-4624-84CF-B4EBA51D7709}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{76065B96-7D4A-4624-84CF-B4EBA51D7709}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{76065B96-7D4A-4624-84CF-B4EBA51D7709}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{76065B96-7D4A-4624-84CF-B4EBA51D7709}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{76065B96-7D4A-4624-84CF-B4EBA51D7709} = {8579D6D4-EF59-4D8D-9BF7-3597AECA38B3}
+	EndGlobalSection
+EndGlobal
