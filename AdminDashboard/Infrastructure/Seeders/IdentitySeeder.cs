@@ -14,7 +14,7 @@ public static class IdentitySeeder
     public static async Task SeedAsync(IServiceProvider serviceProvider)
     {
         var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-        var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationClientIdentity>>();
+        var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUserIdentity>>();
 
         await SeedRolesAsync(roleManager);
         await SeedAdminUserAsync(userManager);
@@ -32,7 +32,7 @@ public static class IdentitySeeder
         }
     }
 
-    private static async Task SeedAdminUserAsync(UserManager<ApplicationClientIdentity> userManager)
+    private static async Task SeedAdminUserAsync(UserManager<ApplicationUserIdentity> userManager)
     {
         const string adminEmail = "admin@admindashboard.com";
         const string adminPassword = "Admin123!";
@@ -41,7 +41,7 @@ public static class IdentitySeeder
 
         if (adminUser == null)
         {
-            adminUser = new ApplicationClientIdentity
+            adminUser = new ApplicationUserIdentity
             {
                 UserName = adminEmail,
                 Email = adminEmail,
@@ -63,7 +63,7 @@ public static class IdentitySeeder
         }
     }
 
-    private static async Task SeedClientUserAsync(UserManager<ApplicationClientIdentity> userManager)
+    private static async Task SeedClientUserAsync(UserManager<ApplicationUserIdentity> userManager)
     {
         const string clientEmail = "client@admindashboard.com";
         const string clientPassword = "Client123!";
@@ -72,7 +72,7 @@ public static class IdentitySeeder
 
         if (clientUser == null)
         {
-            clientUser = new ApplicationClientIdentity
+            clientUser = new ApplicationUserIdentity
             {
                 UserName = clientEmail,
                 Email = clientEmail,

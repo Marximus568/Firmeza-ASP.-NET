@@ -20,7 +20,7 @@ namespace AdminDashboard.Pages.AdminDashboard
         public async Task OnGetAsync()
         {
             TotalProducts = await _context.Products.CountAsync();
-            TotalClients = await _context.Clients.CountAsync();
+            TotalClients = await _context.Users.CountAsync();
             TotalSales = await _context.Sales.CountAsync();
         }
     }

@@ -13,7 +13,7 @@ public class AppDbContext : DbContext
     // ========================
     // TABLES
     // ========================
-    public DbSet<Clients> Clients { get; set; }
+    public DbSet<Users> Users { get; set; }
     public DbSet<Salers> Salers { get; set; }
     public DbSet<Products> Products { get; set; }
     public DbSet<Sales> Sales { get; set; }
@@ -34,10 +34,10 @@ public class AppDbContext : DbContext
         // Exclude Person from direct mapping (no table)
         modelBuilder.Ignore<Person>();
 
-        // ========== CLIENT ==========
-        modelBuilder.Entity<Clients>(entity =>
+        // ========== USERS ==========
+        modelBuilder.Entity<Users>(entity =>
         {
-            entity.ToTable("Clients");
+            entity.ToTable("Users");
 
             entity.Property(e => e.Phone)
                   .HasMaxLength(15);
@@ -66,7 +66,7 @@ public class AppDbContext : DbContext
         {
             entity.ToTable("Sales");
 
-            entity.HasOne(e => e.Clients)
+            entity.HasOne(e => e.Users)
                   .WithMany(c => c.Sales)
                   .HasForeignKey(e => e.ClientId)
                   .OnDelete(DeleteBehavior.Restrict);

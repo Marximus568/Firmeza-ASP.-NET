@@ -12,13 +12,13 @@ namespace AdminDashboard.Infrastructure.Identity.Services;
 /// </summary>
 public class AuthService : IAuthService
 {
-    private readonly UserManager<ApplicationClientIdentity> _userManager;
-    private readonly SignInManager<ApplicationClientIdentity> _signInManager;
+    private readonly UserManager<ApplicationUserIdentity> _userManager;
+    private readonly SignInManager<ApplicationUserIdentity> _signInManager;
     private readonly IHttpContextAccessor _httpContextAccessor;
 
     public AuthService(
-        UserManager<ApplicationClientIdentity> userManager,
-        SignInManager<ApplicationClientIdentity> signInManager,
+        UserManager<ApplicationUserIdentity> userManager,
+        SignInManager<ApplicationUserIdentity> signInManager,
         IHttpContextAccessor httpContextAccessor)
     {
         _userManager = userManager;
@@ -30,15 +30,15 @@ public class AuthService : IAuthService
     /// Registers a new client in the system.
     /// </summary>
     public async Task<AuthResultDto> RegisterAsync(
-        Clients clients,
+        Users users,
         string password,
         CancellationToken cancellationToken = default)
     {
-        var user = new ApplicationClientIdentity
+        var user = new ApplicationUserIdentity
         {
-            UserName = clients.Email,
-            Email = clients.Email,
-            FirstName = clients.Name,  // Assuming Name maps to FirstName
+            UserName = users.Email,
+            Email = users.Email,
+            FirstName = users.FirstName,  // Assuming Name maps to FirstName
             LastName = string.Empty,  // Adjust if your domain includes LastName
             IsActive = true,
             CreatedAt = DateTime.UtcNow

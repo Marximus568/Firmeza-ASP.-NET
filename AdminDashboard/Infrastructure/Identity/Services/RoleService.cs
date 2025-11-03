@@ -10,9 +10,9 @@ namespace AdminDashboard.Infrastructure.Identity.Services;
 /// </summary>
 public class RoleService : IRoleService
 {
-    private readonly UserManager<ApplicationClientIdentity> _userManager;
+    private readonly UserManager<ApplicationUserIdentity> _userManager;
 
-    public RoleService(UserManager<ApplicationClientIdentity> userManager)
+    public RoleService(UserManager<ApplicationUserIdentity> userManager)
     {
         _userManager = userManager;
     }

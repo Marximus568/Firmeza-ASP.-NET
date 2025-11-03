@@ -12,11 +12,11 @@ public interface IAuthService
     /// <summary>
     /// Registers a new client in the system.
     /// </summary>
-    /// <param name="clients">The domain client entity to register.</param>
+    /// <param name="users">The domain client entity to register.</param>
     /// <param name="password">The plain text password to assign.</param>
     /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>An AuthResultDto indicating success or failure.</returns>
-    Task<AuthResultDto> RegisterAsync(Clients clients, string password, CancellationToken cancellationToken = default);
+    Task<AuthResultDto> RegisterAsync(Users users, string password, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Checks whether a user with the given email already exists.

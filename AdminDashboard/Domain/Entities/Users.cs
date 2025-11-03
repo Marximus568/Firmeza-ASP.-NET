@@ -6,8 +6,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-[Table("Clients")]
-public class Clients : Person
+[Table("Users")]
+public class Users : Person
 {
     
     [MaxLength(15)]

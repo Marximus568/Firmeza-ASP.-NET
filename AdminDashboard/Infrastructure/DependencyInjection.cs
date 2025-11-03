@@ -58,7 +58,7 @@ public static class DependencyInjection
         // ============================
         // ASP.NET CORE IDENTITY CONFIGURATION
         // ============================
-        services.AddIdentity<ApplicationClientIdentity, IdentityRole>(options =>
+        services.AddIdentity<ApplicationUserIdentity, IdentityRole>(options =>
         {
             options.Password.RequireDigit = true;
             options.Password.RequireLowercase = true;

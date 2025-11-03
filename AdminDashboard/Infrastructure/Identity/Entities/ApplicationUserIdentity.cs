@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Identity;
 /// Represents the Identity implementation of a user.
 /// This class is specific to ASP.NET Identity and EF Core.
 /// </summary>
-public class ApplicationClientIdentity : IdentityUser
+public class ApplicationUserIdentity : IdentityUser
 {
     public string FirstName { get; set; } = string.Empty;
     public string LastName { get; set; } = string.Empty;
