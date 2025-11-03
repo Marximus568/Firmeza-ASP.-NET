@@ -3,7 +3,7 @@ namespace AdminDashboard.Domain.Entities;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-public class SaleItem
+public class SaleItems
 {
     [Key]
     public int Id { get; set; }
@@ -31,5 +31,5 @@ public class SaleItem
     // Foreign Key: Product
     [ForeignKey("Product")]
     public int ProductId { get; set; }
-    public Product Product { get; set; }
+    public Products Products { get; set; }
 }

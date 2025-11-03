@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 [Table("Salers")]
-public class Saler : Person
+public class Salers : Person
 {
     [MaxLength(15)]
     public string Phone { get; set; } = string.Empty;

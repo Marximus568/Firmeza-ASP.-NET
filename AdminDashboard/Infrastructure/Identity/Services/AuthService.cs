@@ -30,15 +30,15 @@ public class AuthService : IAuthService
     /// Registers a new client in the system.
     /// </summary>
     public async Task<AuthResultDto> RegisterAsync(
-        Client client,
+        Clients clients,
         string password,
         CancellationToken cancellationToken = default)
     {
         var user = new ApplicationClientIdentity
         {
-            UserName = client.Email,
-            Email = client.Email,
-            FirstName = client.Name,  // Assuming Name maps to FirstName
+            UserName = clients.Email,
+            Email = clients.Email,
+            FirstName = clients.Name,  // Assuming Name maps to FirstName
             LastName = string.Empty,  // Adjust if your domain includes LastName
             IsActive = true,
             CreatedAt = DateTime.UtcNow

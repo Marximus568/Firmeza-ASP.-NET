@@ -38,7 +38,7 @@ public class RegisterUserUseCase
             : registerDto.Role;
 
         // 3️⃣ Create domain client instance
-        var client = new Client
+        var client = new Clients
         {
             Name = $"{registerDto.FirstName} {registerDto.LastName}".Trim(),
             Email = registerDto.Email,

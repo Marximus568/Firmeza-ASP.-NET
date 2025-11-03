@@ -13,11 +13,11 @@ public class AppDbContext : DbContext
     // ========================
     // TABLES
     // ========================
-    public DbSet<Client> Clients { get; set; }
-    public DbSet<Saler> Salers { get; set; }
-    public DbSet<Product> Products { get; set; }
+    public DbSet<Clients> Clients { get; set; }
+    public DbSet<Salers> Salers { get; set; }
+    public DbSet<Products> Products { get; set; }
     public DbSet<Sales> Sales { get; set; }
-    public DbSet<SaleItem> SaleItems { get; set; }
+    public DbSet<SaleItems> SaleItems { get; set; }
 
     // ========================
     // CONFIGURATION
@@ -35,7 +35,7 @@ public class AppDbContext : DbContext
         modelBuilder.Ignore<Person>();
 
         // ========== CLIENT ==========
-        modelBuilder.Entity<Client>(entity =>
+        modelBuilder.Entity<Clients>(entity =>
         {
             entity.ToTable("Clients");
 
@@ -50,7 +50,7 @@ public class AppDbContext : DbContext
         });
 
         // ========== SALER ==========
-        modelBuilder.Entity<Saler>(entity =>
+        modelBuilder.Entity<Salers>(entity =>
         {
             entity.ToTable("Salers");
 
@@ -66,12 +66,12 @@ public class AppDbContext : DbContext
         {
             entity.ToTable("Sales");
 
-            entity.HasOne(e => e.Client)
+            entity.HasOne(e => e.Clients)
                   .WithMany(c => c.Sales)
                   .HasForeignKey(e => e.ClientId)
                   .OnDelete(DeleteBehavior.Restrict);
 
-            entity.HasOne(e => e.Saler)
+            entity.HasOne(e => e.Salers)
                   .WithMany(s => s.Sales)
                   .HasForeignKey(e => e.SalerId)
                   .OnDelete(DeleteBehavior.Restrict);

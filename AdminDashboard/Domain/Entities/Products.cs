@@ -2,8 +2,8 @@ namespace AdminDashboard.Domain.Entities;
 
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-
-public class Product
+[Table("Products")]
+public class Products
 {
     [Key]
     public int Id { get; set; }
@@ -23,5 +23,5 @@ public class Product
     public int Stock { get; set; }
 
     // Navigation property: One product can be sold in many sale items
-    public ICollection<SaleItem> SaleItems { get; set; } = new List<SaleItem>();
+    public ICollection<SaleItems> SaleItems { get; set; } = new List<SaleItems>();
 }

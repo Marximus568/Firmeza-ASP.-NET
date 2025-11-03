@@ -6,9 +6,9 @@ namespace AdminDashboard.Application.Mappers
     public static class ClientMapper
     {
         // Convert from Identity object to Domain entity
-        public static Client ToDomain(ApplicationClientIdentity identityClient)
+        public static Clients ToDomain(ApplicationClientIdentity identityClient)
         {
-            return new Client
+            return new Clients
             {
                 Id = identityClient.Id.GetHashCode(), // Temporary int mapping if DB handles int IDs
                 Name = identityClient.UserName ?? string.Empty,
@@ -20,13 +20,13 @@ namespace AdminDashboard.Application.Mappers
         }
 
         // Convert from Domain entity to Identity object
-        public static ApplicationClientIdentity ToIdentity(Client client)
+        public static ApplicationClientIdentity ToIdentity(Clients clients)
         {
             return new ApplicationClientIdentity
             {
-                UserName = client.Name,
-                Email = client.Email,
-                FirstName = client.Name, // You can adjust this mapping if you split names
+                UserName = clients.Name,
+                Email = clients.Email,
+                FirstName = clients.Name, // You can adjust this mapping if you split names
                 LastName = string.Empty,
                 IsActive = true,
                 CreatedAt = DateTime.UtcNow

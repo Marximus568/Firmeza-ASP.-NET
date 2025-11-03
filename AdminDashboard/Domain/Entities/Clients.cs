@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 [Table("Clients")]
-public class Client : Person
+public class Clients : Person
 {
     
     [MaxLength(15)]

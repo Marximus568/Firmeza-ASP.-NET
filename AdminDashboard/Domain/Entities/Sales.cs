@@ -20,16 +20,16 @@ public class Sales
     // =============================
 
     public int ClientId { get; set; }
-    public Client Client { get; set; }
+    public Clients Clients { get; set; }
 
     public int SalerId { get; set; }
-    public Saler Saler { get; set; }
+    public Salers Salers { get; set; }
 
     // =============================
     // SALE DETAILS
     // =============================
 
-    public ICollection<SaleItem> Items { get; set; } = new List<SaleItem>();
+    public ICollection<SaleItems> Items { get; set; } = new List<SaleItems>();
 
     [Column(TypeName = "decimal(10,2)")]
     public decimal Subtotal { get; set; }
