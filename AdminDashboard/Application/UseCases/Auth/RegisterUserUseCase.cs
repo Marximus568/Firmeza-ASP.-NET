@@ -5,8 +5,8 @@ using AdminDashboard.Domain.Entities;
 namespace AdminDashboard.Application.UseCases.Auth;
 
 /// <summary>
-/// Use case for registering new clients in the system.
-/// Handles the business logic for client registration.
+/// Use case for registering new users.
+/// This keeps domain pure and delegates persistence to Infrastructure.
 /// </summary>
 public class RegisterUserUseCase
 {
@@ -20,42 +20,41 @@ public class RegisterUserUseCase
     }
 
     /// <summary>
-    /// Executes the client registration process.
+    /// Executes the registration process.
     /// </summary>
     public async Task<AuthResultDto> ExecuteAsync(
         RegisterDto registerDto,
         CancellationToken cancellationToken = default)
     {
-        // 1️⃣ Verify if the client already exists by email
+        // 1️⃣ Check if user already exists
         if (await _authService.UserExistsAsync(registerDto.Email, cancellationToken))
         {
-            return AuthResultDto.Failure("A client with this email already exists");
+            return AuthResultDto.Failure("A user with this email already exists");
         }
 
-        // 2️⃣ Define the role — default to "Client" if not provided
-        var role = string.IsNullOrWhiteSpace(registerDto.Role)
-            ? "Client"
-            : registerDto.Role;
+        // 2️⃣ Set default role if not provided
+        var role = string.IsNullOrWhiteSpace(registerDto.Role) ? "Client" : registerDto.Role;
 
-        // 3️⃣ Create domain client instance
-        var client = new Users
+        // 3️⃣ Create domain user entity with minimum required info
+        var user = new Users
         {
-            FirstName = $"{registerDto.FirstName} {registerDto.LastName}".Trim(),
+            FirstName = registerDto.FirstName,
+            LastName = registerDto.LastName,
             Email = registerDto.Email,
-            role = role,
-            Address = string.Empty,
-            Phone = string.Empty
+            Role = role
         };
 
-        // 4️⃣ Delegate registration to AuthService (Identity logic handled internally)
-        var result = await _authService.RegisterAsync(client, registerDto.Password, cancellationToken);
+        // 4️⃣ Delegate actual registration to IAuthService
+        var result = await _authService.RegisterAsync(user, registerDto.Password, cancellationToken);
 
         if (!result.Succeeded)
             return result;
 
-        // 5️⃣ Assign role (if AuthService doesn’t handle this internally)
+        // 5️⃣ Assign role using IRoleService (if needed)
         if (!string.IsNullOrEmpty(result.UserId))
+        {
             await _roleService.AssignRoleAsync(result.UserId, role, cancellationToken);
+        }
 
         return result;
     }

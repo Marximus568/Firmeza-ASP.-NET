@@ -15,20 +15,25 @@ public record RegisterDto
     [MinLength(6, ErrorMessage = "Password must be at least 6 characters")]
     public string Password { get; init; } = string.Empty;
 
+    [Required(ErrorMessage = "Confirm password is required")]
+    [DataType(DataType.Password)]
+    [Compare("Password", ErrorMessage = "Passwords do not match")]
+    public string ConfirmPassword { get; set; } = string.Empty;
+
     [Required(ErrorMessage = "First name is required")]
     [MaxLength(50)]
-    
     public string FirstName { get; init; } = string.Empty;
 
     [Required(ErrorMessage = "Last name is required")]
     [MaxLength(50)]
     public string LastName { get; init; } = string.Empty;
 
-    
-    [Required]
-    [DataType(DataType.Password)]
-    [Compare("Password", ErrorMessage = "Passwords do not match.")]
-    public string ConfirmPassword { get; set; } = string.Empty;
+    [MaxLength(15)]
+    public string? PhoneNumber { get; init; }
+
+    [MaxLength(200)]
+    public string? Address { get; init; }
+
     /// <summary>
     /// Optional role assignment during registration (defaults to Client)
     /// </summary>

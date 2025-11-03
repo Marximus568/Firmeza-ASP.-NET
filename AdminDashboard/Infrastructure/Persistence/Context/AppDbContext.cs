@@ -39,13 +39,13 @@ public class AppDbContext : DbContext
         {
             entity.ToTable("Users");
 
-            entity.Property(e => e.Phone)
+            entity.Property(e => e.PhoneNumber)
                   .HasMaxLength(15);
 
             entity.Property(e => e.Address)
                   .HasMaxLength(200);
             
-            entity.Property(e => e.role)
+            entity.Property(e => e.Role)
                 .HasMaxLength(15);
         });
 

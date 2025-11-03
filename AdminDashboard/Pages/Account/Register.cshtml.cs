@@ -4,83 +4,74 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace AdminDashboard.Pages.Account;
-
-/// <summary>
-/// Register page model.
-/// Allows new users to create accounts (defaults to Client role).
-/// </summary>
-[AllowAnonymous]
-public class RegisterModel : PageModel
+namespace AdminDashboard.Pages.Account
 {
-    private readonly RegisterUserUseCase _registerUseCase;
-    private readonly LoginUserUseCase _loginUseCase;
-    private readonly ILogger<RegisterModel> _logger;
-
-    public RegisterModel(
-        RegisterUserUseCase registerUseCase,
-        LoginUserUseCase loginUseCase,
-        ILogger<RegisterModel> logger)
+    /// <summary>
+    /// Register page model.
+    /// Allows new users to create accounts (defaults to Client role).
+    /// </summary>
+    [AllowAnonymous]
+    public class RegisterModel : PageModel
     {
-        _registerUseCase = registerUseCase;
-        _loginUseCase = loginUseCase;
-        _logger = logger;
-    }
+        private readonly RegisterUserUseCase _registerUseCase;
+        private readonly ILogger<RegisterModel> _logger;
 
-    [BindProperty]
-    public RegisterDto Input { get; set; } = new RegisterDto();
-
-    public string? ReturnUrl { get; set; }
-
-    public void OnGet(string? returnUrl = null)
-    {
-        ReturnUrl = returnUrl ?? Url.Content("~/");
-    }
-
-    public async Task<IActionResult> OnPostAsync(string? returnUrl = null)
-    {
-        returnUrl ??= Url.Content("~/");
-
-        if (!ModelState.IsValid)
+        public RegisterModel(
+            RegisterUserUseCase registerUseCase,
+            ILogger<RegisterModel> logger)
         {
-            return Page();
+            _registerUseCase = registerUseCase;
+            _logger = logger;
         }
 
-        // Register the user (defaults to Client role)
-        var registerResult = await _registerUseCase.ExecuteAsync(Input);
+        [BindProperty]
+        public RegisterDto Input { get; set; } = new RegisterDto();
 
-        if (!registerResult.Succeeded)
+        public string? ReturnUrl { get; set; }
+
+        /// <summary>
+        /// Handles GET requests for the registration page.
+        /// </summary>
+        public void OnGet(string? returnUrl = null)
         {
-            foreach (var error in registerResult.Errors)
+            ReturnUrl = returnUrl ?? Url.Content("~/");
+        }
+
+        /// <summary>
+        /// Handles POST requests for user registration.
+        /// Registers the user and redirects to login on success.
+        /// </summary>
+        public async Task<IActionResult> OnPostAsync(string? returnUrl = null)
+        {
+            returnUrl ??= Url.Content("~/");
+
+            if (!ModelState.IsValid)
             {
-                ModelState.AddModelError(string.Empty, error);
+                // Return the page with validation errors
+                return Page();
             }
-            return Page();
+
+            // Execute user registration
+            var registerResult = await _registerUseCase.ExecuteAsync(Input);
+
+            if (!registerResult.Succeeded)
+            {
+                // Add any registration errors to the model state
+                foreach (var error in registerResult.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error);
+                }
+                return Page();
+            }
+
+            // Log the successful registration
+            _logger.LogInformation("User {Email} created a new account", Input.Email);
+
+            // Store a success message to be displayed on the login page
+            TempData["SuccessMessage"] = "Your profile has been created successfully! Please log in.";
+
+            // Redirect to the login page
+            return RedirectToPage("/Account/Login", new { returnUrl });
         }
-
-        _logger.LogInformation("User {Email} created a new account", Input.Email);
-
-        // Automatically log in the user after registration
-        var loginDto = new LoginDto
-        {
-            Email = Input.Email,
-            Password = Input.Password,
-            RememberMe = false
-        };
-
-        var loginResult = await _loginUseCase.ExecuteAsync(loginDto);
-
-        if (loginResult.Succeeded)
-        {
-            _logger.LogInformation("User {Email} logged in after registration", Input.Email);
-            
-            // Note: New users are Clients by default and cannot access admin panel
-            // They will be redirected to the return URL or shown a message
-            TempData["SuccessMessage"] = "Account created successfully! Please contact an administrator for access to the admin panel.";
-            return RedirectToPage("/Account/RegisterConfirmation");
-        }
-
-        // If auto-login fails, redirect to login page
-        return RedirectToPage("/Account/Login", new { returnUrl });
     }
 }

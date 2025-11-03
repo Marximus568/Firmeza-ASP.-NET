@@ -6,66 +6,51 @@ using Microsoft.AspNetCore.Identity;
 
 namespace AdminDashboard.Infrastructure.Identity.Services;
 
-/// <summary>
-/// Implementation of IAuthService using ASP.NET Core Identity.
-/// This adapter connects the Application layer to the Identity framework.
-/// </summary>
 public class AuthService : IAuthService
 {
     private readonly UserManager<ApplicationUserIdentity> _userManager;
     private readonly SignInManager<ApplicationUserIdentity> _signInManager;
-    private readonly IHttpContextAccessor _httpContextAccessor;
 
     public AuthService(
         UserManager<ApplicationUserIdentity> userManager,
-        SignInManager<ApplicationUserIdentity> signInManager,
-        IHttpContextAccessor httpContextAccessor)
+        SignInManager<ApplicationUserIdentity> signInManager)
     {
         _userManager = userManager;
         _signInManager = signInManager;
-        _httpContextAccessor = httpContextAccessor;
     }
 
-    /// <summary>
-    /// Registers a new client in the system.
-    /// </summary>
-    public async Task<AuthResultDto> RegisterAsync(
-        Users users,
-        string password,
-        CancellationToken cancellationToken = default)
+    public async Task<AuthResultDto> RegisterAsync(Users users, string password, CancellationToken cancellationToken = default)
     {
-        var user = new ApplicationUserIdentity
+        var identityUser = new ApplicationUserIdentity
         {
             UserName = users.Email,
             Email = users.Email,
-            FirstName = users.FirstName,  // Assuming Name maps to FirstName
-            LastName = string.Empty,  // Adjust if your domain includes LastName
+            FirstName = users.FirstName,
+            LastName = users.LastName,
+            PhoneNumber = users.PhoneNumber,
+            Address = users.Address,
             IsActive = true,
             CreatedAt = DateTime.UtcNow
         };
 
-        var result = await _userManager.CreateAsync(user, password);
+        var result = await _userManager.CreateAsync(identityUser, password);
 
         if (!result.Succeeded)
-        {
             return AuthResultDto.Failure(result.Errors.Select(e => e.Description));
-        }
 
-        return AuthResultDto.Success(user.Id, user.Email!, Array.Empty<string>());
+        // Assign role
+        if (!string.IsNullOrEmpty(users.Role))
+            await _userManager.AddToRoleAsync(identityUser, users.Role);
+
+        return AuthResultDto.Success(identityUser.Id, identityUser.Email!, Array.Empty<string>());
     }
 
-    /// <summary>
-    /// Checks whether a user with the given email already exists.
-    /// </summary>
     public async Task<bool> UserExistsAsync(string email, CancellationToken cancellationToken = default)
     {
         var user = await _userManager.FindByEmailAsync(email);
         return user != null;
     }
 
-    /// <summary>
-    /// Authenticates a user using email and password.
-    /// </summary>
     public async Task<AuthResultDto> LoginAsync(LoginDto loginDto, CancellationToken cancellationToken = default)
     {
         var user = await _userManager.FindByEmailAsync(loginDto.Email);
@@ -88,9 +73,6 @@ public class AuthService : IAuthService
         return AuthResultDto.Success(user.Id, user.Email!, roles);
     }
 
-    /// <summary>
-    /// Logs out the currently authenticated user.
-    /// </summary>
     public async Task LogoutAsync(CancellationToken cancellationToken = default)
     {
         await _signInManager.SignOutAsync();
