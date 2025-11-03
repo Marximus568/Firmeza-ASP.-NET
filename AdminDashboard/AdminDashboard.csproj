@@ -10,12 +10,15 @@
     <ItemGroup>
       <Folder Include="Application\Behaviors\" />
       <Folder Include="Application\Exception\" />
+      <Folder Include="Application\UseCases\" />
       <Folder Include="Domain\Aggregates\" />
       <Folder Include="Domain\Events\" />
       <Folder Include="Domain\Services\" />
       <Folder Include="Infrastructure\External\" />
       <Folder Include="Infrastructure\Persistence\Configurations\" />
       <Folder Include="Infrastructure\Persistence\Repositories\" />
+      <Folder Include="Infrastructure\Repositories\" />
+      <Folder Include="Infrastructure\Routing\" />
       <Folder Include="Shared\Constants\" />
       <Folder Include="Shared\Extensions\" />
       <Folder Include="Shared\Kernel\" />
@@ -96,6 +99,8 @@
       <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\dist\jquery.min.js" />
       <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\dist\jquery.min.map" />
       <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\LICENSE.txt" />
+      <_ContentIncludedByDefault Remove="Pages\Products\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\AdminDashboard\Products\Index.cshtml" />
     </ItemGroup>
 
     <ItemGroup>

@@ -1,0 +1,103 @@
+@page "{id:int?}"
+@model EditModel
+@{
+    ViewData["Title"] = "Edit User";
+}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow">
+                <div class="card-header bg-warning">
+                    <h4 class="mb-0">
+                        <i class="fas fa-user-edit me-2"></i>Edit User
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        <input type="hidden" asp-for="UpdateUserDto.Id" />
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+                        <div class="row">
+                            <!-- First Name -->
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="UpdateUserDto.FirstName" class="form-label"></label>
+                                <input asp-for="UpdateUserDto.FirstName" class="form-control" />
+                                <span asp-validation-for="UpdateUserDto.FirstName" class="text-danger"></span>
+                            </div>
+
+                            <!-- Last Name -->
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="UpdateUserDto.LastName" class="form-label"></label>
+                                <input asp-for="UpdateUserDto.LastName" class="form-control" />
+                                <span asp-validation-for="UpdateUserDto.LastName" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- Email -->
+                        <div class="mb-3">
+                            <label asp-for="UpdateUserDto.Email" class="form-label"></label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                                <input asp-for="UpdateUserDto.Email" class="form-control" />
+                            </div>
+                            <span asp-validation-for="UpdateUserDto.Email" class="text-danger"></span>
+                        </div>
+
+                        <div class="row">
+                            <!-- Phone Number -->
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="UpdateUserDto.PhoneNumber" class="form-label"></label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                                    <input asp-for="UpdateUserDto.PhoneNumber" class="form-control" />
+                                </div>
+                                <span asp-validation-for="UpdateUserDto.PhoneNumber" class="text-danger"></span>
+                            </div>
+
+                            <!-- Date of Birth -->
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="UpdateUserDto.DateOfBirth" class="form-label"></label>
+                                <input asp-for="UpdateUserDto.DateOfBirth" class="form-control" type="date" />
+                                <span asp-validation-for="UpdateUserDto.DateOfBirth" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- Address -->
+                        <div class="mb-3">
+                            <label asp-for="UpdateUserDto.Address" class="form-label"></label>
+                            <textarea asp-for="UpdateUserDto.Address" class="form-control" rows="2"></textarea>
+                            <span asp-validation-for="UpdateUserDto.Address" class="text-danger"></span>
+                        </div>
+
+                        <!-- Role -->
+                        <div class="mb-4">
+                            <label asp-for="UpdateUserDto.Role" class="form-label"></label>
+                            <select asp-for="UpdateUserDto.Role" class="form-select">
+                                <option value="Admin">Admin</option>
+                                <option value="User">User</option>
+                                <option value="Manager">Manager</option>
+                                <option value="Guest">Guest</option>
+                            </select>
+                            <span asp-validation-for="UpdateUserDto.Role" class="text-danger"></span>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="d-flex justify-content-between">
+                            <a asp-page="Index" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left me-1"></i>Back to List
+                            </a>
+                            <button type="submit" class="btn btn-warning">
+                                <i class="fas fa-save me-1"></i>Save Changes
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

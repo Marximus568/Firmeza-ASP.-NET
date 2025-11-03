@@ -1,16 +1,15 @@
-using AdminDashboard.Domain.Entities;
 using AdminDashboard.Infrastructure.Identity.Entities;
 
-namespace AdminDashboard.Application.Mappers;
+namespace AdminDashboard.Application.DTOs.Auth.Mappers;
 
 public static class UserMapper
 {
     // Convert Identity → Domain
-    public static Users ToDomain(ApplicationUserIdentity identityUser)
+    public static Domain.Entities.Users ToDomain(ApplicationUserIdentity identityUser)
     {
         if (identityUser == null) return null!;
 
-        return new Users
+        return new Domain.Entities.Users()
         {
             Id = int.TryParse(identityUser.Id, out var parsedId) ? parsedId : 0,
             FirstName = identityUser.FirstName,
@@ -22,7 +21,7 @@ public static class UserMapper
     }
 
     // Convert Domain → Identity
-    public static ApplicationUserIdentity ToIdentity(Users users)
+    public static ApplicationUserIdentity ToIdentity(Domain.Entities.Users users)
     {
         if (users == null) return null!;
 

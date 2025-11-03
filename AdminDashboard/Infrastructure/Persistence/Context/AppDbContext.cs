@@ -18,6 +18,9 @@ public class AppDbContext : DbContext
     public DbSet<Products> Products { get; set; }
     public DbSet<Sales> Sales { get; set; }
     public DbSet<SaleItems> SaleItems { get; set; }
+    
+    public DbSet<Categories> Categories { get; set; }
+
 
     // ========================
     // CONFIGURATION
@@ -76,5 +79,50 @@ public class AppDbContext : DbContext
                   .HasForeignKey(e => e.SalerId)
                   .OnDelete(DeleteBehavior.Restrict);
         });
+        //============= Products =========
+        modelBuilder.Entity<Products>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+                
+            entity.Property(e => e.Name)
+                .IsRequired()
+                .HasMaxLength(150);
+
+            entity.Property(e => e.Description)
+                .HasMaxLength(300);
+
+            entity.Property(e => e.UnitPrice)
+                .HasColumnType("decimal(10,2)")
+                .IsRequired();
+
+            entity.Property(e => e.Stock)
+                .IsRequired();
+
+            entity.Property(e => e.CreatedAt)
+                .IsRequired();
+
+            entity.HasOne(e => e.Category)
+                .WithMany(c => c.Products)
+                .HasForeignKey(e => e.CategoryId)
+                .OnDelete(DeleteBehavior.SetNull);
+        });
+        
+        // =========== Categories ==============
+        modelBuilder.Entity<Categories>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+                
+            entity.Property(e => e.Name)
+                .IsRequired()
+                .HasMaxLength(100);
+        });
+        
+        // Seed data
+        modelBuilder.Entity<Categories>().HasData(
+            new Categories { Id = 1, Name = "Cemento y Morteros" },
+            new Categories { Id = 2, Name = "Ladrillos y Bloques" },
+            new Categories { Id = 3, Name = "Arena y Grava" },
+            new Categories { Id = 4, Name = "Madera y Derivados" }
+        );
     }
 }

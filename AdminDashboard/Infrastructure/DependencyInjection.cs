@@ -1,9 +1,11 @@
+using AdminDashboard.Application.DTOs.User.Interfaces;
 using AdminDashboard.Application.Interfaces;
 using AdminDashboard.Application.UseCases.Auth;
 using AdminDashboard.Infrastructure.Data;
 using AdminDashboard.Infrastructure.Identity.Entities;
 using AdminDashboard.Infrastructure.Identity.Services;
 using AdminDashboard.Infrastructure.Persistence.Context;
+using AdminDashboard.Infrastructure.Services;
 using AdminDashboard.Utils;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -96,6 +98,7 @@ public static class DependencyInjection
         // ============================
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<IRoleService, RoleService>();
+        services.AddScoped<IUsersService, UsersService>();
 
         // ============================
         // USE CASES

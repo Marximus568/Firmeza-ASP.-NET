@@ -1,5 +1,9 @@
+using AdminDashboard.Application.DTOs.User.Interfaces;
 using AdminDashboard.Infrastructure;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore;
+using AdminDashboard.Infrastructure.Persistence.Context;
+using AdminDashboard.Infrastructure.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,13 +12,18 @@ var builder = WebApplication.CreateBuilder(args);
 // ===================================================
 builder.Services.AddRazorPages();
 
+// Logging
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+builder.Logging.AddDebug();
+
 // ===================================================
 // ADD INFRASTRUCTURE SERVICES
-// This includes:
+// Includes:
 // - Loading .env via _EnvLoader
-// - Configuring DbContexts (AppDbContext & IdentityContext)
-// - Setting up Identity & Cookie Authentication
-// - Registering Domain Services and UseCases
+// - Configuring DbContexts
+// - Setting up Identity & Cookies
+// - Registering Domain Services
 // ===================================================
 builder.Services.AddInfrastructure(builder.Configuration);
 
@@ -32,10 +41,32 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
+// Security headers
+app.Use(async (context, next) =>
+{
+    context.Response.Headers.Add("X-Content-Type-Options", "nosniff");
+    context.Response.Headers.Add("X-Frame-Options", "DENY");
+    context.Response.Headers.Add("X-XSS-Protection", "1; mode=block");
+    await next();
+});
+
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapRazorPages();
+// Apply migrations automatically
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    await db.Database.MigrateAsync();
+}
 
+// Health endpoint
+app.MapGet("/health", async (AppDbContext db) =>
+{
+    var canConnect = await db.Database.CanConnectAsync();
+    return Results.Ok(new { status = canConnect ? "Healthy" : "Unreachable" });
+});
+
+app.MapRazorPages();
 app.Run();

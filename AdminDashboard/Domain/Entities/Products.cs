@@ -2,6 +2,7 @@ namespace AdminDashboard.Domain.Entities;
 
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+
 [Table("Products")]
 public class Products
 {
@@ -19,9 +20,18 @@ public class Products
     [Column(TypeName = "decimal(10,2)")]
     public decimal UnitPrice { get; set; }
 
-    // Quantity available in inventory
     public int Stock { get; set; }
 
-    // Navigation property: One product can be sold in many sale items
+    public int? CategoryId { get; set; }
+    
+    public Categories? Category { get; set; }
+
+
+    // Navigation properties
     public ICollection<SaleItems> SaleItems { get; set; } = new List<SaleItems>();
+
+    [Required]
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+    public DateTime? UpdatedAt { get; set; }
 }

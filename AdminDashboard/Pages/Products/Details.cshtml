@@ -1,0 +1,167 @@
+@page
+@model Details.DetailsModel
+
+@{
+    ViewData["Title"] = "Product Details";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h2 class="mb-0">Product Details</h2>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <div>
+                            <a asp-page="Edit" asp-route-id="@Model.Product.Id" class="btn btn-warning btn-sm">
+                                <i class="bi bi-pencil"></i> Edit
+                            </a>
+                            <a asp-page="Delete" asp-route-id="@Model.Product.Id" class="btn btn-danger btn-sm">
+                                <i class="bi bi-trash"></i> Delete
+                            </a>
+                        </div>
+                    }
+                </div>
+                <div class="card-body">
+                    <div class="row mb-4">
+                        <div class="col-md-12">
+                            <h3 class="text-primary">@Model.Product.Name</h3>
+                            @if (!string.IsNullOrEmpty(Model.Product.CategoryName))
+                            {
+                                <span class="badge bg-info fs-6">@Model.Product.CategoryName</span>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <div class="card bg-light">
+                                <div class="card-body">
+                                    <h6 class="text-muted mb-2">Unit Price</h6>
+                                    <h2 class="text-success mb-0">
+                                        $@Model.Product.UnitPrice.ToString("N2")
+                                    </h2>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card bg-light">
+                                <div class="card-body">
+                                    <h6 class="text-muted mb-2">Stock Available</h6>
+                                    <h2 class="mb-0">
+                                        <span class="badge @(Model.Product.Stock > 50 ? "bg-success" : Model.Product.Stock > 10 ? "bg-warning" : "bg-danger") fs-4">
+                                            @Model.Product.Stock units
+                                        </span>
+                                    </h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <h5>Description</h5>
+                        <div class="card bg-light">
+                            <div class="card-body">
+                                @if (!string.IsNullOrEmpty(Model.Product.Description))
+                                {
+                                    <p class="mb-0">@Model.Product.Description</p>
+                                }
+                                else
+                                {
+                                    <p class="text-muted mb-0 fst-italic">No description available</p>
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr />
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <dl class="row">
+                                <dt class="col-sm-5">Product ID</dt>
+                                <dd class="col-sm-7">
+                                    <code>#@Model.Product.Id</code>
+                                </dd>
+
+                                <dt class="col-sm-5">Category ID</dt>
+                                <dd class="col-sm-7">
+                                    @(Model.Product.CategoryId?.ToString() ?? "-")
+                                </dd>
+                            </dl>
+                        </div>
+                        <div class="col-md-6">
+                            <dl class="row">
+                                <dt class="col-sm-5">Created At</dt>
+                                <dd class="col-sm-7">
+                                    @Model.Product.CreatedAt.ToString("yyyy-MM-dd HH:mm")
+                                </dd>
+
+                                <dt class="col-sm-5">Last Updated</dt>
+                                <dd class="col-sm-7">
+                                    @(Model.Product.UpdatedAt?.ToString("yyyy-MM-dd HH:mm") ?? "-")
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+
+                    <div class="mt-4">
+                        <a asp-page="Index" class="btn btn-secondary">
+                            <i class="bi bi-arrow-left"></i> Back to List
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Additional Information Card -->
+            <div class="card mt-3">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="bi bi-calculator"></i> Inventory Calculations
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4 text-center">
+                            <h6 class="text-muted">Total Value</h6>
+                            <h4 class="text-primary">
+                                $@((Model.Product.UnitPrice * Model.Product.Stock).ToString("N2"))
+                            </h4>
+                            <small class="text-muted">Price × Stock</small>
+                        </div>
+                        <div class="col-md-4 text-center">
+                            <h6 class="text-muted">Stock Status</h6>
+                            <h4>
+                                @if (Model.Product.Stock > 50)
+                                {
+                                    <span class="text-success">
+                                        <i class="bi bi-check-circle-fill"></i> Excellent
+                                    </span>
+                                }
+                                else if (Model.Product.Stock > 10)
+                                {
+                                    <span class="text-warning">
+                                        <i class="bi bi-exclamation-circle-fill"></i> Moderate
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="text-danger">
+                                        <i class="bi bi-x-circle-fill"></i> Low Stock
+                                    </span>
+                                }
+                            </h4>
+                        </div>
+                        <div class="col-md-4 text-center">
+                            <h6 class="text-muted">Days Since Created</h6>
+                            <h4 class="text-info">
+                                @((DateTime.UtcNow - Model.Product.CreatedAt).Days) days
+                            </h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

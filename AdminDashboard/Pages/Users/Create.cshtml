@@ -1,0 +1,108 @@
+@page
+@model CreateModel
+@{
+    ViewData["Title"] = "Create User";
+}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow">
+                <div class="card-header bg-success text-white">
+                    <h4 class="mb-0">
+                        <i class="fas fa-user-plus me-2"></i>Create New User
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+                        <div class="row">
+                            <!-- First Name -->
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="CreateUserDto.FirstName" class="form-label"></label>
+                                <input asp-for="CreateUserDto.FirstName" class="form-control" placeholder="Enter first name" />
+                                <span asp-validation-for="CreateUserDto.FirstName" class="text-danger"></span>
+                            </div>
+
+                            <!-- Last Name -->
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="CreateUserDto.LastName" class="form-label"></label>
+                                <input asp-for="CreateUserDto.LastName" class="form-control" placeholder="Enter last name" />
+                                <span asp-validation-for="CreateUserDto.LastName" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- Email -->
+                        <div class="mb-3">
+                            <label asp-for="CreateUserDto.Email" class="form-label"></label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                                <input asp-for="CreateUserDto.Email" class="form-control" placeholder="email@example.com" />
+                            </div>
+                            <span asp-validation-for="CreateUserDto.Email" class="text-danger"></span>
+                        </div>
+
+                        <div class="row">
+                            <!-- Phone Number -->
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="CreateUserDto.PhoneNumber" class="form-label"></label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                                    <input asp-for="CreateUserDto.PhoneNumber" class="form-control" placeholder="+1234567890" />
+                                </div>
+                                <span asp-validation-for="CreateUserDto.PhoneNumber" class="text-danger"></span>
+                            </div>
+
+                            <!-- Date of Birth -->
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="CreateUserDto.DateOfBirth" class="form-label"></label>
+                                <input asp-for="CreateUserDto.DateOfBirth" class="form-control" type="date" />
+                                <span asp-validation-for="CreateUserDto.DateOfBirth" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- Address -->
+                        <div class="mb-3">
+                            <label asp-for="CreateUserDto.Address" class="form-label"></label>
+                            <textarea asp-for="CreateUserDto.Address" class="form-control" rows="2" 
+                                      placeholder="Street address, city, state"></textarea>
+                            <span asp-validation-for="CreateUserDto.Address" class="text-danger"></span>
+                        </div>
+
+                        <!-- Role -->
+                        <div class="mb-4">
+                            <label asp-for="CreateUserDto.Role" class="form-label"></label>
+                            <select asp-for="CreateUserDto.Role" class="form-select">
+                                <option value="">Select a role...</option>
+                                <option value="Admin">Admin</option>
+                                <option value="User" selected>User</option>
+                                <option value="Manager">Manager</option>
+                                <option value="Guest">Guest</option>
+                            </select>
+                            <span asp-validation-for="CreateUserDto.Role" class="text-danger"></span>
+                            <div class="form-text">
+                                <i class="fas fa-info-circle me-1"></i>
+                                Select the appropriate role for this user
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="d-flex justify-content-between">
+                            <a asp-page="Index" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left me-1"></i>Back to List
+                            </a>
+                            <button type="submit" class="btn btn-success">
+                                <i class="fas fa-save me-1"></i>Create User
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
