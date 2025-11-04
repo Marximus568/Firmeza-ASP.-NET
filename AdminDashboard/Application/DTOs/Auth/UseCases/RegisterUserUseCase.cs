@@ -36,7 +36,7 @@ public class RegisterUserUseCase
         var role = string.IsNullOrWhiteSpace(registerDto.Role) ? "Client" : registerDto.Role;
 
         // 3️⃣ Create domain user entity with minimum required info
-        var user = new Users
+        var user = new Users.DTOs.UserDto
         {
             FirstName = registerDto.FirstName,
             LastName = registerDto.LastName,

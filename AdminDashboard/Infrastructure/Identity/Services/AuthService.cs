@@ -1,5 +1,6 @@
 using AdminDashboard.Application.DTOs.Auth;
 using AdminDashboard.Application.Interfaces;
+using AdminDashboard.Application.Users.DTOs;
 using AdminDashboard.Domain.Entities;
 using AdminDashboard.Infrastructure.Identity.Entities;
 using Microsoft.AspNetCore.Identity;
@@ -19,8 +20,18 @@ public class AuthService : IAuthService
         _signInManager = signInManager;
     }
 
-    public async Task<AuthResultDto> RegisterAsync(Users users, string password, CancellationToken cancellationToken = default)
+    public async Task<AuthResultDto> RegisterAsync(UserDto userDto, string password, CancellationToken cancellationToken = default)
     {
+        var users = new Users
+        {
+            FirstName = userDto.FirstName,
+            LastName = userDto.LastName,
+            Email = userDto.Email,
+            Role = userDto.Role,
+            PhoneNumber = userDto.PhoneNumber,
+            Address = userDto.Address
+        };
+
         var identityUser = new ApplicationUserIdentity
         {
             UserName = users.Email,
@@ -38,13 +49,11 @@ public class AuthService : IAuthService
         if (!result.Succeeded)
             return AuthResultDto.Failure(result.Errors.Select(e => e.Description));
 
-        // Assign role
         if (!string.IsNullOrEmpty(users.Role))
             await _userManager.AddToRoleAsync(identityUser, users.Role);
 
         return AuthResultDto.Success(identityUser.Id, identityUser.Email!, Array.Empty<string>());
     }
-
     public async Task<bool> UserExistsAsync(string email, CancellationToken cancellationToken = default)
     {
         var user = await _userManager.FindByEmailAsync(email);

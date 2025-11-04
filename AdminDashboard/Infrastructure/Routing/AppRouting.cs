@@ -1,47 +1,57 @@
+using AdminDashboard.Infrastructure.Persistence.Context;
+
 namespace AdminDashboard.Infrastructure.Routing;
 
+/// <summary>
+/// Centralizes global routing and authorization for Razor Pages.
+/// </summary>
 public static class AppRouting
 {
-    /// <summary>
-    /// Registers all custom route and authorization conventions for Razor Pages.
-    /// </summary>
+    // -------------------------------------------------------
+    // [1] Configure authorization and Razor Pages conventions
+    // -------------------------------------------------------
     public static IServiceCollection AddAppRouting(this IServiceCollection services)
     {
-        // Register authorization policies
+        // Authorization policies
         services.AddAuthorization(options =>
         {
             options.AddPolicy("AdminOnly", policy =>
                 policy.RequireRole("Admin"));
         });
 
-        // Register Razor Page route conventions
+        // Razor Pages conventions
         services.AddRazorPages(options =>
         {
-            // Only admin can access Products and Users
-            options.Conventions.AuthorizeFolder("/Products", "AdminOnly");
-            options.Conventions.AuthorizeFolder("/Shared/Users", "AdminOnly");
+            // 🔒 Admin-only sections
+            options.Conventions.AuthorizeFolder("/AdminDashboard/Products", "AdminOnly");
+            options.Conventions.AuthorizeFolder("/AdminDashboard/Users", "AdminOnly");
 
-            // Public folders (e.g., login, register)
-            options.Conventions.AllowAnonymousToFolder("/Account");
-
-            // Default authorization for everything else
-            options.Conventions.AuthorizeFolder("/");
+            // 🟢 Public sections (no authentication required)
+            options.Conventions.AllowAnonymousToPage("/Index");       // Home page
+            options.Conventions.AllowAnonymousToFolder("/Account");  // Login, register, etc.
         });
 
         return services;
     }
 
-    /// <summary>
-    /// Maps endpoints for Razor Pages and API routes.
-    /// </summary>
-    public static IEndpointRouteBuilder MapAppRoutes(this IEndpointRouteBuilder app)
+    // -------------------------------------------------------
+    // [2] Map routes and endpoints
+    // -------------------------------------------------------
+    public static void UseAppRouting(this WebApplication app)
     {
-        // Map Razor Pages
+        // Map all Razor Pages
         app.MapRazorPages();
 
-        // Example health endpoint
-        app.MapGet("/health", () => Results.Ok(new { status = "Healthy" }));
+        // Friendly redirects (optional)
+        app.MapGet("/admin", static () => Results.Redirect("/AdminDashboard/Index"));
+        app.MapGet("/products", static () => Results.Redirect("/AdminDashboard/Products/Index"));
+        app.MapGet("/users", static () => Results.Redirect("/AdminDashboard/Users/Index"));
 
-        return app;
+        // Health check endpoint
+        app.MapGet("/health", async (AppDbContext db) =>
+        {
+            var canConnect = await db.Database.CanConnectAsync();
+            return Results.Ok(new { status = canConnect ? "Healthy" : "Unreachable" });
+        });
     }
 }

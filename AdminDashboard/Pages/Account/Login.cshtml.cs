@@ -14,6 +14,7 @@ namespace AdminDashboard.Pages.Account;
 [AllowAnonymous]
 public class LoginModel : PageModel
 {
+    
     private readonly LoginUserUseCase _loginUseCase;
     private readonly ILogger<LoginModel> _logger;
 
