@@ -1,11 +1,12 @@
 using AdminDashboard.Application.Product;
 using AdminDashboard.Application.Product.Interfaces;
+using AdminDashboard.Infrastructure.Security;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace AdminDashboard.Pages.Products;
+namespace AdminDashboard.Pages.AdminDashboard.Products;
 
-public class Details : PageModel
+public class Details : AdminPageModel
 {
     public class DetailsModel : PageModel
     {

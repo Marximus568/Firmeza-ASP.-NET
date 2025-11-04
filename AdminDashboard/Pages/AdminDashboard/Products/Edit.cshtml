@@ -1,7 +1,7 @@
 @page
-@model Create.CreateModel
+@model Pages.AdminDashboard.Products.Edit.EditModel
 @{
-    ViewData["Title"] = "Create Product";
+    ViewData["Title"] = "Edit Product";
 }
 
 <div class="container mt-4">
@@ -9,22 +9,22 @@
         <div class="col-md-8 offset-md-2">
             <div class="card">
                 <div class="card-header">
-                    <h2>Create New Product</h2>
+                    <h2>Edit Product</h2>
                 </div>
                 <div class="card-body">
                     <form method="post">
+                        <input type="hidden" asp-for="Product.Id" />
                         <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
 
                         <div class="mb-3">
                             <label asp-for="Product.Name" class="form-label"></label>
-                            <input asp-for="Product.Name" class="form-control" placeholder="Enter product name" />
+                            <input asp-for="Product.Name" class="form-control" />
                             <span asp-validation-for="Product.Name" class="text-danger"></span>
                         </div>
 
                         <div class="mb-3">
                             <label asp-for="Product.Description" class="form-label"></label>
-                            <textarea asp-for="Product.Description" class="form-control" rows="3" 
-                                      placeholder="Enter product description (optional)"></textarea>
+                            <textarea asp-for="Product.Description" class="form-control" rows="3"></textarea>
                             <span asp-validation-for="Product.Description" class="text-danger"></span>
                         </div>
 
@@ -34,15 +34,14 @@
                                 <div class="input-group">
                                     <span class="input-group-text">$</span>
                                     <input asp-for="Product.UnitPrice" type="number" step="0.01" 
-                                           class="form-control" placeholder="0.00" />
+                                           class="form-control" />
                                 </div>
                                 <span asp-validation-for="Product.UnitPrice" class="text-danger"></span>
                             </div>
 
                             <div class="col-md-6 mb-3">
                                 <label asp-for="Product.Stock" class="form-label"></label>
-                                <input asp-for="Product.Stock" type="number" class="form-control" 
-                                       placeholder="0" />
+                                <input asp-for="Product.Stock" type="number" class="form-control" />
                                 <span asp-validation-for="Product.Stock" class="text-danger"></span>
                             </div>
                         </div>
@@ -59,12 +58,17 @@
                             <span asp-validation-for="Product.CategoryId" class="text-danger"></span>
                         </div>
 
+                        <div class="alert alert-info" role="alert">
+                            <i class="bi bi-info-circle"></i> 
+                            Make sure all information is correct before updating.
+                        </div>
+
                         <div class="d-flex justify-content-between mt-4">
                             <a asp-page="Index" class="btn btn-secondary">
-                                <i class="bi bi-arrow-left"></i> Back to List
+                                <i class="bi bi-arrow-left"></i> Cancel
                             </a>
-                            <button type="submit" class="btn btn-primary">
-                                <i class="bi bi-check-circle"></i> Create Product
+                            <button type="submit" class="btn btn-warning">
+                                <i class="bi bi-check-circle"></i> Update Product
                             </button>
                         </div>
                     </form>

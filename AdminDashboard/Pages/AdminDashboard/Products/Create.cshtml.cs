@@ -1,12 +1,13 @@
 using AdminDashboard.Application.Product;
 using AdminDashboard.Application.Product.Interfaces;
+using AdminDashboard.Infrastructure.Security;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace AdminDashboard.Pages.Products;
+namespace AdminDashboard.Pages.AdminDashboard.Products;
 
-public class Create : PageModel
+public class Create : AdminPageModel
 { /// <summary>
     /// Page model for creating a new product.
     /// Only accessible to users with Admin role.

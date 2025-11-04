@@ -1,14 +1,15 @@
 using AdminDashboard.Application.DTOs.User.Interfaces;
 using AdminDashboard.Application.Users.DTOs;
+using AdminDashboard.Infrastructure.Security;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace AdminDashboard.Pages.Users
+namespace AdminDashboard.Pages.AdminDashboard.Users
 {
     /// <summary>
     /// Page model for the users list page
     /// </summary>
-    public class IndexModel : PageModel
+    public class IndexModel : AdminPageModel
     {
         private readonly IUsersService _usersService;
 

@@ -1,31 +1,26 @@
 using AdminDashboard.Application.DTOs.User.Interfaces;
 using AdminDashboard.Infrastructure;
+using AdminDashboard.Infrastructure.Persistence.Context;
+using AdminDashboard.Infrastructure.Routing;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
-using AdminDashboard.Infrastructure.Persistence.Context;
-using AdminDashboard.Infrastructure.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // ===================================================
 // ADD SERVICES TO CONTAINER
 // ===================================================
-builder.Services.AddRazorPages();
 
 // Logging
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
 builder.Logging.AddDebug();
 
-// ===================================================
-// ADD INFRASTRUCTURE SERVICES
-// Includes:
-// - Loading .env via _EnvLoader
-// - Configuring DbContexts
-// - Setting up Identity & Cookies
-// - Registering Domain Services
-// ===================================================
+// Infrastructure (DbContext, Identity, etc.)
 builder.Services.AddInfrastructure(builder.Configuration);
+
+// Routing & Authorization policies (AdminOnly, etc.)
+builder.Services.AddAppRouting();
 
 var app = builder.Build();
 
@@ -54,6 +49,9 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
+// Custom routing from your Routing folder
+app.MapAppRoutes();
+
 // Apply migrations automatically
 using (var scope = app.Services.CreateScope())
 {
@@ -61,12 +59,11 @@ using (var scope = app.Services.CreateScope())
     await db.Database.MigrateAsync();
 }
 
-// Health endpoint
+// Health check endpoint (optional, can move to routing)
 app.MapGet("/health", async (AppDbContext db) =>
 {
     var canConnect = await db.Database.CanConnectAsync();
     return Results.Ok(new { status = canConnect ? "Healthy" : "Unreachable" });
 });
 
-app.MapRazorPages();
 app.Run();

@@ -1,11 +1,15 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using AdminDashboard.Infrastructure.Persistence.Context;
+using AdminDashboard.Infrastructure.Security;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AdminDashboard.Pages.AdminDashboard
 {
-    public partial class IndexModel : PageModel
+    [Authorize]
+    public partial class IndexModel : AdminPageModel
     {
+        
         private readonly AppDbContext _context;
 
         public IndexModel(AppDbContext context)
