@@ -1,6 +1,6 @@
-using DomainUser = AdminDashboard.Domain.Entities.Users;
 using System.Linq;
 using System.Collections.Generic;
+using AdminDashboard.Domain.Entities;
 
 // NOTE: we'll refer to Contracts types with full qualification to avoid alias/namespace ambiguity
 
@@ -11,11 +11,11 @@ namespace AdminDashboardApplication.DTOs.Users.Mappers
     /// </summary>
     public static class UserMapper
     {
-        public static DomainUser ToEntity(AdminDashboard.Contracts.Users.CreateUserDto dto)
+        public static Clients ToEntity(AdminDashboard.Contracts.Users.CreateUserDto dto)
         {
             if (dto == null) return null!;
 
-            return new DomainUser
+            return new Clients
             {
                 FirstName = dto.FirstName,
                 LastName = dto.LastName,
@@ -27,32 +27,32 @@ namespace AdminDashboardApplication.DTOs.Users.Mappers
             };
         }
 
-        public static AdminDashboard.Contracts.Users.UserDto ToDto(DomainUser user)
+        public static AdminDashboard.Contracts.Users.UserDto ToDto(Clients client)
         {
-            if (user == null) return null!;
+            if (client == null) return null!;
 
-            var age = user.DateOfBirth == default ? 0 : (int)((System.DateTime.Today - user.DateOfBirth).TotalDays / 365.25);
+            var age = client.DateOfBirth == default ? 0 : (int)((System.DateTime.Today - client.DateOfBirth).TotalDays / 365.25);
 
             return new AdminDashboard.Contracts.Users.UserDto
             {
-                Id = user.Id,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                FullName = string.Concat(user.FirstName, " ", user.LastName).Trim(),
-                Email = user.Email,
-                DateOfBirth = user.DateOfBirth,
+                Id = client.Id,
+                FirstName = client.FirstName,
+                LastName = client.LastName,
+                FullName = string.Concat(client.FirstName, " ", client.LastName).Trim(),
+                Email = client.Email,
+                DateOfBirth = client.DateOfBirth,
                 Age = age,
-                PhoneNumber = user.PhoneNumber,
-                Address = user.Address,
-                Role = user.Role,
-                TotalSales = user.Sales?.Count ?? 0
+                PhoneNumber = client.PhoneNumber,
+                Address = client.Address,
+                Role = client.Role,
+                TotalSales = client.Sales?.Count ?? 0
             };
         }
 
-        public static IEnumerable<AdminDashboard.Contracts.Users.UserDto> ToDtoList(IEnumerable<DomainUser> users)
+        public static IEnumerable<AdminDashboard.Contracts.Users.UserDto> ToDtoList(IEnumerable<Clients> users)
             => users?.Select(ToDto).ToList() ?? new List<AdminDashboard.Contracts.Users.UserDto>();
 
-        public static void UpdateEntity(AdminDashboard.Contracts.Users.UpdateUserDto dto, DomainUser entity)
+        public static void UpdateEntity(AdminDashboard.Contracts.Users.UpdateUserDto dto, Clients entity)
         {
             if (dto == null || entity == null) return;
 

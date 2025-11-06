@@ -47,6 +47,23 @@ builder.Services.ConfigureApplicationCookie(options =>
 
 var app = builder.Build();
 
+// Run seeders if requested (set env RUN_SEEDERS=1 to enable)
+if (Environment.GetEnvironmentVariable("RUN_SEEDERS") == "1")
+{
+    using var scope = app.Services.CreateScope();
+    var services = scope.ServiceProvider;
+    Console.WriteLine("[Seeder] Starting Identity seeder...");
+    try
+    {
+        await AdminDashboard.Identity.Seeders.IdentitySeeder.SeedAsync(services);
+        Console.WriteLine("[Seeder] Identity seeder finished.");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"[Seeder] Identity seeder ERROR: {ex}");
+    }
+}
+
 // ===================================================
 // 🌐 MIDDLEWARE PIPELINE
 // ===================================================

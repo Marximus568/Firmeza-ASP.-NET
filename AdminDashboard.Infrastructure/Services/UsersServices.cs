@@ -204,7 +204,7 @@ namespace AdminDashboard.Infrastructure.Services
         /// <summary>
         /// Apply sorting to Users query based on field and direction.
         /// </summary>
-        private System.Linq.IQueryable<Users> ApplySorting(System.Linq.IQueryable<Users> query, string sortBy, string sortDirection)
+        private System.Linq.IQueryable<Clients> ApplySorting(System.Linq.IQueryable<Clients> query, string sortBy, string sortDirection)
         {
             var descending = string.Equals(sortDirection, "desc", StringComparison.OrdinalIgnoreCase);
 
@@ -220,9 +220,9 @@ namespace AdminDashboard.Infrastructure.Services
         }
 
         // ------------------ Local mappers to avoid cross-project mapper dependency ------------------
-        private static Users MapToEntity(CreateUserDto dto)
+        private static Clients MapToEntity(CreateUserDto dto)
         {
-            return new Users
+            return new Clients
             {
                 FirstName = dto.FirstName,
                 LastName = dto.LastName,
@@ -234,32 +234,32 @@ namespace AdminDashboard.Infrastructure.Services
             };
         }
 
-        private static UserDto MapToDto(Users user)
+        private static UserDto MapToDto(Clients client)
         {
-            if (user == null) return null!;
+            if (client == null) return null!;
 
-            var age = user.DateOfBirth == default ? 0 : (int)((System.DateTime.Today - user.DateOfBirth).TotalDays / 365.25);
+            var age = client.DateOfBirth == default ? 0 : (int)((System.DateTime.Today - client.DateOfBirth).TotalDays / 365.25);
 
             return new UserDto
             {
-                Id = user.Id,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                FullName = string.Concat(user.FirstName, " ", user.LastName).Trim(),
-                Email = user.Email,
-                DateOfBirth = user.DateOfBirth,
+                Id = client.Id,
+                FirstName = client.FirstName,
+                LastName = client.LastName,
+                FullName = string.Concat(client.FirstName, " ", client.LastName).Trim(),
+                Email = client.Email,
+                DateOfBirth = client.DateOfBirth,
                 Age = age,
-                PhoneNumber = user.PhoneNumber,
-                Address = user.Address,
-                Role = user.Role,
-                TotalSales = user.Sales?.Count ?? 0
+                PhoneNumber = client.PhoneNumber,
+                Address = client.Address,
+                Role = client.Role,
+                TotalSales = client.Sales?.Count ?? 0
             };
         }
 
-        private static System.Collections.Generic.IEnumerable<UserDto> MapToDtoList(System.Collections.Generic.IEnumerable<Users> users)
+        private static System.Collections.Generic.IEnumerable<UserDto> MapToDtoList(System.Collections.Generic.IEnumerable<Clients> users)
             => users?.Select(MapToDto).ToList() ?? new System.Collections.Generic.List<UserDto>();
 
-        private static void UpdateEntity(UpdateUserDto dto, Users entity)
+        private static void UpdateEntity(UpdateUserDto dto, Clients entity)
         {
             if (dto == null || entity == null) return;
 

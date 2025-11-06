@@ -3,8 +3,8 @@ namespace AdminDashboard.Domain.Entities;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-[Table("Users")]
-public class Users : Person
+[Table("Clients")]
+public class Clients : Person
 {
     
     [MaxLength(15)]

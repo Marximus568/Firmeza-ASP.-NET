@@ -20,7 +20,7 @@ public class Sales
     // =============================
 
     public int ClientId { get; set; }
-    public Users Users { get; set; }
+    public Clients Clients { get; set; }
 
     public int SalerId { get; set; }
     public Salers Salers { get; set; }

@@ -7,25 +7,25 @@ namespace AdminDashboardApplication.DTOs.Auth.Mappers;
 public static class UserMapper
 {
     // Map domain user to contract DTO
-    public static UserDto ToDto(AdminDashboard.Domain.Entities.Users users)
+    public static UserDto ToDto(AdminDashboard.Domain.Entities.Clients clients)
     {
-        if (users == null) return null!;
+        if (clients == null) return null!;
 
-        var age = (int)((DateTime.Today - users.DateOfBirth).TotalDays / 365.25);
+        var age = (int)((DateTime.Today - clients.DateOfBirth).TotalDays / 365.25);
 
         return new UserDto
         {
-            Id = users.Id,
-            FirstName = users.FirstName,
-            LastName = users.LastName,
-            FullName = $"{users.FirstName} {users.LastName}".Trim(),
-            Email = users.Email,
-            DateOfBirth = users.DateOfBirth,
+            Id = clients.Id,
+            FirstName = clients.FirstName,
+            LastName = clients.LastName,
+            FullName = $"{clients.FirstName} {clients.LastName}".Trim(),
+            Email = clients.Email,
+            DateOfBirth = clients.DateOfBirth,
             Age = age,
-            PhoneNumber = users.PhoneNumber,
-            Address = users.Address,
-            Role = users.Role,
-            TotalSales = users.Sales?.Count ?? 0
+            PhoneNumber = clients.PhoneNumber,
+            Address = clients.Address,
+            Role = clients.Role,
+            TotalSales = clients.Sales?.Count ?? 0
         };
     }
 }

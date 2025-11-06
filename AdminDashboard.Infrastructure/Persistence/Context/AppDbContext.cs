@@ -14,7 +14,7 @@ public class AppDbContext : DbContext
     // ========================
     // TABLES
     // ========================
-    public DbSet<Users> Users { get; set; }
+    public DbSet<Clients> Users { get; set; }
     public DbSet<Salers> Salers { get; set; }
     public DbSet<Products> Products { get; set; }
     public DbSet<Sales> Sales { get; set; }
@@ -39,7 +39,7 @@ public class AppDbContext : DbContext
         modelBuilder.Ignore<Person>();
 
         // ========== USERS ==========
-        modelBuilder.Entity<Users>(entity =>
+        modelBuilder.Entity<Clients>(entity =>
         {
             entity.ToTable("Users");
 
@@ -70,7 +70,7 @@ public class AppDbContext : DbContext
         {
             entity.ToTable("Sales");
 
-            entity.HasOne(e => e.Users)
+            entity.HasOne(e => e.Clients)
                   .WithMany(c => c.Sales)
                   .HasForeignKey(e => e.ClientId)
                   .OnDelete(DeleteBehavior.Restrict);

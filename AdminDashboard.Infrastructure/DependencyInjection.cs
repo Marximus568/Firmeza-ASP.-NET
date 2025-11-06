@@ -1,8 +1,6 @@
 using AdminDashboard.Contracts.Users;
 using AdminDashboard.Application.Interfaces;
 using AdminDashboard.Application.UseCases.Auth;
-using AdminDashboard.Infrastructure.Identity.Entities;
-using AdminDashboard.Infrastructure.Identity.Services;
 using AdminDashboard.Infrastructure.Persistence.Context;
 using AdminDashboard.Infrastructure.Services;
 using AdminDashboardApplication.Common;
@@ -12,6 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using AdminDashboard.Identity.DependencyInjection;
 
 namespace AdminDashboard.Infrastructure;
 
@@ -26,9 +25,9 @@ public static class DependencyInjection
         IConfiguration configuration)
     {
         // ===================================================
-        // LOAD .env USING UTIL
+        // LOAD .env USING UTIL (moved to Identity project where needed)
         // ===================================================
-        EnvLoader.Load();
+        // EnvLoader.Load();  // removed to avoid duplicate loading and responsibility
 
         // ===================================================
         // GET DATABASE CONNECTION
@@ -39,8 +38,7 @@ public static class DependencyInjection
         {
             throw new InvalidOperationException("Missing .env or DB_CONNECTION variable");
         }
-     
-
+      
 
         // ============================
         // DATABASE CONTEXT (Domain Data)
@@ -53,39 +51,15 @@ public static class DependencyInjection
         );
 
         // ============================
-        // IDENTITY CONTEXT (Auth Data)
+        // IDENTITY INFRASTRUCTURE
         // ============================
-        services.AddDbContext<IdentityContext>(options =>
-            options.UseNpgsql(
-                connectionString,
-                b => b.MigrationsAssembly(typeof(IdentityContext).Assembly.FullName)
-            )
-        );
-
-        // ============================
-        // ASP.NET CORE IDENTITY CONFIGURATION
-        // ============================
-        services.AddIdentity<ApplicationUserIdentity, IdentityRole>(options =>
-            {
-                options.Password.RequireDigit = true;
-                options.Password.RequireLowercase = true;
-                options.Password.RequireUppercase = true;
-                options.Password.RequireNonAlphanumeric = true;
-                options.Password.RequiredLength = 6;
-
-                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
-                options.Lockout.MaxFailedAccessAttempts = 5;
-                options.Lockout.AllowedForNewUsers = true;
-
-                options.User.RequireUniqueEmail = true;
-                options.SignIn.RequireConfirmedEmail = false;
-            })
-            .AddEntityFrameworkStores<IdentityContext>()
-            .AddDefaultTokenProviders();
+        // Identity setup moved to AdminDashboard.Identity project. Use its extension here.
+        services.AddIdentityInfrastructure(configuration);
 
         // ============================
         // COOKIE AUTHENTICATION
         // ============================
+        // Move cookie configuration up here if still required by Infrastructure
         services.ConfigureApplicationCookie(options =>
         {
             options.Cookie.HttpOnly = true;
@@ -99,8 +73,8 @@ public static class DependencyInjection
         // ============================
         // DOMAIN SERVICES (Ports/Adapters)
         // ============================
-        services.AddScoped<IAuthService, AuthService>();
-        services.AddScoped<IRoleService, RoleService>();
+        // Identity service implementations are registered inside AdminDashboard.Identity
+        // to keep responsibilities separated. Do not register IAuthService/IRoleService here.
         services.AddScoped<IUsersService, UsersService>();
 
         // ============================
