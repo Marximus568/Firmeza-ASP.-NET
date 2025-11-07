@@ -1,3 +1,5 @@
+using AdminDashboard.Domain.Models;
+
 namespace AdminDashboard.Domain.Entities;
 
 using System.ComponentModel.DataAnnotations;

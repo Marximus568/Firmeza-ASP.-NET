@@ -70,23 +70,6 @@
                             <span asp-validation-for="CreateUserDto.Address" class="text-danger"></span>
                         </div>
 
-                        <!-- Role -->
-                        <div class="mb-4">
-                            <label asp-for="CreateUserDto.Role" class="form-label"></label>
-                            <select asp-for="CreateUserDto.Role" class="form-select">
-                                <option value="">Select a role...</option>
-                                <option value="Admin">Admin</option>
-                                <option value="User" selected>User</option>
-                                <option value="Manager">Manager</option>
-                                <option value="Guest">Guest</option>
-                            </select>
-                            <span asp-validation-for="CreateUserDto.Role" class="text-danger"></span>
-                            <div class="form-text">
-                                <i class="fas fa-info-circle me-1"></i>
-                                Select the appropriate role for this user
-                            </div>
-                        </div>
-
                         <!-- Action Buttons -->
                         <div class="d-flex justify-content-between">
                             <a asp-page="Index" class="btn btn-secondary">

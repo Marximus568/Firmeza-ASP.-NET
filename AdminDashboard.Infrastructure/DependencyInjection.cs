@@ -1,6 +1,7 @@
 using AdminDashboard.Contracts.Users;
 using AdminDashboard.Application.Interfaces;
 using AdminDashboard.Application.UseCases.Auth;
+using AdminDashboard.Contracts;
 using AdminDashboard.Infrastructure.Persistence.Context;
 using AdminDashboard.Infrastructure.Services;
 using AdminDashboardApplication.Common;
@@ -11,6 +12,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using AdminDashboard.Identity.DependencyInjection;
+using AdminDashboard.Infrastructure.Services.ProductServices;
+using AdminDashboard.Infrastructure.Services.UsersServices;
+using AdminDashboardApplication.DTOs.Products.Interfaces;
+using AdminDashboardApplication.DTOs.Users.Interface;
 
 namespace AdminDashboard.Infrastructure;
 
@@ -74,8 +79,8 @@ public static class DependencyInjection
         // DOMAIN SERVICES (Ports/Adapters)
         // ============================
         // Identity service implementations are registered inside AdminDashboard.Identity
-        // to keep responsibilities separated. Do not register IAuthService/IRoleService here.
         services.AddScoped<IUsersService, UsersService>();
+        services.AddScoped<IProductServices, ProductService>();
 
         // ============================
         // USE CASES

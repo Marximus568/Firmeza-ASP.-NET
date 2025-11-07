@@ -1,4 +1,4 @@
-namespace AdminDashboard.Domain.Entities;
+namespace AdminDashboard.Domain.Models;
 
 public abstract class Person
 {

@@ -11,7 +11,7 @@
     @if (User.Identity.IsAuthenticated)
     {
         <p>Hello, @User.Identity.Name! You are logged in.</p>
-        <p>Go to your <a asp-page="/Dashboard/Index">dashboard</a> to manage your data.</p>
+        <p>Go to your <a asp-page="/AdminDashboard/Index">dashboard</a> to manage your data.</p>
     }
     else
     {

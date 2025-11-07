@@ -17,7 +17,7 @@ public class CreateUserDto
     [StringLength(100)]
     public string Email { get; set; } = string.Empty;
 
-    [Required]
+    [Required(ErrorMessage = "The Date of Birth field is required.")]
     [DataType(DataType.Date)]
     public DateTime DateOfBirth { get; set; }
 
@@ -32,7 +32,7 @@ public class CreateUserDto
 
     [Required]
     [StringLength(20)]
-    public string Role { get; set; } = "User";
+    public string Role { get; set; } = "Client";
 }
 
 public class MinimumAgeAttribute : ValidationAttribute

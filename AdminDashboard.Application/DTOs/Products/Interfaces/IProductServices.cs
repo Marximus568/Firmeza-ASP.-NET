@@ -1,4 +1,6 @@
-namespace AdminDashboard.Application.Product.Interfaces;
+using AdminDashboard.Application.Product;
+
+namespace AdminDashboardApplication.DTOs.Products.Interfaces;
 
 public interface IProductServices
 {

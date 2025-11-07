@@ -1,10 +1,10 @@
 using AdminDashboard.Application.Product;
-using AdminDashboard.Application.Product.Interfaces;
 using AdminDashboard.Infrastructure.Persistence.Context;
+using AdminDashboardApplication.DTOs.Products.Interfaces;
 using AdminDashboardApplication.DTOs.Products.Mappers;
 using Microsoft.EntityFrameworkCore;
 
-namespace AdminDashboard.Infrastructure.Services;
+namespace AdminDashboard.Infrastructure.Services.ProductServices;
 
  public class ProductService : IProductServices
     {

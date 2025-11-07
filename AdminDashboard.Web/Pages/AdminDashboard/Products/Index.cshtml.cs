@@ -1,8 +1,8 @@
 using AdminDashboard.Application.Product;
-using AdminDashboard.Application.Product.Interfaces;
 using AdminDashboard.Infrastructure.Security;
+using AdminDashboardApplication.DTOs.Products.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+
 
 namespace AdminDashboard.Pages.AdminDashboard.Products;
 

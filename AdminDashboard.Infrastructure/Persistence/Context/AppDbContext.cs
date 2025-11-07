@@ -1,5 +1,6 @@
 
 using AdminDashboard.Domain.Entities;
+using AdminDashboard.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace AdminDashboard.Infrastructure.Persistence.Context;

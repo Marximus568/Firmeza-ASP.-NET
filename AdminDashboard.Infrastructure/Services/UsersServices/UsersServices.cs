@@ -1,13 +1,15 @@
+using AdminDashboard.Contracts;
 using AdminDashboard.Contracts.Users;
+using AdminDashboard.Domain.Entities;
+using AdminDashboard.Infrastructure.Persistence.Context;
+using AdminDashboardApplication.DTOs.Users.Interface;
 using Microsoft.EntityFrameworkCore;
 using DateTime = System.DateTime;
 using Enumerable = System.Linq.Enumerable;
 using InvalidOperationException = System.InvalidOperationException;
-using AdminDashboard.Domain.Entities;
-using AdminDashboard.Infrastructure.Persistence.Context;
 
 
-namespace AdminDashboard.Infrastructure.Services
+namespace AdminDashboard.Infrastructure.Services.UsersServices
 {
     /// <summary>
     /// Service implementation for managing user operations.
@@ -227,7 +229,7 @@ namespace AdminDashboard.Infrastructure.Services
                 FirstName = dto.FirstName,
                 LastName = dto.LastName,
                 Email = dto.Email,
-                DateOfBirth = dto.DateOfBirth,
+                DateOfBirth = DateTime.SpecifyKind(dto.DateOfBirth, DateTimeKind.Utc),
                 PhoneNumber = dto.PhoneNumber,
                 Address = dto.Address,
                 Role = dto.Role ?? "Client"
@@ -266,7 +268,7 @@ namespace AdminDashboard.Infrastructure.Services
             entity.FirstName = dto.FirstName;
             entity.LastName = dto.LastName;
             entity.Email = dto.Email;
-            entity.DateOfBirth = dto.DateOfBirth;
+            entity.DateOfBirth = DateTime.SpecifyKind(dto.DateOfBirth, DateTimeKind.Utc);
             entity.PhoneNumber = dto.PhoneNumber;
             entity.Address = dto.Address;
             entity.Role = dto.Role;

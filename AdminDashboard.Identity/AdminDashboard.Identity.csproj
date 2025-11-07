@@ -9,7 +9,6 @@
   <ItemGroup>
     <ProjectReference Include="..\AdminDashboard.Application\AdminDashboard.Application.csproj" />
     <ProjectReference Include="..\AdminDashboard.Domain\AdminDashboard.Domain.csproj" />
-    <ProjectReference Include="..\AdminDashboard.Contracts\AdminDashboard.Contracts.csproj" />
   </ItemGroup>
 
   <ItemGroup>
