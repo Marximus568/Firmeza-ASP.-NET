@@ -1,4 +1,4 @@
-namespace AdminDashboard.Application.Interfaces;
+namespace AdminDashboardApplication.Auth.Interfaces;
 
 /// <summary>
 /// Defines operations related to roles and permissions.

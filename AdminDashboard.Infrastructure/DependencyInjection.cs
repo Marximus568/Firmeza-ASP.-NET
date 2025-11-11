@@ -1,12 +1,9 @@
 using AdminDashboard.Contracts.Users;
-using AdminDashboard.Application.Interfaces;
 using AdminDashboard.Application.UseCases.Auth;
 using AdminDashboard.Contracts;
 using AdminDashboard.Infrastructure.Persistence.Context;
 using AdminDashboard.Infrastructure.Services;
 using AdminDashboardApplication.Common;
-using AdminDashboardApplication.DTOs.Auth.Interfaces;
-using AdminDashboardApplication.DTOs.Auth.UseCases;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -14,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using AdminDashboard.Identity.DependencyInjection;
 using AdminDashboard.Infrastructure.Services.ProductServices;
 using AdminDashboard.Infrastructure.Services.UsersServices;
+using AdminDashboardApplication.Auth.UseCases;
 using AdminDashboardApplication.DTOs.Products.Interfaces;
 using AdminDashboardApplication.DTOs.Users.Interface;
 

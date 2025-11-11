@@ -1,7 +1,8 @@
-using AdminDashboard.Application.DTOs.Auth;
+
+
 using AdminDashboard.Contracts.Users;
 
-namespace AdminDashboardApplication.DTOs.Auth.Interfaces;
+namespace AdminDashboardApplication.Auth.Interfaces;
 
 /// <summary>
 /// Defines the contract for authentication operations.

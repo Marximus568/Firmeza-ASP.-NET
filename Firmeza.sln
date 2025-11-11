@@ -1,9 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AdminService", "AdminService", "{8579D6D4-EF59-4D8D-9BF7-3597AECA38B3}"
-	ProjectSection(SolutionItems) = preProject
-		.env = .env
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdminDashboard.Web", "AdminDashboard.Web\AdminDashboard.Web.csproj", "{76065B96-7D4A-4624-84CF-B4EBA51D7709}"
 EndProject
@@ -14,6 +11,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdminDashboard.Domain", "AdminDashboard.Domain\AdminDashboard.Domain.csproj", "{648E5CA2-7B56-48D3-976D-2E799328D5F7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdminDashboard.Identity", "AdminDashboard.Identity\AdminDashboard.Identity.csproj", "{6B2E659E-1B15-4B76-BEB8-9DFD0B4BE5E3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Firmeza.WebApi", "Firmeza.WebApi\Firmeza.WebApi.csproj", "{64A53A10-E33A-4339-84DE-D07E8B303512}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -85,6 +84,18 @@ Global
 		{6B2E659E-1B15-4B76-BEB8-9DFD0B4BE5E3}.Release|x64.Build.0 = Release|Any CPU
 		{6B2E659E-1B15-4B76-BEB8-9DFD0B4BE5E3}.Release|x86.ActiveCfg = Release|Any CPU
 		{6B2E659E-1B15-4B76-BEB8-9DFD0B4BE5E3}.Release|x86.Build.0 = Release|Any CPU
+		{64A53A10-E33A-4339-84DE-D07E8B303512}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{64A53A10-E33A-4339-84DE-D07E8B303512}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{64A53A10-E33A-4339-84DE-D07E8B303512}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{64A53A10-E33A-4339-84DE-D07E8B303512}.Debug|x64.Build.0 = Debug|Any CPU
+		{64A53A10-E33A-4339-84DE-D07E8B303512}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{64A53A10-E33A-4339-84DE-D07E8B303512}.Debug|x86.Build.0 = Debug|Any CPU
+		{64A53A10-E33A-4339-84DE-D07E8B303512}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{64A53A10-E33A-4339-84DE-D07E8B303512}.Release|Any CPU.Build.0 = Release|Any CPU
+		{64A53A10-E33A-4339-84DE-D07E8B303512}.Release|x64.ActiveCfg = Release|Any CPU
+		{64A53A10-E33A-4339-84DE-D07E8B303512}.Release|x64.Build.0 = Release|Any CPU
+		{64A53A10-E33A-4339-84DE-D07E8B303512}.Release|x86.ActiveCfg = Release|Any CPU
+		{64A53A10-E33A-4339-84DE-D07E8B303512}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
