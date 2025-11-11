@@ -1,8 +1,6 @@
 using AdminDashboard.Contracts.Users;
-using AdminDashboard.Domain.Entities;
 
-
-namespace AdminDashboardApplication.DTOs.Auth.Mappers;
+namespace AdminDashboardApplication.Auth.Mappers;
 
 public static class UserMapper
 {

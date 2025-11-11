@@ -1,5 +1,4 @@
-using AdminDashboard.Application.Interfaces;
-using AdminDashboardApplication.DTOs.Auth.Interfaces;
+using AdminDashboardApplication.Auth.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;

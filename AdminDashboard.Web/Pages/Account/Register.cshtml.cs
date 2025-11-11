@@ -1,6 +1,6 @@
-using AdminDashboard.Application.DTOs.Auth;
 using AdminDashboard.Application.UseCases.Auth;
-using AdminDashboardApplication.DTOs.Auth.UseCases;
+using AdminDashboardApplication.Auth;
+using AdminDashboardApplication.Auth.UseCases;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;

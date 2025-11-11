@@ -1,4 +1,4 @@
-using AdminDashboard.Application.Interfaces;
+using AdminDashboardApplication.Auth.Interfaces;
 
 namespace AdminDashboard.Infrastructure.Identity.Services;
 

@@ -1,8 +1,6 @@
-using AdminDashboard.Application.DTOs.Auth;
-using AdminDashboard.Application.Interfaces;
-using AdminDashboardApplication.DTOs.Auth.Interfaces;
+using AdminDashboardApplication.Auth.Interfaces;
 
-namespace AdminDashboardApplication.DTOs.Auth.UseCases;
+namespace AdminDashboardApplication.Auth.UseCases;
 
 /// <summary>
 /// Use case for registering new users.

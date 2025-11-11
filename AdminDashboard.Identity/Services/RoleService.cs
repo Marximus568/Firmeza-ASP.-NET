@@ -1,5 +1,5 @@
-using AdminDashboard.Application.Interfaces;
 using AdminDashboard.Identity.Entities;
+using AdminDashboardApplication.Auth.Interfaces;
 using Microsoft.AspNetCore.Identity;
 
 namespace AdminDashboard.Identity.Services;

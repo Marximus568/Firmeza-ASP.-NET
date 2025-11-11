@@ -1,8 +1,7 @@
 using AdminDashboard.Identity.Entities;
 using AdminDashboard.Identity.Persistence.Context;
 using AdminDashboard.Identity.Services;
-using AdminDashboard.Application.Interfaces;
-using AdminDashboardApplication.DTOs.Auth.Interfaces;
+using AdminDashboardApplication.Auth.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;

@@ -1,6 +1,6 @@
-namespace AdminDashboard.Application.DTOs.Auth;
-
 using System.ComponentModel.DataAnnotations;
+
+namespace AdminDashboardApplication.Auth;
 
 /// <summary>
 /// Data transfer object for user registration
