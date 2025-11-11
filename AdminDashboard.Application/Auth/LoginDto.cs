@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace AdminDashboard.Application.DTOs.Auth;
+namespace AdminDashboardApplication.Auth;
 
 
 /// <summary>

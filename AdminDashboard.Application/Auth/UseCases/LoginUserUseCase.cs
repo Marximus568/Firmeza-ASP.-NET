@@ -1,10 +1,6 @@
-using AdminDashboard.Application.DTOs.Auth;
-using AdminDashboard.Application.Interfaces;
-using System.Threading;
-using System.Threading.Tasks;
-using AdminDashboardApplication.DTOs.Auth.Interfaces;
+using AdminDashboardApplication.Auth.Interfaces;
 
-namespace AdminDashboard.Application.UseCases.Auth
+namespace AdminDashboardApplication.Auth.UseCases
 {
     /// <summary>
     /// Handles the user login use case.

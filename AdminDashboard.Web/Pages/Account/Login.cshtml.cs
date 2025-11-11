@@ -1,6 +1,7 @@
-using AdminDashboard.Application.DTOs.Auth;
 using AdminDashboard.Application.UseCases.Auth;
 using AdminDashboard.Domain.ValueObjects;
+using AdminDashboardApplication.Auth;
+using AdminDashboardApplication.Auth.UseCases;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -88,6 +89,7 @@ public class LoginModel : PageModel
             // Redirect to the AdminDashboard Index Razor Page
             return RedirectToPage("/AdminDashboard/Index");
         }
+        
         
         return LocalRedirect(returnUrl);
     }
