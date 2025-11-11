@@ -1,5 +1,3 @@
-using AdminDashboard.Application.DTOs.Auth;
-using AdminDashboardApplication.DTOs.Auth.Interfaces;
 using AdminDashboard.Contracts.Users;
 using AdminDashboard.Domain.Entities;
 using AdminDashboard.Infrastructure.Identity.Entities;

@@ -1,4 +1,4 @@
-namespace AdminDashboard.Application.DTOs.Auth;
+namespace AdminDashboardApplication.Auth;
 
 
 public record AuthResultDto
