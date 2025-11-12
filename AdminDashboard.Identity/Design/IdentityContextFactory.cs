@@ -15,11 +15,7 @@ public class IdentityContextFactory : IDesignTimeDbContextFactory<IdentityContex
 
         // Read connection string from environment variable DB_CONNECTION
         var conn = Environment.GetEnvironmentVariable("DB_CONNECTION");
-        if (string.IsNullOrWhiteSpace(conn))
-        {
-            // Default to localhost postgres if not set (don't overwrite in production)
-            conn = "Host=localhost;Port=5432;Database=FirmezaDatabase;Username=postgres;Password=postgres";
-        }
+      
 
         builder.UseNpgsql(conn, b => b.MigrationsAssembly(typeof(IdentityContext).Assembly.FullName));
 

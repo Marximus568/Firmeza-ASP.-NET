@@ -1,4 +1,5 @@
 using AdminDashboardApplication.Auth.Interfaces;
+using AdminDashboardApplication.DTOs.Users;
 
 namespace AdminDashboardApplication.Auth.UseCases;
 
@@ -34,7 +35,7 @@ public class RegisterUserUseCase
         var role = string.IsNullOrWhiteSpace(registerDto.Role) ? "Client" : registerDto.Role;
 
         // 3️⃣ Create user DTO (now using centralized Contracts DTO)
-        var user = new AdminDashboard.Contracts.Users.UserDto
+        var user = new UserDto
         {
             FirstName = registerDto.FirstName,
             LastName = registerDto.LastName,

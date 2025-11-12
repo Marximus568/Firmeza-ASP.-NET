@@ -1,4 +1,3 @@
-using AdminDashboard.Contracts.Users;
 using AdminDashboard.Domain.Entities;
 using AdminDashboard.Infrastructure.Identity.Entities;
 using Microsoft.AspNetCore.Identity;

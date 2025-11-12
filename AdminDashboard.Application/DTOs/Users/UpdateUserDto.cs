@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace AdminDashboard.Contracts.Users;
+namespace AdminDashboardApplication.DTOs.Users;
 
 public class UpdateUserDto
 {

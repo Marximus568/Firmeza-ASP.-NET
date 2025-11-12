@@ -11,7 +11,7 @@ namespace AdminDashboardApplication.DTOs.Users.Mappers
     /// </summary>
     public static class UserMapper
     {
-        public static Clients ToEntity(AdminDashboard.Contracts.Users.CreateUserDto dto)
+        public static Clients ToEntity(CreateUserDto dto)
         {
             if (dto == null) return null!;
 
@@ -27,13 +27,13 @@ namespace AdminDashboardApplication.DTOs.Users.Mappers
             };
         }
 
-        public static AdminDashboard.Contracts.Users.UserDto ToDto(Clients client)
+        public static UserDto ToDto(Clients client)
         {
             if (client == null) return null!;
 
             var age = client.DateOfBirth == default ? 0 : (int)((System.DateTime.Today - client.DateOfBirth).TotalDays / 365.25);
 
-            return new AdminDashboard.Contracts.Users.UserDto
+            return new UserDto
             {
                 Id = client.Id,
                 FirstName = client.FirstName,
@@ -49,10 +49,10 @@ namespace AdminDashboardApplication.DTOs.Users.Mappers
             };
         }
 
-        public static IEnumerable<AdminDashboard.Contracts.Users.UserDto> ToDtoList(IEnumerable<Clients> users)
-            => users?.Select(ToDto).ToList() ?? new List<AdminDashboard.Contracts.Users.UserDto>();
+        public static IEnumerable<UserDto> ToDtoList(IEnumerable<Clients> users)
+            => users?.Select(ToDto).ToList() ?? new List<UserDto>();
 
-        public static void UpdateEntity(AdminDashboard.Contracts.Users.UpdateUserDto dto, Clients entity)
+        public static void UpdateEntity(UpdateUserDto dto, Clients entity)
         {
             if (dto == null || entity == null) return;
 

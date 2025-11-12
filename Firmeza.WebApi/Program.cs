@@ -1,3 +1,4 @@
+using AdminDashboard.Infrastructure;
 using DotNetEnv;
 using Firmeza.WebApi;
 
@@ -13,10 +14,14 @@ Env.Load("../.env"); // Adjust path if .env is in the parent directory
 // ====================================
 builder.Services.AddJwtAuthentication(builder.Configuration);
 
+// Infrastructure (DbContext, Identity, Cookies)
+builder.Services.AddInfrastructure(builder.Configuration);
 // ==============================
 // 🧾 Add Authorization (required for [Authorize])
 // ==============================
 builder.Services.AddAuthorization();
+//Controllers
+builder.Services.AddControllers();
 
 // ==============================
 // 🔧 Other services (Swagger etc.)
@@ -40,30 +45,10 @@ app.UseHttpsRedirection();
 app.UseAuthentication(); // Validate JWT tokens
 app.UseAuthorization();  // Enforce [Authorize] and policies
 
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
+app.MapControllers();
 
-app.MapGet("/weatherforecast", () =>
-    {
-        var forecast = Enumerable.Range(1, 5).Select(index =>
-                new WeatherForecast
-                (
-                    DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-                    Random.Shared.Next(-20, 55),
-                    summaries[Random.Shared.Next(summaries.Length)]
-                ))
-            .ToArray();
-        return forecast;
-    })
-    .WithName("GetWeatherForecast")
-    .WithOpenApi()
-    .RequireAuthorization(); // 🔒 Protected endpoint
+
+
 
 app.Run();
 
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}

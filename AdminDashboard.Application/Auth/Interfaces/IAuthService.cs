@@ -1,6 +1,4 @@
-
-
-using AdminDashboard.Contracts.Users;
+using AdminDashboardApplication.DTOs.Users;
 
 namespace AdminDashboardApplication.Auth.Interfaces;
 

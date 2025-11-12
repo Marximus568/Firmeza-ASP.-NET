@@ -1,7 +1,7 @@
-using AdminDashboard.Contracts;
-using AdminDashboard.Contracts.Users;
+
 using AdminDashboard.Domain.Entities;
 using AdminDashboard.Infrastructure.Persistence.Context;
+using AdminDashboardApplication.DTOs.Users;
 using AdminDashboardApplication.DTOs.Users.Interface;
 using Microsoft.EntityFrameworkCore;
 using DateTime = System.DateTime;
