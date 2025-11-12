@@ -1,4 +1,4 @@
-namespace AdminDashboard.Application.Product;
+namespace AdminDashboardApplication.DTOs.Products;
 
 public class ProductDto
 {

@@ -1,5 +1,6 @@
 using AdminDashboard.Application.Product;
 using AdminDashboard.Infrastructure.Persistence.Context;
+using AdminDashboardApplication.DTOs.Products;
 using AdminDashboardApplication.DTOs.Products.Interfaces;
 using AdminDashboardApplication.DTOs.Products.Mappers;
 using Microsoft.EntityFrameworkCore;

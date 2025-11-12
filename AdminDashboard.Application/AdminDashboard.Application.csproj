@@ -9,8 +9,6 @@
 
     <ItemGroup>
       <Folder Include="Behaviors\" />
-      <Folder Include="DTOs\SaleItems\Mappers\" />
-      <Folder Include="DTOs\Sales\Mappers\" />
       <Folder Include="Exception\" />
       <Folder Include="UseCases\" />
     </ItemGroup>
@@ -21,6 +19,7 @@
 
     <ItemGroup>
       <PackageReference Include="AutoMapper" Version="15.1.0" />
+      <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
       <PackageReference Include="Azure.Identity" Version="1.17.0" />
     </ItemGroup>
 
