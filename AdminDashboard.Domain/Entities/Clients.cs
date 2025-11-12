@@ -16,8 +16,9 @@ public class Clients : Person
     public string Address { get; set; } = string.Empty;
     
     [MaxLength(20)]
-    public string Role { get; set; } = string.Empty;
+    public string Role { get; set; } = "Customer";
 
+    public bool EmailConfirmed { get; set; } = false;
     // Navigation property: One client can have many sales
     public ICollection<Sales> Sales { get; set; } = new List<Sales>();
     
