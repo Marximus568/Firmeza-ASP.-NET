@@ -1,6 +1,7 @@
 
 using AdminDashboard.Domain.Entities;
 using AdminDashboard.Domain.Models;
+using AdminDashboardApplication.DTOs.Users;
 using Microsoft.EntityFrameworkCore;
 
 namespace AdminDashboard.Infrastructure.Persistence.Context;
@@ -21,7 +22,7 @@ public class AppDbContext : DbContext
     public DbSet<SaleItems> SaleItems { get; set; }
     
     public DbSet<Categories> Categories { get; set; }
-
+    
 
     // ========================
     // CONFIGURATION
