@@ -16,7 +16,6 @@ public class AppDbContext : DbContext
     // TABLES
     // ========================
     public DbSet<Clients> Users { get; set; }
-    public DbSet<Salers> Salers { get; set; }
     public DbSet<Products> Products { get; set; }
     public DbSet<Sales> Sales { get; set; }
     public DbSet<SaleItems> SaleItems { get; set; }
@@ -53,18 +52,7 @@ public class AppDbContext : DbContext
             entity.Property(e => e.Role)
                 .HasMaxLength(15);
         });
-
-        // ========== SALER ==========
-        modelBuilder.Entity<Salers>(entity =>
-        {
-            entity.ToTable("Salers");
-
-            entity.Property(e => e.Phone)
-                  .HasMaxLength(15);
-
-            entity.Property(e => e.IsActive)
-                  .HasDefaultValue(true);
-        });
+        
 
         // ========== SALES ==========
         modelBuilder.Entity<Sales>(entity =>
@@ -74,11 +62,6 @@ public class AppDbContext : DbContext
             entity.HasOne(e => e.Clients)
                   .WithMany(c => c.Sales)
                   .HasForeignKey(e => e.ClientId)
-                  .OnDelete(DeleteBehavior.Restrict);
-
-            entity.HasOne(e => e.Salers)
-                  .WithMany(s => s.Sales)
-                  .HasForeignKey(e => e.SalerId)
                   .OnDelete(DeleteBehavior.Restrict);
         });
         //============= Products =========

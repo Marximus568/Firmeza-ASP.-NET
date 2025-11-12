@@ -1,8 +1,8 @@
-using AdminDashboard.Contracts.Users;
 using AdminDashboard.Domain.Entities;
 using AdminDashboard.Identity.Entities;
 using AdminDashboardApplication.Auth;
 using AdminDashboardApplication.Auth.Interfaces;
+using AdminDashboardApplication.DTOs.Users;
 using Microsoft.AspNetCore.Identity;
 
 namespace AdminDashboard.Identity.Services;
