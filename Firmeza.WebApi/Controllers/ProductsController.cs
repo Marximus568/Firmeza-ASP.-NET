@@ -1,108 +1,127 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+using AdminDashboard.Application.Product;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using AdminDashboard.Domain.Entities;
 using AdminDashboard.Infrastructure.Persistence.Context;
+using AdminDashboardApplication.DTOs.Products;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace Firmeza.WebApi.Controllers
 {
-    [Route("apiv1/[controller]")]
     [ApiController]
+    [Route("apiv1/[controller]")]
     public class ProductsController : ControllerBase
     {
         private readonly AppDbContext _context;
+        private readonly IMapper _mapper;
 
-        public ProductsController(AppDbContext context)
+        public ProductsController(AppDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
-        // GET: api/Products
+        // =========================================================
+        // GET: apiv1/products
+        // =========================================================
+        /// <summary>
+        /// Retrieves all products in the system.
+        /// </summary>
+        /// <returns>A list of product DTOs (no sensitive data).</returns>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Products>>> GetProducts()
+        [SwaggerOperation(Summary = "Get all products", Description = "Returns a list of product DTOs without sensitive data.")]
+        [ProducesResponseType(typeof(IEnumerable<ProductDto>), 200)]
+        public async Task<ActionResult<IEnumerable<ProductDto>>> GetProducts()
         {
-            return await _context.Products.ToListAsync();
+            var products = await _context.Products.ToListAsync();
+            var productsDto = _mapper.Map<List<ProductDto>>(products);
+            return Ok(productsDto);
         }
 
-        // GET: api/Products/5
+        // =========================================================
+        // GET: apiv1/products/{id}
+        // =========================================================
+        /// <summary>
+        /// Retrieves a product by its unique ID.
+        /// </summary>
         [HttpGet("{id}")]
-        public async Task<ActionResult<Products>> GetProducts(int id)
+        [SwaggerOperation(Summary = "Get product by ID", Description = "Returns a single product DTO if found.")]
+        [ProducesResponseType(typeof(ProductDto), 200)]
+        [ProducesResponseType(404)]
+        public async Task<ActionResult<ProductDto>> GetProduct(int id)
         {
-            var products = await _context.Products.FindAsync(id);
+            var product = await _context.Products.FindAsync(id);
+            if (product == null)
+                return NotFound(new { message = $"Product with ID {id} not found." });
 
-            if (products == null)
-            {
-                return NotFound();
-            }
-
-            return products;
+            var productDto = _mapper.Map<ProductDto>(product);
+            return Ok(productDto);
         }
 
-        // PUT: api/Products/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutProducts(int id, Products products)
-        {
-            if (id != products.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(products).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ProductsExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        // POST: api/Products
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        // =========================================================
+        // POST: apiv1/products
+        // =========================================================
+        /// <summary>
+        /// Creates a new product.
+        /// </summary>
         [HttpPost]
-        public async Task<ActionResult<Products>> PostProducts(Products products)
+        [SwaggerOperation(Summary = "Create a product", Description = "Creates a new product and returns its DTO.")]
+        [ProducesResponseType(typeof(ProductDto), 201)]
+        [ProducesResponseType(400)]
+        public async Task<ActionResult<ProductDto>> PostProduct([FromBody] CreateProductDto dto)
         {
-            _context.Products.Add(products);
+            var entity = _mapper.Map<Products>(dto);
+            _context.Products.Add(entity);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetProducts", new { id = products.Id }, products);
+            var productDto = _mapper.Map<ProductDto>(entity);
+            return CreatedAtAction(nameof(GetProduct), new { id = entity.Id }, productDto);
         }
 
-        // DELETE: api/Products/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteProducts(int id)
+        // =========================================================
+        // PUT: apiv1/products/{id}
+        // =========================================================
+        /// <summary>
+        /// Updates an existing product.
+        /// </summary>
+        [HttpPut("{id}")]
+        [SwaggerOperation(Summary = "Update a product", Description = "Updates a product using its ID.")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public async Task<IActionResult> PutProduct(int id, [FromBody] CreateProductDto dto)
         {
-            var products = await _context.Products.FindAsync(id);
-            if (products == null)
-            {
-                return NotFound();
-            }
+            var entity = await _context.Products.FindAsync(id);
+            if (entity == null)
+                return NotFound(new { message = $"Product with ID {id} not found." });
 
-            _context.Products.Remove(products);
+            _mapper.Map(dto, entity);
+            _context.Entry(entity).State = EntityState.Modified;
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool ProductsExists(int id)
+        // =========================================================
+        // DELETE: apiv1/products/{id}
+        // =========================================================
+        /// <summary>
+        /// Deletes a product by ID.
+        /// </summary>
+        [HttpDelete("{id}")]
+        [SwaggerOperation(Summary = "Delete a product", Description = "Deletes a product by its ID.")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public async Task<IActionResult> DeleteProduct(int id)
         {
-            return _context.Products.Any(e => e.Id == id);
+            var entity = await _context.Products.FindAsync(id);
+            if (entity == null)
+                return NotFound(new { message = $"Product with ID {id} not found." });
+
+            _context.Products.Remove(entity);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
         }
     }
 }

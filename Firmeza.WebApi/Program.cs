@@ -1,4 +1,5 @@
 using AdminDashboard.Infrastructure;
+using AdminDashboard.Infrastructure.Filters;
 using DotNetEnv;
 using Firmeza.WebApi;
 
@@ -21,13 +22,19 @@ builder.Services.AddInfrastructure(builder.Configuration);
 // ==============================
 builder.Services.AddAuthorization();
 //Controllers
-builder.Services.AddControllers();
-
+builder.Services.AddControllers(options =>
+{
+    options.Filters.Add<SensitiveDataFilter>();
+});
 // ==============================
 // 🔧 Other services (Swagger etc.)
 // ==============================
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.EnableAnnotations();
+});
+
 
 var app = builder.Build();
 
