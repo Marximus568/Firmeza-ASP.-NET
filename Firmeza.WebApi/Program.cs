@@ -2,6 +2,7 @@ using AdminDashboard.Infrastructure;
 using AdminDashboard.Infrastructure.Filters;
 using DotNetEnv;
 using Firmeza.WebApi;
+using Microsoft.OpenApi;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,9 +33,15 @@ builder.Services.AddControllers(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
+    c.SwaggerDoc("v1", new OpenApiInfo()
+    {
+        Title = "Firmeza API",
+        Version = "v1",
+        Description = "API for Firmeza backend services"
+    });
+
     c.EnableAnnotations();
 });
-
 
 var app = builder.Build();
 
