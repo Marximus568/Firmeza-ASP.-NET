@@ -12,7 +12,7 @@ namespace Firmeza.WebApi.Controllers
     /// Handles CRUD operations for sale items.
     /// </summary>
     [ApiController]
-    [Route("apiv1/[controller]")]
+    [Route("v1/[controller]")]
     public class SaleItemsController : ControllerBase
     {
         private readonly AppDbContext _context;

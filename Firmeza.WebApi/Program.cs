@@ -29,6 +29,7 @@ builder.Services.AddAuthorization();
 // ====================================
 // 📌 Controllers + Global Filters
 // ====================================
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddControllers(options =>
 {
     // Global filter to avoid returning sensitive data

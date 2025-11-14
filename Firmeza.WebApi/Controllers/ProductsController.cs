@@ -10,7 +10,7 @@ using Swashbuckle.AspNetCore.Annotations;
 namespace Firmeza.WebApi.Controllers
 {
     [ApiController]
-    [Route("apiv1/[controller]")]
+    [Route("v1/[controller]")]
     public class ProductsController : ControllerBase
     {
         private readonly AppDbContext _context;

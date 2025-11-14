@@ -18,7 +18,7 @@ namespace Firmeza.WebApi.Controllers
     /// All endpoints return standard HTTP status codes and JSON responses.
     /// </remarks>
     [ApiController]
-    [Route("apiv1/[controller]")]
+    [Route("v1/[controller]")]
     [Produces("application/json")]
     [Consumes("application/json")]
     public class SalesController : ControllerBase

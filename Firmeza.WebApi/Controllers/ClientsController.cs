@@ -9,7 +9,7 @@ using AdminDashboardApplication.DTOs.Users;
 namespace Firmeza.WebApi.Controllers
 {
     [ApiController]
-    [Route("apiv1/[controller]")]
+    [Route("v1/[controller]")]
     [Produces("application/json")]
     public class UsersController : ControllerBase
     {
