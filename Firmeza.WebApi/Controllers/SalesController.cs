@@ -6,6 +6,8 @@ using AdminDashboard.Infrastructure.Persistence.Context;
 using AdminDashboardApplication.DTOs.Sales;
 using Swashbuckle.AspNetCore.Annotations;
 
+
+
 namespace Firmeza.WebApi.Controllers
 {
     /// <summary>
