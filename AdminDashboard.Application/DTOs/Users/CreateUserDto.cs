@@ -17,9 +17,8 @@ public class CreateUserDto
     [StringLength(100)]
     public string Email { get; set; } = string.Empty;
 
-    [Required(ErrorMessage = "The Date of Birth field is required.")]
-    [DataType(DataType.Date)]
-    public DateTime DateOfBirth { get; set; }
+    [Required]
+    public DateOnly DateOfBirth { get; set; }
 
     [Required]
     [Phone]
@@ -34,35 +33,3 @@ public class CreateUserDto
     [StringLength(20)]
     public string Role { get; set; } = "Client";
 }
-
-public class MinimumAgeAttribute : ValidationAttribute
-{
-    private readonly int _minimumAge;
-
-    public MinimumAgeAttribute(int minimumAge)
-    {
-        _minimumAge = minimumAge;
-    }
-
-    protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
-    {
-        if (value is DateTime dateOfBirth)
-        {
-            var age = DateTime.Today.Year - dateOfBirth.Year;
-            if (dateOfBirth.Date > DateTime.Today.AddYears(-age))
-            {
-                age--;
-            }
-
-            if (age >= _minimumAge)
-            {
-                return ValidationResult.Success;
-            }
-
-            return new ValidationResult(ErrorMessage ?? $"Minimum age requirement is {_minimumAge} years");
-        }
-
-        return new ValidationResult("Invalid date format");
-    }
-}
-

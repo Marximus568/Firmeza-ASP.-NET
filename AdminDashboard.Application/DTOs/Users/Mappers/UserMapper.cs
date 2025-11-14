@@ -2,15 +2,12 @@ using System.Linq;
 using System.Collections.Generic;
 using AdminDashboard.Domain.Entities;
 
-// NOTE: we'll refer to Contracts types with full qualification to avoid alias/namespace ambiguity
-
 namespace AdminDashboardApplication.DTOs.Users.Mappers
 {
-    /// <summary>
-    /// Maps between Domain.Entities.Users (aliased DomainUser) and Contracts DTOs.
-    /// </summary>
     public static class UserMapper
     {
+        // ------------------ CreateUserDto → Clients ------------------
+
         public static Clients ToEntity(CreateUserDto dto)
         {
             if (dto == null) return null!;
@@ -20,25 +17,39 @@ namespace AdminDashboardApplication.DTOs.Users.Mappers
                 FirstName = dto.FirstName,
                 LastName = dto.LastName,
                 Email = dto.Email,
+
+                // dto.DateOfBirth YA ES DateOnly → no convertir
                 DateOfBirth = dto.DateOfBirth,
+
                 PhoneNumber = dto.PhoneNumber,
                 Address = dto.Address,
                 Role = dto.Role ?? "Client"
             };
         }
 
+        // ------------------ Clients → UserDto ------------------
+
         public static UserDto ToDto(Clients client)
         {
             if (client == null) return null!;
 
-            var age = client.DateOfBirth == default ? 0 : (int)((System.DateTime.Today - client.DateOfBirth).TotalDays / 365.25);
+            int age = 0;
+
+            if (client.DateOfBirth != default)
+            {
+                var today = DateOnly.FromDateTime(DateTime.Today);
+                age = today.Year - client.DateOfBirth.Year;
+
+                if (client.DateOfBirth > today.AddYears(-age))
+                    age--;
+            }
 
             return new UserDto
             {
                 Id = client.Id,
                 FirstName = client.FirstName,
                 LastName = client.LastName,
-                FullName = string.Concat(client.FirstName, " ", client.LastName).Trim(),
+                FullName = $"{client.FirstName} {client.LastName}".Trim(),
                 Email = client.Email,
                 DateOfBirth = client.DateOfBirth,
                 Age = age,
@@ -49,8 +60,12 @@ namespace AdminDashboardApplication.DTOs.Users.Mappers
             };
         }
 
+        // ------------------ List mapper ------------------
+
         public static IEnumerable<UserDto> ToDtoList(IEnumerable<Clients> users)
             => users?.Select(ToDto).ToList() ?? new List<UserDto>();
+
+        // ------------------ UpdateUserDto → Clients ------------------
 
         public static void UpdateEntity(UpdateUserDto dto, Clients entity)
         {
@@ -59,7 +74,10 @@ namespace AdminDashboardApplication.DTOs.Users.Mappers
             entity.FirstName = dto.FirstName;
             entity.LastName = dto.LastName;
             entity.Email = dto.Email;
+
+            // dto.DateOfBirth YA ES DateOnly
             entity.DateOfBirth = dto.DateOfBirth;
+
             entity.PhoneNumber = dto.PhoneNumber;
             entity.Address = dto.Address;
             entity.Role = dto.Role;

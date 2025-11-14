@@ -1,6 +1,6 @@
 using System.Text.RegularExpressions;
 
-namespace AdminDashboard.Application.Common
+namespace AdminDashboardApplication.Common
 {
     /// <summary>
     /// Helper class for additional validation utilities

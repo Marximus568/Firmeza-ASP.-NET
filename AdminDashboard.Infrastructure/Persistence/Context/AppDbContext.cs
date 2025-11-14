@@ -29,7 +29,6 @@ public class AppDbContext : DbContext
     // ========================
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        base.OnModelCreating(modelBuilder);
 
         // =============================================
         // INHERITANCE MAPPING: TABLE-PER-CONCRETE-TYPE
@@ -110,5 +109,6 @@ public class AppDbContext : DbContext
             new Categories { Id = 3, Name = "Arena y Grava" },
             new Categories { Id = 4, Name = "Madera y Derivados" }
         );
+        base.OnModelCreating(modelBuilder);
     }
 }

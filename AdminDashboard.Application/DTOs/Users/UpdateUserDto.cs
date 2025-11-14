@@ -23,7 +23,7 @@ public class UpdateUserDto
 
     [Required]
     [DataType(DataType.Date)]
-    public DateTime DateOfBirth { get; set; }
+    public DateOnly DateOfBirth { get; set; }
 
     [Required]
     [Phone]
