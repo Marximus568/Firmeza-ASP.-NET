@@ -22,6 +22,15 @@ Env.Load("../.env");
 builder.Services.AddJwtAuthentication(builder.Configuration);
 builder.Services.AddInfrastructure(builder.Configuration);
 
+//Service to email. 
+builder.Services.Configure<SmtpSettings.SmtpSettings>(options =>
+{
+    options.Host = Environment.GetEnvironmentVariable("APP_SMTP_HOST");
+    options.Port = int.Parse(Environment.GetEnvironmentVariable("APP_SMTP_PORT")!);
+    options.From = Environment.GetEnvironmentVariable("APP_SMTP_FROM");
+    options.Username = Environment.GetEnvironmentVariable("APP_SMTP_USERNAME");
+    options.Password = Environment.GetEnvironmentVariable("APP_SMTP_PASSWORD");
+});
 // ====================================
 // 🛡️ Authorization (Required for JWT + [Authorize])
 // ====================================

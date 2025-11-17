@@ -23,5 +23,36 @@ public class Clients : Person
     
     // Logic stays in Domain
     public string FullName => $"{FirstName} {LastName}".Trim();
+    
+    public Clients(string firstName, string lastName, string email, string phone)
+    {
+        FirstName = firstName;
+        LastName = lastName;
+        Email = email;
+        PhoneNumber = phone;
+    }
+    
+    public Clients(
+        string firstName,
+        string lastName,
+        string email,
+       
+        string phoneNumber,
+        string address,
+        string role = "Customer"
+    )
+    {
+        FirstName = firstName;
+        LastName = lastName;
+        Email = email;
+        PhoneNumber = phoneNumber;
+        Address = address;
+        Role = role;
+    }
+
+    public Clients()
+    {
+        throw new NotImplementedException();
+    }
 }
 

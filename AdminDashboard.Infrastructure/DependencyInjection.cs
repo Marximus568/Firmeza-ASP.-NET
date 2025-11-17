@@ -1,7 +1,6 @@
 using AdminDashboard.Application.UseCases.Auth;
 
 using AdminDashboard.Infrastructure.Persistence.Context;
-using AdminDashboard.Infrastructure.Services;
 using AdminDashboardApplication.Common;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
