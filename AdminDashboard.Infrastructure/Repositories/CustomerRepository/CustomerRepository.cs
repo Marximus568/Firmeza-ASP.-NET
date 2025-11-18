@@ -1,9 +1,9 @@
 using AdminDashboard.Domain.Entities;
-using AdminDashboard.Domain.Interfaces.Repository;
 using AdminDashboard.Infrastructure.Persistence.Context;
+using AdminDashboardApplication.Interfaces.Repository;
 using Microsoft.EntityFrameworkCore;
 
-namespace AdminDashboard.Infrastructure.Repositories.Customer
+namespace AdminDashboard.Infrastructure.Repositories.CustomerRepository
 {
     public class CustomerRepository : ICustomerRepository
     {

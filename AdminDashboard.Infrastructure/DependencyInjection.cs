@@ -7,11 +7,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using AdminDashboard.Identity.DependencyInjection;
+using AdminDashboard.Infrastructure.Repositories.CustomerRepository;
+using AdminDashboard.Infrastructure.Repositories.ProductRepository;
 using AdminDashboard.Infrastructure.Services.ProductServices;
 using AdminDashboard.Infrastructure.Services.UsersServices;
 using AdminDashboardApplication.Auth.UseCases;
 using AdminDashboardApplication.DTOs.Products.Interfaces;
 using AdminDashboardApplication.DTOs.Users.Interface;
+using AdminDashboardApplication.Interfaces.Repository;
 
 namespace AdminDashboard.Infrastructure;
 
@@ -77,8 +80,12 @@ public static class DependencyInjection
         // Identity service implementations are registered inside AdminDashboard.Identity
         services.AddScoped<IUsersService, UsersService>();
         services.AddScoped<IProductServices, ProductService>();
+        
+        // REPOSITORIES
+        services.AddScoped<IProductRepository, ProductsRepository>();
+        services.AddScoped<ICustomerRepository, CustomerRepository>();
 
-        // ============================
+        // ============================ 
         // USE CASES
         // ============================
         services.AddScoped<RegisterUserUseCase>();

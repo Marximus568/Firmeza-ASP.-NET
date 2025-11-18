@@ -1,6 +1,6 @@
 using AdminDashboard.Domain.Entities;
 
-namespace AdminDashboard.Domain.Interfaces.Repository;
+namespace AdminDashboardApplication.Interfaces.Repository;
 
 public interface ICustomerRepository
 {
