@@ -1,6 +1,6 @@
 using System.Net;
 using System.Net.Mail;
-using AdminDashboard.Domain.Interfaces;
+using AdminDashboardApplication.Interfaces;
 using Microsoft.Extensions.Options;
 
 namespace AdminDashboard.Infrastructure.Email;
@@ -16,17 +16,30 @@ public class SmtpEmailService : IEmailService
 
     public async Task SendEmailAsync(string to, string subject, string body)
     {
-        var client = new SmtpClient(_settings.Host, _settings.Port)
+        // Setup SMTP client
+        using var client = new SmtpClient(_settings.Host, _settings.Port)
         {
-            EnableSsl = true,
+            EnableSsl = _settings.EnableSsl, 
             Credentials = new NetworkCredential(_settings.Username, _settings.Password)
         };
 
-        var mail = new MailMessage(_settings.From, to, subject, body)
+        // Build proper From address (with optional display name)
+        var fromAddress = string.IsNullOrWhiteSpace(_settings.FromName)
+            ? new MailAddress(_settings.From)
+            : new MailAddress(_settings.From, _settings.FromName);
+
+        // Build email
+        using var mail = new MailMessage
         {
-            IsBodyHtml = true // si usas HTML
+            From = fromAddress,
+            Subject = subject,
+            Body = body,
+            IsBodyHtml = true
         };
 
+        mail.To.Add(to);
+
+        // Send
         await client.SendMailAsync(mail);
     }
 }

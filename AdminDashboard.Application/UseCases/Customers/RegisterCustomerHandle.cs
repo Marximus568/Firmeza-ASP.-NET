@@ -1,6 +1,6 @@
 using AdminDashboard.Domain.Entities;
-using AdminDashboard.Domain.Interfaces;
 using AdminDashboardApplication.DTOs.CustomersEmail;
+using AdminDashboardApplication.Interfaces;
 using AdminDashboardApplication.Interfaces.Repository;
 
 namespace AdminDashboardApplication.UseCases.Customers;

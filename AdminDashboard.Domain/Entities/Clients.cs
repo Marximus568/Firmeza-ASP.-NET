@@ -52,7 +52,6 @@ public class Clients : Person
 
     public Clients()
     {
-        throw new NotImplementedException();
     }
 }
 

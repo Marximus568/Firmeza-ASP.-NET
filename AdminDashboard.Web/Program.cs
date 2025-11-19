@@ -1,28 +1,17 @@
 using AdminDashboard.Infrastructure;
-using AdminDashboard.Infrastructure.Persistence.Context;
+using AdminDashboard.Infrastructure.Persistence;
 using AdminDashboard.Infrastructure.Routing;
 using AdminDashboard.Infrastructure.Seeders;
-using Microsoft.EntityFrameworkCore;
+using AdminDashboardApplication;
 using AdminDashboardApplication.Common;
+using DotNetEnv;
 
-// Load solution-level .env (if present) so configuration picks up DB_CONNECTION and other vars
-EnvLoader.Load();
-
-// Debug: print whether DB_CONNECTION is set (do not print full value in logs to avoid secrets)
-var _dbConn = Environment.GetEnvironmentVariable("DB_CONNECTION");
-if (!string.IsNullOrEmpty(_dbConn))
-{
-    Console.WriteLine($"[EnvLoader] DB_CONNECTION found, length={_dbConn.Length}");
-}
-else
-{
-    Console.WriteLine("[EnvLoader] DB_CONNECTION NOT FOUND");
-}
+Env.Load("../.env");
 
 var builder = WebApplication.CreateBuilder(args);
 
 // ===================================================
-// 🔧 SERVICES
+// 🔧 SERVICE REGISTRATION
 // ===================================================
 
 // Logging
@@ -30,13 +19,19 @@ builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
 builder.Logging.AddDebug();
 
-// Infrastructure (DbContext, Identity, Cookies)
+// 1️⃣ Persistence (DbContext)
+builder.Services.AddPersistence(builder.Configuration);
+
+// 2️⃣ Infrastructure (Identity, JWT, Repositories, Domain Services)
 builder.Services.AddInfrastructure(builder.Configuration);
 
-// Routing & authorization
+// 3️⃣ Application Layer (UseCases + Handlers + AutoMapper)
+builder.Services.AddApplication();
+
+// 4️⃣ Custom App Routing
 builder.Services.AddAppRouting();
 
-// Configure cookie paths for Identity
+// 5️⃣ Identity cookie configuration (UI behavior)
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.LoginPath = "/Account/Login";
@@ -47,12 +42,16 @@ builder.Services.ConfigureApplicationCookie(options =>
 
 var app = builder.Build();
 
-// Run seeders if requested (set env RUN_SEEDERS=1 to enable)
+// ===================================================
+// 🧪 SEEDERS (Optional)
+// ===================================================
 if (Environment.GetEnvironmentVariable("RUN_SEEDERS") == "1")
 {
     using var scope = app.Services.CreateScope();
     var services = scope.ServiceProvider;
+
     Console.WriteLine("[Seeder] Starting Identity seeder...");
+
     try
     {
         await AdminDashboard.Identity.Seeders.IdentitySeeder.SeedAsync(services);
@@ -60,7 +59,7 @@ if (Environment.GetEnvironmentVariable("RUN_SEEDERS") == "1")
     }
     catch (Exception ex)
     {
-        Console.WriteLine($"[Seeder] Identity seeder ERROR: {ex}");
+        Console.WriteLine($"[Seeder] ERROR: {ex}");
     }
 }
 
@@ -76,25 +75,24 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
-// Security headers
+// Security headers middleware
 app.Use(async (context, next) =>
 {
     context.Response.Headers.Append("X-Content-Type-Options", "nosniff");
     context.Response.Headers.Append("X-Frame-Options", "DENY");
     context.Response.Headers.Append("X-XSS-Protection", "1; mode=block");
+
     await next();
 });
 
 app.UseRouting();
+
+// Auth
 app.UseAuthentication();
 app.UseAuthorization();
 
-// ===================================================
-// 🚀 ROUTING
-// ===================================================
+// Routes
 app.UseAppRouting();
 
-// ===================================================
-// ▶️ RUN APP
-// ===================================================
+// Start
 app.Run();

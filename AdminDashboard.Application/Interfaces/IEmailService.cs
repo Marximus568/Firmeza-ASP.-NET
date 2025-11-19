@@ -1,4 +1,4 @@
-namespace AdminDashboard.Domain.Interfaces;
+namespace AdminDashboardApplication.Interfaces;
 
 public interface IEmailService
 {

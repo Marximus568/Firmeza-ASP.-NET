@@ -1,52 +1,34 @@
-using AdminDashboard.Application.UseCases.Auth;
-
 using AdminDashboard.Infrastructure.Persistence.Context;
-using AdminDashboardApplication.Common;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using AdminDashboard.Identity.DependencyInjection;
+using AdminDashboardApplication.Interfaces.Repository;
 using AdminDashboard.Infrastructure.Repositories.CustomerRepository;
 using AdminDashboard.Infrastructure.Repositories.ProductRepository;
 using AdminDashboard.Infrastructure.Services.ProductServices;
 using AdminDashboard.Infrastructure.Services.UsersServices;
-using AdminDashboardApplication.Auth.UseCases;
-using AdminDashboardApplication.DTOs.Products.Interfaces;
+using AdminDashboardApplication.Interfaces;
 using AdminDashboardApplication.DTOs.Users.Interface;
-using AdminDashboardApplication.Interfaces.Repository;
+using AdminDashboardApplication.DTOs.Products.Interfaces;
+using AdminDashboard.Infrastructure.Email;
+using AdminDashboard.Identity.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace AdminDashboard.Infrastructure;
 
-/// <summary>
-/// Configures all Infrastructure services for Dependency Injection.
-/// Keeps Program.cs clean and isolates implementation details.
-/// </summary>
 public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructure(
         this IServiceCollection services,
         IConfiguration configuration)
     {
-        // ===================================================
-        // LOAD .env USING UTIL (moved to Identity project where needed)
-        // ===================================================
-        // EnvLoader.Load();  // removed to avoid duplicate loading and responsibility
-
-        // ===================================================
-        // GET DATABASE CONNECTION
-        // ===================================================
+        // ======================================
+        // 🌱 Environment + Database
+        // ======================================
         var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION");
 
         if (string.IsNullOrWhiteSpace(connectionString))
-        {
             throw new InvalidOperationException("Missing .env or DB_CONNECTION variable");
-        }
-      
 
-        // ============================
-        // DATABASE CONTEXT (Domain Data)
-        // ============================
         services.AddDbContext<AppDbContext>(options =>
             options.UseNpgsql(
                 connectionString,
@@ -54,44 +36,27 @@ public static class DependencyInjection
             )
         );
 
-        // ============================
-        // IDENTITY INFRASTRUCTURE
-        // ============================
-        // Identity setup moved to AdminDashboard.Identity project. Use its extension here.
+        // ======================================
+        // 🔐 Identity + JWT
+        // ======================================
         services.AddIdentityInfrastructure(configuration);
 
-        // ============================
-        // COOKIE AUTHENTICATION
-        // ============================
-        // Move cookie configuration up here if still required by Infrastructure
-        services.ConfigureApplicationCookie(options =>
-        {
-            options.Cookie.HttpOnly = true;
-            options.ExpireTimeSpan = TimeSpan.FromDays(7);
-            options.LoginPath = "/Account/Login";
-            options.AccessDeniedPath = "/Account/AccessDenied";
-            options.SlidingExpiration = true;
-            options.ReturnUrlParameter = "returnUrl";
-        });
-
-        // ============================
-        // DOMAIN SERVICES (Ports/Adapters)
-        // ============================
-        // Identity service implementations are registered inside AdminDashboard.Identity
+        // ======================================
+        // 📦 Domain Services
+        // ======================================
         services.AddScoped<IUsersService, UsersService>();
         services.AddScoped<IProductServices, ProductService>();
-        
-        // REPOSITORIES
+
+        // ======================================
+        // 🗄️ Repositories
+        // ======================================
         services.AddScoped<IProductRepository, ProductsRepository>();
         services.AddScoped<ICustomerRepository, CustomerRepository>();
 
-        // ============================ 
-        // USE CASES
-        // ============================
-        services.AddScoped<RegisterUserUseCase>();
-        services.AddScoped<LoginUserUseCase>();
-        services.AddScoped<AssignRoleUseCase>();
-        
+        // ======================================
+        // ✉️ Email
+        // ======================================
+        services.AddScoped<IEmailService, SmtpEmailService>();
 
         return services;
     }

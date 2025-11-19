@@ -1,38 +1,49 @@
 using System.Reflection;
 using AdminDashboard.Infrastructure;
 using AdminDashboard.Infrastructure.Filters;
+using AdminDashboardApplication;
 using DotNetEnv;
 using Firmeza.WebApi;
 using Microsoft.OpenApi.Models;
 
-
-// ====================================
-// 🚀 Create the WebApplication builder
-// ====================================
 var builder = WebApplication.CreateBuilder(args);
 
 // ====================================
-// 📦 Load environment variables (.env)
+// 📦 Load environment variables
 // ====================================
 Env.Load("../.env");
 
 // ====================================
-// 🔐 Register Authentication + Infrastructure Services
+// 🔐 Authentication (JWT)
 // ====================================
 builder.Services.AddJwtAuthentication(builder.Configuration);
+
+// ====================================
+// 🧱 Application Layer (Use Cases)
+// ====================================
+builder.Services.AddApplication();
+
+// ====================================
+// 🏗️ Infrastructure (DbContext, Repositories, Services)
+// ====================================
 builder.Services.AddInfrastructure(builder.Configuration);
 
-//Service to email. 
+// ====================================
+// 📧 SMTP (Email service)
+// ====================================
 builder.Services.Configure<SmtpSettings.SmtpSettings>(options =>
 {
-    options.Host = Environment.GetEnvironmentVariable("APP_SMTP_HOST");
-    options.Port = int.Parse(Environment.GetEnvironmentVariable("APP_SMTP_PORT")!);
-    options.From = Environment.GetEnvironmentVariable("APP_SMTP_FROM");
-    options.Username = Environment.GetEnvironmentVariable("APP_SMTP_USERNAME");
-    options.Password = Environment.GetEnvironmentVariable("APP_SMTP_PASSWORD");
+    options.Host = Environment.GetEnvironmentVariable("SMTP_HOST");
+    options.Port = int.Parse(Environment.GetEnvironmentVariable("SMTP_PORT")!);
+    options.From = Environment.GetEnvironmentVariable("SMTP_FROM");
+    options.FromName = Environment.GetEnvironmentVariable("SMTP_FROM_NAME");
+    options.Username = Environment.GetEnvironmentVariable("SMTP_USERNAME");
+    options.Password = Environment.GetEnvironmentVariable("SMTP_PASSWORD");
+    options.EnableSsl = bool.Parse(Environment.GetEnvironmentVariable("SMTP_ENABLE_SSL") ?? "true");
 });
+
 // ====================================
-// 🛡️ Authorization (Required for JWT + [Authorize])
+// 🔐 Authorization
 // ====================================
 builder.Services.AddAuthorization();
 
@@ -40,44 +51,35 @@ builder.Services.AddAuthorization();
 // 📌 Controllers + Global Filters
 // ====================================
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
 builder.Services.AddControllers(options =>
 {
-    // Global filter to avoid returning sensitive data
+    // Global filter to protect sensitive info
     options.Filters.Add<SensitiveDataFilter>();
 });
 
 // ====================================
-// 📄 Swagger / OpenAPI Documentation
+// 📄 Swagger + JWT Support
 // ====================================
 builder.Services.AddEndpointsApiExplorer();
-
 builder.Services.AddSwaggerGen(c =>
 {
-    // Basic API info
     c.SwaggerDoc("v1", new OpenApiInfo
     {
         Title = "Firmeza API",
-        Version = "v1",
-        Description = "Backend API for Firmeza platform"
+        Version = "v1"
     });
 
-    // Enable XML comments (if enabled in csproj)
+    // XML Comments
     var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
     var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
     if (File.Exists(xmlPath))
-    {
         c.IncludeXmlComments(xmlPath);
-    }
 
-    // Enable Swagger annotations
-    c.EnableAnnotations();
-
-    // ================================
-    // 🔐 Configure JWT Bearer in Swagger
-    // ================================
+    // JWT Auth in Swagger
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
-        Description = "JWT Authorization header using the Bearer scheme. Example: 'Bearer eyJhbGciOi...'",
+        Description = "Add 'Bearer {token}' to authenticate",
         Name = "Authorization",
         In = ParameterLocation.Header,
         Type = SecuritySchemeType.Http,
@@ -102,32 +104,24 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 // ====================================
-// 🚀 Build the WebApplication
+// 🚀 Build App
 // ====================================
 var app = builder.Build();
 
 // ====================================
-// 🧱 Middlewares (order matters)
+// 🧱 Middleware Pipeline
 // ====================================
-
-// Enable Swagger in development mode
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
-// Redirect HTTP to HTTPS
 app.UseHttpsRedirection();
 
-// Authentication middleware
 app.UseAuthentication();
-
-// Authorization middleware
 app.UseAuthorization();
 
-// Map controllers to endpoints
 app.MapControllers();
 
-// Run the application
 app.Run();
