@@ -1,164 +1,158 @@
 @page
-@model Pages.AdminDashboard.Products.Details.DetailsModel
-
+@model global::AdminDashboard.Pages.AdminDashboard.Products.Details.DetailsModel
 @{
     ViewData["Title"] = "Product Details";
 }
 
-<div class="container mt-4">
+<div class="container mt-4 animate-fade-in-up">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="mb-1 text-gradient" style="font-size: 2.5rem; font-weight: 800;">
+                <i class="fas fa-info-circle me-3"></i>Product Details
+            </h1>
+            <p class="text-muted" style="font-size: 1.1rem;">
+                <i class="fas fa-box me-2"></i>Información detallada del producto
+            </p>
+        </div>
+    </div>
+
     <div class="row">
         <div class="col-md-8 offset-md-2">
-            <div class="card">
+            <div class="card shadow-lg">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h2 class="mb-0">Product Details</h2>
-                    @if (User.IsInRole("Admin"))
-                    {
-                        <div>
+                    <h5 class="mb-0">
+                        <i class="fas fa-box-open me-2"></i>@Model.Product.Name
+                    </h5>
+                    <div class="d-flex gap-2">
+                        @if (User.IsInRole("Admin"))
+                        {
                             <a asp-page="Edit" asp-route-id="@Model.Product.Id" class="btn btn-warning btn-sm">
-                                <i class="bi bi-pencil"></i> Edit
+                                <i class="fas fa-edit me-1"></i>Edit
                             </a>
                             <a asp-page="Delete" asp-route-id="@Model.Product.Id" class="btn btn-danger btn-sm">
-                                <i class="bi bi-trash"></i> Delete
+                                <i class="fas fa-trash me-1"></i>Delete
                             </a>
-                        </div>
-                    }
-                </div>
-                <div class="card-body">
-                    <div class="row mb-4">
-                        <div class="col-md-12">
-                            <h3 class="text-primary">@Model.Product.Name</h3>
-                            @if (!string.IsNullOrEmpty(Model.Product.CategoryName))
-                            {
-                                <span class="badge bg-info fs-6">@Model.Product.CategoryName</span>
-                            }
-                        </div>
+                        }
                     </div>
-
-                    <div class="row mb-3">
+                </div>
+                <div class="card-body p-4">
+                    <div class="row mb-4">
                         <div class="col-md-6">
-                            <div class="card bg-light">
-                                <div class="card-body">
-                                    <h6 class="text-muted mb-2">Unit Price</h6>
-                                    <h2 class="text-success mb-0">
-                                        $@Model.Product.UnitPrice.ToString("N2")
-                                    </h2>
+                            <div class="p-3 bg-light rounded-3 h-100">
+                                <h6 class="text-uppercase text-muted mb-3" style="font-size: 0.75rem; letter-spacing: 1px;">
+                                    <i class="fas fa-tag me-2"></i>Product Information
+                                </h6>
+                                <div class="mb-3">
+                                    <label class="form-label text-muted mb-1" style="font-size: 0.875rem;">Product ID</label>
+                                    <p class="mb-0 fw-bold">#@Model.Product.Id</p>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label text-muted mb-1" style="font-size: 0.875rem;">Name</label>
+                                    <p class="mb-0 fw-bold fs-5">@Model.Product.Name</p>
+                                </div>
+                                <div>
+                                    <label class="form-label text-muted mb-1" style="font-size: 0.875rem;">Category</label>
+                                    @if (!string.IsNullOrEmpty(Model.Product.CategoryName))
+                                    {
+                                        <p class="mb-0">
+                                            <span class="badge bg-primary">@Model.Product.CategoryName</span>
+                                        </p>
+                                    }
+                                    else
+                                    {
+                                        <p class="mb-0 text-muted">No category assigned</p>
+                                    }
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="card bg-light">
-                                <div class="card-body">
-                                    <h6 class="text-muted mb-2">Stock Available</h6>
-                                    <h2 class="mb-0">
-                                        <span class="badge @(Model.Product.Stock > 50 ? "bg-success" : Model.Product.Stock > 10 ? "bg-warning" : "bg-danger") fs-4">
-                                            @Model.Product.Stock units
+                            <div class="p-3 bg-light rounded-3 h-100">
+                                <h6 class="text-uppercase text-muted mb-3" style="font-size: 0.75rem; letter-spacing: 1px;">
+                                    <i class="fas fa-chart-line me-2"></i>Pricing & Stock
+                                </h6>
+                                <div class="mb-3">
+                                    <label class="form-label text-muted mb-1" style="font-size: 0.875rem;">Unit Price</label>
+                                    <p class="mb-0">
+                                        <span class="fs-3 fw-bold text-success">$@Model.Product.UnitPrice.ToString("N2")</span>
+                                    </p>
+                                </div>
+                                <div>
+                                    <label class="form-label text-muted mb-1" style="font-size: 0.875rem;">Stock Available</label>
+                                    <p class="mb-0">
+                                        <span class="badge @(Model.Product.Stock > 50 ? "bg-success" : Model.Product.Stock > 10 ? "bg-warning" : "bg-danger")" 
+                                              style="font-size: 1.2rem; padding: 0.5rem 1rem;">
+                                            <i class="fas fa-boxes me-2"></i>@Model.Product.Stock units
                                         </span>
-                                    </h2>
+                                    </p>
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <div class="mb-4">
-                        <h5>Description</h5>
-                        <div class="card bg-light">
-                            <div class="card-body">
-                                @if (!string.IsNullOrEmpty(Model.Product.Description))
-                                {
-                                    <p class="mb-0">@Model.Product.Description</p>
-                                }
-                                else
-                                {
-                                    <p class="text-muted mb-0 fst-italic">No description available</p>
-                                }
+                        <h6 class="text-uppercase text-muted mb-3" style="font-size: 0.75rem; letter-spacing: 1px;">
+                            <i class="fas fa-align-left me-2"></i>Description
+                        </h6>
+                        <div class="p-3 bg-light rounded-3">
+                            @if (!string.IsNullOrEmpty(Model.Product.Description))
+                            {
+                                <p class="mb-0">@Model.Product.Description</p>
+                            }
+                            else
+                            {
+                                <p class="mb-0 text-muted fst-italic">No description available</p>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <div class="p-3 border rounded-3">
+                                <div class="d-flex align-items-center">
+                                    <div class="me-3">
+                                        <i class="fas fa-calendar-plus fa-2x text-primary"></i>
+                                    </div>
+                                    <div>
+                                        <label class="form-label text-muted mb-1" style="font-size: 0.75rem;">Created At</label>
+                                        <p class="mb-0 fw-bold">@Model.Product.CreatedAt.ToString("MMM dd, yyyy")</p>
+                                        <small class="text-muted">@Model.Product.CreatedAt.ToString("hh:mm tt")</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="p-3 border rounded-3">
+                                <div class="d-flex align-items-center">
+                                    <div class="me-3">
+                                        <i class="fas fa-calendar-check fa-2x text-success"></i>
+                                    </div>
+                                    <div>
+                                        <label class="form-label text-muted mb-1" style="font-size: 0.75rem;">Last Updated</label>
+                                        <p class="mb-0 fw-bold">@(Model.Product.UpdatedAt?.ToString("MMM dd, yyyy") ?? "N/A")</p>
+                                        <small class="text-muted">@(Model.Product.UpdatedAt?.ToString("hh:mm tt") ?? "")</small>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <hr />
+                    <hr class="my-4">
 
-                    <div class="row">
-                        <div class="col-md-6">
-                            <dl class="row">
-                                <dt class="col-sm-5">Product ID</dt>
-                                <dd class="col-sm-7">
-                                    <code>#@Model.Product.Id</code>
-                                </dd>
-
-                                <dt class="col-sm-5">Category ID</dt>
-                                <dd class="col-sm-7">
-                                    @(Model.Product.CategoryId?.ToString() ?? "-")
-                                </dd>
-                            </dl>
-                        </div>
-                        <div class="col-md-6">
-                            <dl class="row">
-                                <dt class="col-sm-5">Created At</dt>
-                                <dd class="col-sm-7">
-                                    @Model.Product.CreatedAt.ToString("yyyy-MM-dd HH:mm")
-                                </dd>
-
-                                <dt class="col-sm-5">Last Updated</dt>
-                                <dd class="col-sm-7">
-                                    @(Model.Product.UpdatedAt?.ToString("yyyy-MM-dd HH:mm") ?? "-")
-                                </dd>
-                            </dl>
-                        </div>
-                    </div>
-
-                    <div class="mt-4">
+                    <div class="d-flex justify-content-between gap-3">
                         <a asp-page="Index" class="btn btn-secondary">
-                            <i class="bi bi-arrow-left"></i> Back to List
+                            <i class="fas fa-arrow-left me-2"></i>Back to List
                         </a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Additional Information Card -->
-            <div class="card mt-3">
-                <div class="card-header">
-                    <h5 class="mb-0">
-                        <i class="bi bi-calculator"></i> Inventory Calculations
-                    </h5>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-4 text-center">
-                            <h6 class="text-muted">Total Value</h6>
-                            <h4 class="text-primary">
-                                $@((Model.Product.UnitPrice * Model.Product.Stock).ToString("N2"))
-                            </h4>
-                            <small class="text-muted">Price × Stock</small>
-                        </div>
-                        <div class="col-md-4 text-center">
-                            <h6 class="text-muted">Stock Status</h6>
-                            <h4>
-                                @if (Model.Product.Stock > 50)
-                                {
-                                    <span class="text-success">
-                                        <i class="bi bi-check-circle-fill"></i> Excellent
-                                    </span>
-                                }
-                                else if (Model.Product.Stock > 10)
-                                {
-                                    <span class="text-warning">
-                                        <i class="bi bi-exclamation-circle-fill"></i> Moderate
-                                    </span>
-                                }
-                                else
-                                {
-                                    <span class="text-danger">
-                                        <i class="bi bi-x-circle-fill"></i> Low Stock
-                                    </span>
-                                }
-                            </h4>
-                        </div>
-                        <div class="col-md-4 text-center">
-                            <h6 class="text-muted">Days Since Created</h6>
-                            <h4 class="text-info">
-                                @((DateTime.UtcNow - Model.Product.CreatedAt).Days) days
-                            </h4>
-                        </div>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <div class="d-flex gap-2">
+                                <a asp-page="Edit" asp-route-id="@Model.Product.Id" class="btn btn-warning">
+                                    <i class="fas fa-edit me-2"></i>Edit Product
+                                </a>
+                                <a asp-page="Delete" asp-route-id="@Model.Product.Id" class="btn btn-danger">
+                                    <i class="fas fa-trash me-2"></i>Delete
+                                </a>
+                            </div>
+                        }
                     </div>
                 </div>
             </div>

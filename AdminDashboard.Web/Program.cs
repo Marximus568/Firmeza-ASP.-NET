@@ -5,6 +5,9 @@ using AdminDashboard.Infrastructure.Seeders;
 using AdminDashboardApplication;
 using AdminDashboardApplication.Common;
 using DotNetEnv;
+using OfficeOpenXml;
+
+ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
 Env.Load("../.env");
 

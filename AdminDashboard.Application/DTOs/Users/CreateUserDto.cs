@@ -16,16 +16,13 @@ public class CreateUserDto
     [EmailAddress]
     [StringLength(100)]
     public string Email { get; set; } = string.Empty;
-
-    [Required]
+    
     public DateOnly DateOfBirth { get; set; }
-
-    [Required]
+    
     [Phone]
     [StringLength(15, MinimumLength = 7)]
     public string PhoneNumber { get; set; } = string.Empty;
-
-    [Required]
+    
     [StringLength(200, MinimumLength = 5)]
     public string Address { get; set; } = string.Empty;
 

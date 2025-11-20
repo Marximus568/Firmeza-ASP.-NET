@@ -5,52 +5,122 @@
 }
 
 <div class="d-flex">
-    <!-- Sidebar -->
-    <nav class="sidebar d-flex flex-column p-3 bg-dark text-white" style="min-height: 100vh; width: 220px;">
+    <!-- Enhanced Sidebar -->
+    <nav class="sidebar d-flex flex-column p-3 bg-dark text-white animate-slide-in-left" style="min-height: 100vh; width: 220px;">
         <a href="#" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+            <i class="fas fa-shield-alt me-2 fs-4"></i>
             <span class="fs-4">Admin Panel</span>
         </a>
         <hr class="text-white">
         <ul class="nav nav-pills flex-column mb-auto">
             <li>
-                <a asp-area="Admin" asp-page="Products/Index" class="nav-link text-white">Productos</a>
+                <a asp-area="Admin" asp-page="Products/Index" class="nav-link text-white">
+                    <i class="fas fa-box me-2"></i>Productos
+                </a>
             </li>
             <li>
-                <a asp-area="Admin" asp-page="Users/Index" class="nav-link text-white">Clientes</a>
+                <a asp-area="Admin" asp-page="Users/Index" class="nav-link text-white">
+                    <i class="fas fa-users me-2"></i>Clientes
+                </a>
             </li>
             <li>
-                <a asp-area="Admin" class="nav-link text-white">Ventas</a>
+                <a asp-area="Admin" class="nav-link text-white">
+                    <i class="fas fa-chart-line me-2"></i>Ventas
+                </a>
             </li>
         </ul>
     </nav>
 
     <!-- Main Content -->
     <div class="content flex-grow-1 p-4">
-        <h1 class="mb-4">Dashboard</h1>
+        <!-- Page Header -->
+        <div class="mb-4 animate-fade-in-up">
+            <h1 class="mb-2 text-gradient" style="font-size: 2.5rem; font-weight: 800;">Dashboard</h1>
+            <p class="text-muted" style="font-size: 1.1rem;">
+                <i class="far fa-calendar me-2"></i>Bienvenido al panel de administración
+            </p>
+        </div>
 
-        <div class="row g-3">
-            <div class="col-md-4">
-                <div class="card text-center p-3 shadow-sm">
-                    <h5 class="card-title">Total Productos</h5>
-                    <p class="card-text fs-4">@Model.TotalProducts</p>
+        <!-- Statistics Cards -->
+        <div class="row g-4 mb-4">
+            <!-- Total Products Card -->
+            <div class="col-md-4 animate-fade-in-up" style="animation-delay: 0.1s;">
+                <div class="card text-center p-4 shadow-sm text-white bg-primary">
+                    <div class="mb-3">
+                        <i class="fas fa-box" style="font-size: 3rem; opacity: 0.9;"></i>
+                    </div>
+                    <h5 class="card-title text-uppercase" style="letter-spacing: 1px; font-size: 0.9rem;">Total Productos</h5>
+                    <p class="card-text mb-0" style="font-size: 3rem; font-weight: 800; line-height: 1;">@Model.TotalProducts</p>
+                    <p class="mt-2 mb-0" style="opacity: 0.8; font-size: 0.85rem;">
+                        <i class="fas fa-arrow-up me-1"></i>+12% este mes
+                    </p>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="card text-center p-3 shadow-sm">
-                    <h5 class="card-title">Total Clientes</h5>
-                    <p class="card-text fs-4">@Model.TotalClients</p>
+
+            <!-- Total Clients Card -->
+            <div class="col-md-4 animate-fade-in-up" style="animation-delay: 0.2s;">
+                <div class="card text-center p-4 shadow-sm text-white bg-success">
+                    <div class="mb-3">
+                        <i class="fas fa-users" style="font-size: 3rem; opacity: 0.9;"></i>
+                    </div>
+                    <h5 class="card-title text-uppercase" style="letter-spacing: 1px; font-size: 0.9rem;">Total Clientes</h5>
+                    <p class="card-text mb-0" style="font-size: 3rem; font-weight: 800; line-height: 1;">@Model.TotalClients</p>
+                    <p class="mt-2 mb-0" style="opacity: 0.8; font-size: 0.85rem;">
+                        <i class="fas fa-arrow-up me-1"></i>+8% este mes
+                    </p>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="card text-center p-3 shadow-sm">
-                    <h5 class="card-title">Total Ventas</h5>
-                    <p class="card-text fs-4">@Model.TotalSales</p>
+
+            <!-- Total Sales Card -->
+            <div class="col-md-4 animate-fade-in-up" style="animation-delay: 0.3s;">
+                <div class="card text-center p-4 shadow-sm text-white bg-warning">
+                    <div class="mb-3">
+                        <i class="fas fa-chart-line" style="font-size: 3rem; opacity: 0.9;"></i>
+                    </div>
+                    <h5 class="card-title text-uppercase" style="letter-spacing: 1px; font-size: 0.9rem;">Total Ventas</h5>
+                    <p class="card-text mb-0" style="font-size: 3rem; font-weight: 800; line-height: 1;">@Model.TotalSales</p>
+                    <p class="mt-2 mb-0" style="opacity: 0.8; font-size: 0.85rem;">
+                        <i class="fas fa-arrow-up me-1"></i>+15% este mes
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="row g-4 animate-fade-in-up" style="animation-delay: 0.4s;">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">
+                            <i class="fas fa-bolt me-2"></i>Acciones Rápidas
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-md-3">
+                                <a asp-area="Admin" asp-page="Products/Create" class="btn btn-primary w-100 py-3">
+                                    <i class="fas fa-plus-circle me-2"></i>Nuevo Producto
+                                </a>
+                            </div>
+                            <div class="col-md-3">
+                                <a asp-area="Admin" asp-page="Users/Create" class="btn btn-success w-100 py-3">
+                                    <i class="fas fa-user-plus me-2"></i>Nuevo Cliente
+                                </a>
+                            </div>
+                            <div class="col-md-3">
+                                <button class="btn btn-info w-100 py-3">
+                                    <i class="fas fa-file-invoice me-2"></i>Nueva Venta
+                                </button>
+                            </div>
+                            <div class="col-md-3">
+                                <button class="btn btn-secondary w-100 py-3">
+                                    <i class="fas fa-chart-bar me-2"></i>Ver Reportes
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-<!-- Bootstrap CSS y JS -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
