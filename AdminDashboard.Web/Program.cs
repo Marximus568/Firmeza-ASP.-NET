@@ -1,10 +1,12 @@
 using AdminDashboard.Infrastructure;
 using AdminDashboard.Infrastructure.Persistence;
 using AdminDashboard.Infrastructure.Routing;
+
 using AdminDashboardApplication;
 using AdminDashboardApplication.Common;
 using DotNetEnv;
 using OfficeOpenXml;
+using SalePDF.Interface;
 
 ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
@@ -34,7 +36,7 @@ builder.Services.AddApplication();
 builder.Services.AddAppRouting();
 
 //  ⃣ Services pdf
-// builder.Services.AddScoped<IPdfService, PdfService>(); // Commented out - service not implemented
+// builder.Services.AddScoped<IPdfService, PdfService>();
 
 
 // 5️⃣ Identity cookie configuration (UI behavior)

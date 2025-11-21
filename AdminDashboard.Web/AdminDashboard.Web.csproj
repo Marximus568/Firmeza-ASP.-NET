@@ -128,7 +128,6 @@
         <PrivateAssets>all</PrivateAssets>
       </PackageReference>
       <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.0" />
-      <PackageReference Include="QuestPDF" Version="2025.7.3" />
     </ItemGroup>
 
     <ItemGroup>
@@ -141,6 +140,7 @@
       <ProjectReference Include="..\AdminDashboard.Infrastructure\AdminDashboard.Infrastructure.csproj" />
       <ProjectReference Include="..\AdminDashboard.Application\AdminDashboard.Application.csproj" />
       <ProjectReference Include="..\ExcelImporter\ExcelImporter.csproj" />
+      <ProjectReference Include="..\SalePDF\SalePDF.csproj" />
     </ItemGroup>
 
 </Project>

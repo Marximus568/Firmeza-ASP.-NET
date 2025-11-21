@@ -19,6 +19,7 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.7" />
+    <PackageReference Include="QuestPDF" Version="2025.7.4" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.5.0" />
   </ItemGroup>
@@ -26,7 +27,12 @@
   <ItemGroup>
     <ProjectReference Include="..\AdminDashboard.Domain\AdminDashboard.Domain.csproj" />
     <ProjectReference Include="..\AdminDashboard.Infrastructure\AdminDashboard.Infrastructure.csproj" />
+    <ProjectReference Include="..\AdminDashboard.Web\AdminDashboard.Web.csproj" />
     <ProjectReference Include="..\SmtpSettings\SmtpSettings.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="wwwroot\receipt\PdfServices.cs" />
   </ItemGroup>
 
 </Project>
