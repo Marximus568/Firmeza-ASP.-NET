@@ -1,0 +1,160 @@
+@page
+@model AdminDashboard.Pages.Admin.Reports.IndexModel
+@{
+    ViewData["Title"] = "Reportes PDF";
+}
+
+<div class="container-fluid px-4 pt-4">
+    <!-- Page Header -->
+    <div class="mb-4 animate-fade-in-up">
+        <h2 class="mb-2 text-gradient" style="font-size: 2rem; font-weight: 700;">
+            <i class="fas fa-file-pdf me-2"></i>Reportes en PDF
+        </h2>
+        <p class="text-muted" style="font-size: 1rem;">
+            Descarga reportes detallados de tu sistema en formato PDF
+        </p>
+    </div>
+
+    <!-- Reports Cards -->
+    <div class="row g-4">
+        <!-- Products Report Card -->
+        <div class="col-md-4 animate-fade-in-up" style="animation-delay: 0.1s;">
+            <div class="card shadow-sm border-0 h-100 hover-lift">
+                <div class="card-body text-center p-4">
+                    <div class="report-icon mb-3">
+                        <i class="fas fa-box" style="font-size: 3.5rem; color: #3b82f6;"></i>
+                    </div>
+                    <h5 class="card-title mb-2" style="font-weight: 700;">Reporte de Productos</h5>
+                    <p class="card-text text-muted mb-4" style="font-size: 0.9rem;">
+                        Lista completa de productos con precios, stock y categorías
+                    </p>
+                    <a asp-page-handler="DownloadProducts" class="btn btn-primary w-100 py-2 shadow-sm">
+                        <i class="fas fa-download me-2"></i>Descargar PDF
+                    </a>
+                </div>
+                <div class="card-footer bg-light border-0 text-center py-2">
+                    <small class="text-muted">
+                        <i class="fas fa-info-circle me-1"></i>Incluye inventario actual
+                    </small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Clients Report Card -->
+        <div class="col-md-4 animate-fade-in-up" style="animation-delay: 0.2s;">
+            <div class="card shadow-sm border-0 h-100 hover-lift">
+                <div class="card-body text-center p-4">
+                    <div class="report-icon mb-3">
+                        <i class="fas fa-users" style="font-size: 3.5rem; color: #10b981;"></i>
+                    </div>
+                    <h5 class="card-title mb-2" style="font-weight: 700;">Reporte de Clientes</h5>
+                    <p class="card-text text-muted mb-4" style="font-size: 0.9rem;">
+                        Información de contacto y estadísticas de todos los clientes
+                    </p>
+                    <a asp-page-handler="DownloadClients" class="btn btn-success w-100 py-2 shadow-sm">
+                        <i class="fas fa-download me-2"></i>Descargar PDF
+                    </a>
+                </div>
+                <div class="card-footer bg-light border-0 text-center py-2">
+                    <small class="text-muted">
+                        <i class="fas fa-info-circle me-1"></i>Con número de ventas
+                    </small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sales Report Card -->
+        <div class="col-md-4 animate-fade-in-up" style="animation-delay: 0.3s;">
+            <div class="card shadow-sm border-0 h-100 hover-lift">
+                <div class="card-body text-center p-4">
+                    <div class="report-icon mb-3">
+                        <i class="fas fa-chart-line" style="font-size: 3.5rem; color: #f59e0b;"></i>
+                    </div>
+                    <h5 class="card-title mb-2" style="font-weight: 700;">Reporte de Ventas</h5>
+                    <p class="card-text text-muted mb-4" style="font-size: 0.9rem;">
+                        Historial completo de ventas con totales y métodos de pago
+                    </p>
+                    <a asp-page-handler="DownloadSales" class="btn btn-warning w-100 py-2 shadow-sm">
+                        <i class="fas fa-download me-2"></i>Descargar PDF
+                    </a>
+                </div>
+                <div class="card-footer bg-light border-0 text-center py-2">
+                    <small class="text-muted">
+                        <i class="fas fa-info-circle me-1"></i>Incluye estado de pago
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Info Section -->
+    <div class="row mt-5 animate-fade-in-up" style="animation-delay: 0.4s;">
+        <div class="col-12">
+            <div class="alert alert-info border-0 shadow-sm">
+                <div class="d-flex align-items-start">
+                    <i class="fas fa-lightbulb me-3 mt-1" style="font-size: 1.5rem;"></i>
+                    <div>
+                        <h6 class="alert-heading mb-2">Información sobre los reportes</h6>
+                        <p class="mb-2" style="font-size: 0.9rem;">
+                            Los reportes se generan con la información más actualizada de la base de datos.
+                            Todos los PDFs incluyen fecha y hora de generación.
+                        </p>
+                        <ul class="mb-0" style="font-size: 0.9rem;">
+                            <li>Los archivos se descargan automáticamente al hacer clic</li>
+                            <li>Formato profesional listo para impresión</li>
+                            <li>Incluye paginación si hay muchos registros</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .hover-lift {
+        transition: all 0.3s ease;
+    }
+    
+    .hover-lift:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15) !important;
+    }
+    
+    .text-gradient {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    
+    .animate-fade-in-up {
+        animation: fadeInUp 0.6s ease-out;
+    }
+    
+    @@keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .report-icon {
+        padding: 20px;
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+        border-radius: 20px;
+        display: inline-block;
+    }
+    
+    .card {
+        border-radius: 15px;
+        overflow: hidden;
+    }
+    
+    .card-footer {
+        font-size: 0.85rem;
+    }
+</style>
