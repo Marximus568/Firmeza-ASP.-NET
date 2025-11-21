@@ -29,6 +29,7 @@ public static class AppRouting
             options.Conventions.AuthorizeFolder("/Admin/Products", "AdminOnly");
             options.Conventions.AuthorizeFolder("/Admin/Users", "AdminOnly");
             options.Conventions.AuthorizeFolder("/Admin/ExcelImporter", "AdminOnly");
+            options.Conventions.AuthorizeFolder("/Admin/Reports", "AdminOnly");
             options.Conventions.AuthorizePage("/Admin/Index", "AdminOnly");
 
             // 🟢 Public sections (no authentication required)

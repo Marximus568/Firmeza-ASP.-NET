@@ -29,5 +29,10 @@ namespace AdminDashboard.Infrastructure.Repositories.CustomerRepository
         {
             return await _context.Users.FirstOrDefaultAsync(c => c.Id == id);
         }
+        
+        public async Task<List<Clients>> GetAllAsync()
+        {
+            return await _context.Users.Include(c => c.Sales).ToListAsync();
+        }
     }
 }

@@ -12,4 +12,7 @@ public interface ICustomerRepository
 
     // Optional: Get by ID
     Task<Clients?> GetByIdAsync(int id);
+    
+    // Get all customers
+    Task<List<Clients>> GetAllAsync();
 }

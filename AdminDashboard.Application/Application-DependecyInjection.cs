@@ -17,6 +17,9 @@ public static class ApplicationDependecyInjection
         // CUSTOMERS
         services.AddScoped<RegisterCustomerHandler>();
 
+        // PDF REPORTS
+        services.AddScoped<SalePDF.Interface.IPdfReportService, SalePDF.Services.PdfReportService>();
+
         // AutoMapper
         services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
