@@ -5,6 +5,7 @@ using AdminDashboard.Infrastructure.Routing;
 using AdminDashboardApplication;
 using AdminDashboardApplication.Common;
 using DotNetEnv;
+using ExcelImporter.Services;
 using OfficeOpenXml;
 using SalePDF.Interface;
 
@@ -31,6 +32,9 @@ builder.Services.AddInfrastructure(builder.Configuration);
 
 // 3️⃣ Application Layer (UseCases + Handlers + AutoMapper)
 builder.Services.AddApplication();
+
+// 3.5️⃣ ExcelImporter Services
+builder.Services.AddExcelServices();
 
 // 4️⃣ Custom App Routing
 builder.Services.AddAppRouting();

@@ -26,8 +26,10 @@ public static class AppRouting
         services.AddRazorPages(options =>
         {
             // 🔒 Admin-only sections
-            options.Conventions.AuthorizeFolder("/AdminDashboard.Web/Products", "AdminOnly");
-            options.Conventions.AuthorizeFolder("/AdminDashboard.Web/Users", "AdminOnly");
+            options.Conventions.AuthorizeFolder("/Admin/Products", "AdminOnly");
+            options.Conventions.AuthorizeFolder("/Admin/Users", "AdminOnly");
+            options.Conventions.AuthorizeFolder("/Admin/ExcelImporter", "AdminOnly");
+            options.Conventions.AuthorizePage("/Admin/Index", "AdminOnly");
 
             // 🟢 Public sections (no authentication required)
             options.Conventions.AllowAnonymousToPage("/Index");       // Home page
@@ -46,9 +48,9 @@ public static class AppRouting
         app.MapRazorPages();
 
         // Friendly redirects (optional)
-        app.MapGet("/admin", static () => Results.Redirect("/AdminDashboard.Web/Index"));
-        app.MapGet("/products", static () => Results.Redirect("/AdminDashboard.Web/Products/Index"));
-        app.MapGet("/users", static () => Results.Redirect("/AdminDashboard.Web/Users/Index"));
+        app.MapGet("/admin", static () => Results.Redirect("/Admin/Index"));
+        app.MapGet("/products", static () => Results.Redirect("/Admin/Products/Index"));
+        app.MapGet("/users", static () => Results.Redirect("/Admin/Users/Index"));
 
         // Health check endpoint
         app.MapGet("/health", async (AppDbContext db) =>

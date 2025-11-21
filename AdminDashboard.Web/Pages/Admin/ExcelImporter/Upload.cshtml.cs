@@ -3,7 +3,7 @@ using ExcelImporter.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace AdminDashboard.Pages.ExcelImporter;
+namespace AdminDashboard.Pages.Admin.ExcelImporter;
 
 public class UploadModel : PageModel
 {

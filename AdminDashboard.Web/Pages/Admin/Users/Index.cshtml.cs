@@ -2,6 +2,7 @@
 using AdminDashboard.Infrastructure.Security;
 using AdminDashboardApplication.DTOs.Users;
 using AdminDashboardApplication.DTOs.Users.Interface;
+using ExcelImporter.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -13,10 +14,17 @@ namespace AdminDashboard.Pages.Admin.Users
     public class IndexModel : AdminPageModel
     {
         private readonly IUsersService _usersService;
+        private readonly IExcelExporter _excelExporter;
+        private readonly ILogger<IndexModel> _logger;
 
-        public IndexModel(IUsersService usersService)
+        public IndexModel(
+            IUsersService usersService,
+            IExcelExporter excelExporter,
+            ILogger<IndexModel> logger)
         {
             _usersService = usersService;
+            _excelExporter = excelExporter;
+            _logger = logger;
         }
 
         /// <summary>
@@ -82,6 +90,25 @@ namespace AdminDashboard.Pages.Admin.Users
             TotalAdmins = admins.Count();
             TotalRegularUsers = regularUsers.Count();
             TotalManagers = managers.Count();
+        }
+
+        /// <summary>
+        /// Export users/clients to Excel
+        /// </summary>
+        public async Task<IActionResult> OnGetExportExcelAsync()
+        {
+            try
+            {
+                var fileBytes = await _excelExporter.ExportClientsAsync();
+                return File(fileBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                    $"Users_{DateTime.Now:yyyyMMdd_HHmmss}.xlsx");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error exporting users to Excel");
+                TempData["Error"] = "Failed to export users to Excel.";
+                return RedirectToPage();
+            }
         }
     }
 }
