@@ -105,6 +105,41 @@ namespace AdminDashboard.Infrastructure.Migrations
                     b.ToTable("Users", (string)null);
 
                     b.HasDiscriminator().HasValue("Clients");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Address = "Calle Principal #123, Bogotá",
+                            DateOfBirth = new DateOnly(1, 1, 1),
+                            Email = "admin@firmeza.com",
+                            FirstName = "Admin",
+                            LastName = "System",
+                            PhoneNumber = "3001234567",
+                            Role = "Admin"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Address = "Carrera 10 #45-67, Medellín",
+                            DateOfBirth = new DateOnly(1, 1, 1),
+                            Email = "juanperez@example.com",
+                            FirstName = "Juan",
+                            LastName = "Pérez",
+                            PhoneNumber = "3109876543",
+                            Role = "Customer"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Address = "Avenida 15 #89-12, Cali",
+                            DateOfBirth = new DateOnly(1, 1, 1),
+                            Email = "mariarodriguez@example.com",
+                            FirstName = "María",
+                            LastName = "Rodríguez",
+                            PhoneNumber = "3157654321",
+                            Role = "Customer"
+                        });
                 });
 
             modelBuilder.Entity("AdminDashboard.Domain.Entities.Products", b =>
@@ -145,6 +180,108 @@ namespace AdminDashboard.Infrastructure.Migrations
                     b.HasIndex("CategoryId");
 
                     b.ToTable("Products");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CategoryId = 1,
+                            CreatedAt = new DateTime(2024, 1, 15, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Cemento de alta resistencia para todo tipo de construcción",
+                            Name = "Cemento Argos Portland Gris 50kg",
+                            Stock = 150,
+                            UnitPrice = 32000m
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CategoryId = 1,
+                            CreatedAt = new DateTime(2024, 1, 15, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Mezcla lista para pega de bloques y ladrillos",
+                            Name = "Mortero Premezclado 40kg",
+                            Stock = 80,
+                            UnitPrice = 18500m
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CategoryId = 2,
+                            CreatedAt = new DateTime(2024, 1, 15, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Ladrillo rojo tradicional de arcilla cocida",
+                            Name = "Ladrillo Tolete Macizo",
+                            Stock = 5000,
+                            UnitPrice = 950m
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CategoryId = 2,
+                            CreatedAt = new DateTime(2024, 1, 15, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Bloque de concreto estructural estándar",
+                            Name = "Bloque #4 (10x20x40cm)",
+                            Stock = 2000,
+                            UnitPrice = 2100m
+                        },
+                        new
+                        {
+                            Id = 5,
+                            CategoryId = 2,
+                            CreatedAt = new DateTime(2024, 1, 15, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Bloque de concreto para muros de carga",
+                            Name = "Bloque #5 (12x20x40cm)",
+                            Stock = 1500,
+                            UnitPrice = 2400m
+                        },
+                        new
+                        {
+                            Id = 6,
+                            CategoryId = 3,
+                            CreatedAt = new DateTime(2024, 1, 15, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Arena fina lavada para mezclas y acabados",
+                            Name = "Arena Lavada - Bulto 40kg",
+                            Stock = 300,
+                            UnitPrice = 8500m
+                        },
+                        new
+                        {
+                            Id = 7,
+                            CategoryId = 3,
+                            CreatedAt = new DateTime(2024, 1, 15, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Agregado grueso para concreto estructural",
+                            Name = "Gravilla #67 - Bulto 40kg",
+                            Stock = 250,
+                            UnitPrice = 9200m
+                        },
+                        new
+                        {
+                            Id = 8,
+                            CategoryId = 4,
+                            CreatedAt = new DateTime(2024, 1, 15, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Placa de triplex para formaletas y acabados",
+                            Name = "Tabla Triplex 6mm 1.22x2.44m",
+                            Stock = 120,
+                            UnitPrice = 45000m
+                        },
+                        new
+                        {
+                            Id = 9,
+                            CategoryId = 4,
+                            CreatedAt = new DateTime(2024, 1, 15, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Madera de pino cepillada para estructura",
+                            Name = "Regla Pino 2x4x3m",
+                            Stock = 90,
+                            UnitPrice = 15800m
+                        },
+                        new
+                        {
+                            Id = 10,
+                            CategoryId = 4,
+                            CreatedAt = new DateTime(2024, 1, 15, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Madera bruta para formaleta y obra negra",
+                            Name = "Tabla Burra 1x12x3m",
+                            Stock = 75,
+                            UnitPrice = 28000m
+                        });
                 });
 
             modelBuilder.Entity("AdminDashboard.Domain.Entities.SaleItems", b =>
@@ -210,9 +347,6 @@ namespace AdminDashboard.Infrastructure.Migrations
 
                     b.Property<DateTime>("SaleDate")
                         .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("SalerId")
-                        .HasColumnType("integer");
 
                     b.Property<decimal>("Subtotal")
                         .HasColumnType("decimal(10,2)");

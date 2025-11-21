@@ -9,9 +9,13 @@
     <ItemGroup>
       <Folder Include="External\" />
       <Folder Include="Repositories\UsersRepository\" />
+      <Folder Include="Seeders\" />
     </ItemGroup>
 
     <ItemGroup>
+      <Reference Include="EPPlus">
+        <HintPath>..\..\..\.nuget\packages\epplus\5.0.3\lib\netstandard2.1\EPPlus.dll</HintPath>
+      </Reference>
       <Reference Include="Microsoft.AspNetCore">
         <HintPath>..\..\..\.nuget\packages\microsoft.aspnetcore.app.ref\8.0.19\ref\net8.0\Microsoft.AspNetCore.dll</HintPath>
       </Reference>

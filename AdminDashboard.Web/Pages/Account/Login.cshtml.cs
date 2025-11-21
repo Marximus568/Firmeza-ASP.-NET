@@ -87,7 +87,7 @@ public class LoginModel : PageModel
         if (result.Roles.Contains(UserRole.Admin))
         {
             // Redirect to the AdminDashboard Index Razor Page
-            return RedirectToPage("/AdminDashboard/Index");
+            return RedirectToPage("/Admin/Index");
         }
         
         

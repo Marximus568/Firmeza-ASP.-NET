@@ -140,6 +140,7 @@
     <ItemGroup>
       <ProjectReference Include="..\AdminDashboard.Infrastructure\AdminDashboard.Infrastructure.csproj" />
       <ProjectReference Include="..\AdminDashboard.Application\AdminDashboard.Application.csproj" />
+      <ProjectReference Include="..\ExcelImporter\ExcelImporter.csproj" />
     </ItemGroup>
 
 </Project>

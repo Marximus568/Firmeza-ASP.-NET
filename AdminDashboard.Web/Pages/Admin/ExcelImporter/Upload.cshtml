@@ -1,0 +1,194 @@
+@page
+@model AdminDashboard.Pages.ExcelImporter.UploadModel
+
+@{
+    ViewData["Title"] = "Excel Import/Export Manager";
+}
+
+<div class="container-fluid px-4 pt-4 animate-fade-in-up">
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="mb-4">
+                <i class="bi bi-file-earmark-excel"></i> Excel Import/Export Manager
+            </h2>
+        </div>
+    </div>
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show animate-fade-in" role="alert">
+            <i class="bi bi-exclamation-triangle-fill"></i> <strong>Error:</strong> @TempData["Error"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <!-- Step 1: Download Current Data -->
+    <div class="card mb-4 shadow-sm animate-fade-in">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0"><i class="bi bi-download"></i> Step 1: Download Current Data</h5>
+        </div>
+        <div class="card-body">
+            <p class="text-muted">Download existing data from database as Excel template</p>
+            <div class="row">
+                <div class="col-md-3 mb-2">
+                    <a asp-page-handler="ExportClients" class="btn btn-outline-success w-100">
+                        <i class="bi bi-people-fill"></i> Export Clients
+                    </a>
+                </div>
+                <div class="col-md-3 mb-2">
+                    <a asp-page-handler="ExportProducts" class="btn btn-outline-success w-100">
+                        <i class="bi bi-box-seam"></i> Export Products
+                    </a>
+                </div>
+                <div class="col-md-3 mb-2">
+                    <a asp-page-handler="ExportSales" class="btn btn-outline-success w-100">
+                        <i class="bi bi-cart-fill"></i> Export Sales
+                    </a>
+                </div>
+                <div class="col-md-3 mb-2">
+                    <a asp-page-handler="ExportSaleItems" class="btn btn-outline-success w-100">
+                        <i class="bi bi-list-ul"></i> Export Sale Items
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Step 2: Import Data -->
+    <div class="card mb-4 shadow-sm animate-fade-in">
+        <div class="card-header bg-info text-white">
+            <h5 class="mb-0"><i class="bi bi-upload"></i> Step 2: Import Excel File</h5>
+        </div>
+        <div class="card-body">
+            <form method="post" enctype="multipart/form-data" id="importForm">
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label asp-for="EntityType" class="form-label">Entity Type</label>
+                        <select asp-for="EntityType" class="form-select" required>
+                            <option value="">-- Select Entity --</option>
+                            <option value="Clients">Clients</option>
+                            <option value="Products">Products</option>
+                            <option value="Sales">Sales</option>
+                            <option value="SaleItems">Sale Items</option>
+                        </select>
+                    </div>
+                    <div class="col-md-8 mb-3">
+                        <label asp-for="UploadedFile" class="form-label">Excel File (.xlsx)</label>
+                        <input asp-for="UploadedFile" class="form-control" accept=".xlsx" required />
+                        <small class="text-muted">Only .xlsx files are supported</small>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary btn-lg" id="importBtn">
+                    <i class="bi bi-cloud-upload"></i> Import Data
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Step 3: View Results -->
+    @if (Model.Result != null)
+    {
+        <div class="card shadow-sm animate-fade-in">
+            <div class="card-header @(Model.Result.Errors > 0 ? "bg-danger" : "bg-success") text-white">
+                <h5 class="mb-0">
+                    <i class="bi bi-@(Model.Result.Errors > 0 ? "exclamation-triangle" : "check-circle")"></i>
+                    Step 3: Import Results
+                </h5>
+            </div>
+            <div class="card-body">
+                <!-- Summary -->
+                <div class="row mb-4">
+                    <div class="col-md-3">
+                        <div class="card text-center bg-light">
+                            <div class="card-body">
+                                <h3 class="text-primary">@Model.Result.TotalRows</h3>
+                                <p class="mb-0 text-muted">Total Processed</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card text-center bg-light">
+                            <div class="card-body">
+                                <h3 class="text-success">@Model.Result.Inserted</h3>
+                                <p class="mb-0 text-muted">Inserted</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card text-center bg-light">
+                            <div class="card-body">
+                                <h3 class="text-warning">@Model.Result.Updated</h3>
+                                <p class="mb-0 text-muted">Updated</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card text-center bg-light">
+                            <div class="card-body">
+                                <h3 class="text-danger">@Model.Result.Errors</h3>
+                                <p class="mb-0 text-muted">Errors</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Success Message -->
+                @if (!Model.Result.ErrorList.Any())
+                {
+                    <div class="alert alert-success" role="alert">
+                        <h5 class="alert-heading"><i class="bi bi-check-circle-fill"></i> Import Successful!</h5>
+                        <p class="mb-0">@Model.Result.Message</p>
+                    </div>
+                }
+
+                <!-- Errors Table -->
+                @if (Model.Result.ErrorList.Any())
+                {
+                    <div class="alert alert-danger" role="alert">
+                        <h5 class="alert-heading"><i class="bi bi-exclamation-triangle-fill"></i> Import Completed with Errors</h5>
+                        <p class="mb-0">@Model.Result.Message</p>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered">
+                            <thead class="table-danger">
+                                <tr>
+                                    <th style="width: 10%">Row #</th>
+                                    <th style="width: 20%">Field</th>
+                                    <th style="width: 70%">Error Message</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var error in Model.Result.ErrorList)
+                                {
+                                    <tr>
+                                        <td class="text-center"><strong>@error.RowNumber</strong></td>
+                                        <td><code>@error.Field</code></td>
+                                        <td>@error.ErrorMessage</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+
+                <!-- Actions -->
+                <div class="mt-4">
+                    <a asp-page="Upload" class="btn btn-primary">
+                        <i class="bi bi-arrow-clockwise"></i> Import Another File
+                    </a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        document.getElementById('importForm').addEventListener('submit', function() {
+            const btn = document.getElementById('importBtn');
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Importing...';
+        });
+    </script>
+}

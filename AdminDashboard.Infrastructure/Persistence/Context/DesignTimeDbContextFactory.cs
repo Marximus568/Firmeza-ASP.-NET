@@ -13,7 +13,7 @@ namespace AdminDashboard.Infrastructure.Persistence.Context
             // -------------------------------------
             // 1. Load .env manually (EF does not do it)
             // -------------------------------------
-            var solutionRoot = Path.Combine(Directory.GetCurrentDirectory(), "..", "..");
+            var solutionRoot = Path.Combine(Directory.GetCurrentDirectory(), "..");
             var envPath = Path.Combine(solutionRoot, ".env");
 
             if (File.Exists(envPath))

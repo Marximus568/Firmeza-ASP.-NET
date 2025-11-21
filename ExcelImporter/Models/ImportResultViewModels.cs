@@ -1,4 +1,4 @@
-namespace ExcelImporter;
+namespace ExcelImporter.Models;
 
 /// <summary>
 /// ViewModel for displaying import results in the view

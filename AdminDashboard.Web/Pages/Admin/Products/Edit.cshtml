@@ -1,0 +1,115 @@
+@page
+@model AdminDashboard.Pages.Admin.Products.Edit.EditModel
+@{
+    ViewData["Title"] = "Edit Product";
+}
+
+<div class="container-fluid px-4 pt-4 animate-fade-in-up">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="mb-1 text-gradient" style="font-size: 2.5rem; font-weight: 800;">
+                <i class="fas fa-edit me-3"></i>Edit Product
+            </h1>
+            <p class="text-muted" style="font-size: 1.1rem;">
+                <i class="fas fa-info-circle me-2"></i>Modifica la información del producto
+            </p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card shadow-lg">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-box me-2"></i>Product Information
+                    </h5>
+                </div>
+                <div class="card-body p-4">
+                    <form method="post">
+                        <input type="hidden" asp-for="Product.Id" />
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+                        <div class="mb-4">
+                            <label asp-for="Product.Name" class="form-label">
+                                <i class="fas fa-tag me-2"></i>Product Name
+                            </label>
+                            <input asp-for="Product.Name" class="form-control" />
+                            <span asp-validation-for="Product.Name" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="Product.Description" class="form-label">
+                                <i class="fas fa-align-left me-2"></i>Description
+                            </label>
+                            <textarea asp-for="Product.Description" class="form-control" rows="4"></textarea>
+                            <span asp-validation-for="Product.Description" class="text-danger"></span>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <label asp-for="Product.UnitPrice" class="form-label">
+                                    <i class="fas fa-dollar-sign me-2"></i>Unit Price
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-white">
+                                        <i class="fas fa-dollar-sign text-success"></i>
+                                    </span>
+                                    <input asp-for="Product.UnitPrice" type="number" step="0.01" 
+                                           class="form-control" />
+                                </div>
+                                <span asp-validation-for="Product.UnitPrice" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-6 mb-4">
+                                <label asp-for="Product.Stock" class="form-label">
+                                    <i class="fas fa-boxes me-2"></i>Stock Quantity
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-white">
+                                        <i class="fas fa-warehouse text-info"></i>
+                                    </span>
+                                    <input asp-for="Product.Stock" type="number" class="form-control" />
+                                </div>
+                                <span asp-validation-for="Product.Stock" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="Product.CategoryId" class="form-label">
+                                <i class="fas fa-layer-group me-2"></i>Category
+                            </label>
+                            <select asp-for="Product.CategoryId" class="form-select">
+                                <option value="">-- Select Category (Optional) --</option>
+                                <option value="1">📱 Electronics</option>
+                                <option value="2">📚 Books</option>
+                                <option value="3">👕 Clothing</option>
+                                <option value="4">🍔 Food</option>
+                            </select>
+                            <span asp-validation-for="Product.CategoryId" class="text-danger"></span>
+                        </div>
+
+                        <div class="alert alert-info" role="alert">
+                            <i class="fas fa-info-circle me-2"></i>
+                            Asegúrate de que toda la información sea correcta antes de actualizar
+                        </div>
+
+                        <hr class="my-4">
+
+                        <div class="d-flex justify-content-between gap-3">
+                            <a asp-page="Index" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left me-2"></i>Cancel
+                            </a>
+                            <button type="submit" class="btn btn-warning btn-lg shadow-glow">
+                                <i class="fas fa-save me-2"></i>Update Product
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

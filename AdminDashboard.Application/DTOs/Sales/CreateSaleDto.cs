@@ -12,9 +12,6 @@ public class CreateSaleDto
     public int ClientId { get; set; }
 
     [Required]
-    public int SalerId { get; set; }
-
-    [Required]
     public decimal TaxRate { get; set; }
 
     [Required]

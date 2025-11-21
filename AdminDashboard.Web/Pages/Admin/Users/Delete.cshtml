@@ -1,0 +1,139 @@
+@page "{id:int?}"
+@model AdminDashboard.Pages.Admin.Users.DeleteModel
+@{
+    ViewData["Title"] = "Delete User";
+}
+
+<div class="container-fluid px-4 pt-4 animate-fade-in-up">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="mb-1" style="font-size: 2.5rem; font-weight: 800; color: #ef4444;">
+                <i class="fas fa-exclamation-triangle me-3"></i>Delete User
+            </h1>
+            <p class="text-muted" style="font-size: 1.1rem;">
+                <i class="fas fa-trash me-2"></i>Confirma la eliminación de este usuario
+            </p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card shadow-lg border-danger">
+                <div class="card-header" style="background: var(--gradient-error); border: none;">
+                    <h5 class="mb-0 text-white">
+                        <i class="fas fa-exclamation-circle me-2"></i>Confirmación de Eliminación
+                    </h5>
+                </div>
+                <div class="card-body p-4">
+                    <div class="alert alert-warning border-0 shadow-sm" role="alert">
+                        <div class="d-flex align-items-start">
+                            <i class="fas fa-exclamation-triangle fa-2x me-3 text-warning"></i>
+                            <div>
+                                <h6 class="alert-heading mb-2">⚠️ Warning!</h6>
+                                <p class="mb-0">
+                                    ¿Estás seguro de que deseas eliminar este usuario? 
+                                    <strong>Esta acción no se puede deshacer y se perderán todos los datos asociados.</strong>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-4">
+                        <div class="col-md-6 mb-4">
+                            <div class="p-3 bg-light rounded-3">
+                                <h6 class="text-uppercase text-muted mb-3" style="font-size: 0.75rem; letter-spacing: 1px;">
+                                    <i class="fas fa-user me-2"></i>User Information
+                                </h6>
+                                <div class="mb-3">
+                                    <label class="form-label text-muted mb-1" style="font-size: 0.875rem;">User ID</label>
+                                    <p class="mb-0 fw-bold">#@Model.User.Id</p>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label text-muted mb-1" style="font-size: 0.875rem;">Full Name</label>
+                                    <p class="mb-0 fw-bold fs-5">@Model.User.FullName</p>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label text-muted mb-1" style="font-size: 0.875rem;">Email</label>
+                                    <p class="mb-0">
+                                        <i class="fas fa-envelope text-primary me-2"></i>@Model.User.Email
+                                    </p>
+                                </div>
+                                <div>
+                                    <label class="form-label text-muted mb-1" style="font-size: 0.875rem;">Phone</label>
+                                    <p class="mb-0">
+                                        <i class="fas fa-phone text-success me-2"></i>@Model.User.PhoneNumber
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <div class="p-3 bg-light rounded-3">
+                                <h6 class="text-uppercase text-muted mb-3" style="font-size: 0.75rem; letter-spacing: 1px;">
+                                    <i class="fas fa-briefcase me-2"></i>Role & Statistics
+                                </h6>
+                                <div class="mb-3">
+                                    <label class="form-label text-muted mb-1" style="font-size: 0.875rem;">Role</label>
+                                    <p class="mb-0">
+                                        <span class="badge bg-@GetRoleBadgeClass(Model.User.Role)" style="font-size: 1rem; padding: 0.5rem 1rem;">
+                                            @Model.User.Role
+                                        </span>
+                                    </p>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label text-muted mb-1" style="font-size: 0.875rem;">Age</label>
+                                    <p class="mb-0 fw-bold fs-4">@Model.User.Age años</p>
+                                </div>
+                                <div>
+                                    <label class="form-label text-muted mb-1" style="font-size: 0.875rem;">Total Sales</label>
+                                    <p class="mb-0">
+                                        <span class="badge bg-info" style="font-size: 1rem; padding: 0.5rem 1rem;">
+                                            @Model.User.TotalSales ventas
+                                        </span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <h6 class="text-uppercase text-muted mb-3" style="font-size: 0.75rem; letter-spacing: 1px;">
+                            <i class="fas fa-map-marker-alt me-2"></i>Address
+                        </h6>
+                        <div class="p-3 bg-light rounded-3">
+                            <p class="mb-0">@(Model.User.Address ?? "No address")</p>
+                        </div>
+                    </div>
+
+                    <form method="post">
+                        <input type="hidden" asp-for="User.Id" />
+                        
+                        <hr class="my-4">
+                        
+                        <div class="d-flex justify-content-between gap-3">
+                            <a asp-page="Index" class="btn btn-secondary btn-lg">
+                                <i class="fas fa-arrow-left me-2"></i>Cancel
+                            </a>
+                            <button type="submit" class="btn btn-danger btn-lg shadow-glow">
+                                <i class="fas fa-trash-alt me-2"></i>Confirm Delete
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@functions {
+    string GetRoleBadgeClass(string role)
+    {
+        return role switch
+        {
+            "Admin" => "danger",
+            "Manager" => "warning",
+            "User" => "primary",
+            "Guest" => "secondary",
+            _ => "dark"
+        };
+    }
+}

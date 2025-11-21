@@ -22,8 +22,6 @@ public class Sales
     public int ClientId { get; set; }
     public Clients Clients { get; set; }
 
-    public int SalerId { get; set; }
-
     // =============================
     // SALE DETAILS
     // =============================

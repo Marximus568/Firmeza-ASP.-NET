@@ -1,0 +1,145 @@
+@page
+@model AdminDashboard.Pages.Admin.Products.Delete.DeleteModel
+@{
+    ViewData["Title"] = "Delete Product";
+}
+
+<div class="container-fluid px-4 pt-4 animate-fade-in-up">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="mb-1" style="font-size: 2.5rem; font-weight: 800; color: #ef4444;">
+                <i class="fas fa-exclamation-triangle me-3"></i>Delete Product
+            </h1>
+            <p class="text-muted" style="font-size: 1.1rem;">
+                <i class="fas fa-trash me-2"></i>Confirma la eliminación de este producto
+            </p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card shadow-lg border-danger">
+                <div class="card-header" style="background: var(--gradient-error); border: none;">
+                    <h5 class="mb-0 text-white">
+                        <i class="fas fa-exclamation-circle me-2"></i>Confirmación de Eliminación
+                    </h5>
+                </div>
+                <div class="card-body p-4">
+                    <div class="alert alert-warning border-0 shadow-sm" role="alert">
+                        <div class="d-flex align-items-start">
+                            <i class="fas fa-exclamation-triangle fa-2x me-3 text-warning"></i>
+                            <div>
+                                <h6 class="alert-heading mb-2">⚠️ Warning!</h6>
+                                <p class="mb-0">
+                                    ¿Estás seguro de que deseas eliminar este producto? 
+                                    <strong>Esta acción no se puede deshacer.</strong>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-4">
+                        <div class="col-md-6 mb-4">
+                            <div class="p-3 bg-light rounded-3">
+                                <h6 class="text-uppercase text-muted mb-3" style="font-size: 0.75rem; letter-spacing: 1px;">
+                                    <i class="fas fa-info-circle me-2"></i>Product Information
+                                </h6>
+                                <div class="mb-3">
+                                    <label class="form-label text-muted mb-1" style="font-size: 0.875rem;">Product ID</label>
+                                    <p class="mb-0 fw-bold">#@Model.Product.Id</p>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label text-muted mb-1" style="font-size: 0.875rem;">Name</label>
+                                    <p class="mb-0 fw-bold fs-5">@Model.Product.Name</p>
+                                </div>
+                                <div>
+                                    <label class="form-label text-muted mb-1" style="font-size: 0.875rem;">Category</label>
+                                    @if (!string.IsNullOrEmpty(Model.Product.CategoryName))
+                                    {
+                                        <p class="mb-0"><span class="badge bg-info">@Model.Product.CategoryName</span></p>
+                                    }
+                                    else
+                                    {
+                                        <p class="mb-0 text-muted">-</p>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <div class="p-3 bg-light rounded-3">
+                                <h6 class="text-uppercase text-muted mb-3" style="font-size: 0.75rem; letter-spacing: 1px;">
+                                    <i class="fas fa-dollar-sign me-2"></i>Pricing & Stock
+                                </h6>
+                                <div class="mb-3">
+                                    <label class="form-label text-muted mb-1" style="font-size: 0.875rem;">Unit Price</label>
+                                    <p class="mb-0 fs-4 fw-bold text-success">$@Model.Product.UnitPrice.ToString("N2")</p>
+                                </div>
+                                <div>
+                                    <label class="form-label text-muted mb-1" style="font-size: 0.875rem;">Stock</label>
+                                    <p class="mb-0">
+                                        <span class="badge @(Model.Product.Stock > 50 ? "bg-success" : Model.Product.Stock > 10 ? "bg-warning" : "bg-danger")" 
+                                              style="font-size: 1rem; padding: 0.5rem 1rem;">
+                                            @Model.Product.Stock units
+                                        </span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <h6 class="text-uppercase text-muted mb-3" style="font-size: 0.75rem; letter-spacing: 1px;">
+                            <i class="fas fa-align-left me-2"></i>Description
+                        </h6>
+                        <div class="p-3 bg-light rounded-3">
+                            <p class="mb-0">@(Model.Product.Description ?? "No description")</p>
+                        </div>
+                    </div>
+
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <div class="p-3 border rounded-3">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-calendar-plus fa-2x text-primary me-3"></i>
+                                    <div>
+                                        <label class="form-label text-muted mb-1" style="font-size: 0.75rem;">Created At</label>
+                                        <p class="mb-0 fw-bold">@Model.Product.CreatedAt.ToString("MMM dd, yyyy HH:mm")</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        @if (Model.Product.UpdatedAt.HasValue)
+                        {
+                            <div class="col-md-6">
+                                <div class="p-3 border rounded-3">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-calendar-check fa-2x text-success me-3"></i>
+                                        <div>
+                                            <label class="form-label text-muted mb-1" style="font-size: 0.75rem;">Last Updated</label>
+                                            <p class="mb-0 fw-bold">@Model.Product.UpdatedAt.Value.ToString("MMM dd, yyyy HH:mm")</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+
+                    <form method="post">
+                        <input type="hidden" asp-for="Product.Id" />
+                        
+                        <hr class="my-4">
+                        
+                        <div class="d-flex justify-content-between gap-3">
+                            <a asp-page="Index" class="btn btn-secondary btn-lg">
+                                <i class="fas fa-arrow-left me-2"></i>Cancel
+                            </a>
+                            <button type="submit" class="btn btn-danger btn-lg shadow-glow">
+                                <i class="fas fa-trash-alt me-2"></i>Confirm Delete
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

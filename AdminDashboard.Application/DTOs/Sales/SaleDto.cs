@@ -27,11 +27,6 @@ namespace AdminDashboardApplication.DTOs.Sales
         public int ClientId { get; set; }
 
         /// <summary>
-        /// Identifier of the employee or seller who made the sale.
-        /// </summary>
-        public int SalerId { get; set; }
-
-        /// <summary>
         /// Subtotal amount before tax.
         /// </summary>
         public decimal Subtotal { get; set; }

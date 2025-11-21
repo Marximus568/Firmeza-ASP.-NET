@@ -8,7 +8,6 @@ public class SaleResponseDto
     public DateTime SaleDate { get; set; }
     public string InvoiceNumber { get; set; } = string.Empty;
     public int ClientId { get; set; }
-    public int SalerId { get; set; }
 
     public decimal Subtotal { get; set; }
     public decimal TaxRate { get; set; }

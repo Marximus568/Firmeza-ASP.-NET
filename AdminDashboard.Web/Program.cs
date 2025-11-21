@@ -1,7 +1,6 @@
 using AdminDashboard.Infrastructure;
 using AdminDashboard.Infrastructure.Persistence;
 using AdminDashboard.Infrastructure.Routing;
-using AdminDashboard.Infrastructure.Seeders;
 using AdminDashboardApplication;
 using AdminDashboardApplication.Common;
 using DotNetEnv;
@@ -33,6 +32,10 @@ builder.Services.AddApplication();
 
 // 4️⃣ Custom App Routing
 builder.Services.AddAppRouting();
+
+//  ⃣ Services pdf
+// builder.Services.AddScoped<IPdfService, PdfService>(); // Commented out - service not implemented
+
 
 // 5️⃣ Identity cookie configuration (UI behavior)
 builder.Services.ConfigureApplicationCookie(options =>

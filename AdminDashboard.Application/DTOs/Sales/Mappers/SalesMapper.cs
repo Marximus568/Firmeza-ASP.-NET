@@ -11,7 +11,6 @@ public static class SalesMapper
         {
             SaleDate = DateTime.UtcNow,
             ClientId = dto.ClientId,
-            SalerId = dto.SalerId,
             TaxRate = dto.TaxRate,
             PaymentMethod = dto.PaymentMethod,
             Notes = dto.Notes,
@@ -40,7 +39,6 @@ public static class SalesMapper
             SaleDate = entity.SaleDate,
             InvoiceNumber = entity.InvoiceNumber,
             ClientId = entity.ClientId,
-            SalerId = entity.SalerId,
             Subtotal = entity.Subtotal,
             TaxRate = entity.TaxRate,
             Total = entity.Total,

@@ -4,7 +4,7 @@
     ViewData["Title"] = "Home";
 }
 
-<div class="home-container animate-fade-in-up">
+<div class="container-fluid px-4 pt-4 home-container animate-fade-in-up">
     <!-- Hero Section -->
     <div class="hero-section text-center py-5 mb-5 rounded-3 position-relative overflow-hidden" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; box-shadow: 0 20px 40px -10px rgba(118, 75, 162, 0.4);">
         <div class="position-absolute top-0 start-0 w-100 h-100" style="background: url('data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'0.05\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
@@ -19,7 +19,7 @@
             @if (User.Identity.IsAuthenticated)
             {
                 <div class="d-flex justify-content-center gap-3">
-                    <a asp-page="/AdminDashboard/Index" class="btn btn-light btn-lg px-5 py-3 shadow-lg fw-bold text-primary rounded-pill hover-scale">
+                    <a asp-page="/Admin/Index" class="btn btn-light btn-lg px-5 py-3 shadow-lg fw-bold text-primary rounded-pill hover-scale">
                         <i class="fas fa-tachometer-alt me-2"></i>Go to Dashboard
                     </a>
                 </div>
@@ -87,22 +87,7 @@
             </div>
         </div>
     </div>
-    
-    <!-- Tech Stack Section -->
-    <div class="text-center py-5">
-        <p class="text-uppercase text-muted fw-bold letter-spacing-2 mb-4">Powered By</p>
-        <div class="d-flex justify-content-center gap-4 flex-wrap opacity-75">
-            <span class="d-flex align-items-center gap-2 fs-5 fw-bold text-dark">
-                <i class="fab fa-microsoft text-primary"></i> ASP.NET Core
-            </span>
-            <span class="d-flex align-items-center gap-2 fs-5 fw-bold text-dark">
-                <i class="fab fa-bootstrap text-purple"></i> Bootstrap 5
-            </span>
-            <span class="d-flex align-items-center gap-2 fs-5 fw-bold text-dark">
-                <i class="fas fa-database text-success"></i> Entity Framework
-            </span>
-        </div>
-    </div>
+
 </div>
 
 <style>

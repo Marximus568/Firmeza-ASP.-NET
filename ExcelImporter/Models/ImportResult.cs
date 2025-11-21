@@ -1,4 +1,4 @@
-namespace ExcelImporter;
+namespace ExcelImporter.Models;
 
 public class ImportResult
 {
@@ -12,11 +12,4 @@ public class ImportResult
     public string Message => Success 
         ? $"Import completed: {Inserted} inserted, {Updated} updated" 
         : $"Import failed: {Errors} errors found";
-}
-
-public class ImportError
-{
-    public int RowNumber { get; set; }
-    public string Field { get; set; } = string.Empty;
-    public string ErrorMessage { get; set; } = string.Empty;
 }
