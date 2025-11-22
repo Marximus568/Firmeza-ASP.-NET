@@ -56,6 +56,17 @@ public static class DependencyInjection
         // ======================================
         // ✉️ Email
         // ======================================
+        services.Configure<SmtpSettings.SmtpSettings>(options =>
+        {
+            options.Host = configuration["SMTP_HOST"] ?? "";
+            options.Port = int.Parse(configuration["SMTP_PORT"] ?? "587");
+            options.From = configuration["SMTP_FROM"] ?? "";
+            options.FromName = configuration["SMTP_FROM_NAME"] ?? "";
+            options.Username = configuration["SMTP_USERNAME"] ?? "";
+            options.Password = configuration["SMTP_PASSWORD"] ?? "";
+            options.EnableSsl = bool.Parse(configuration["SMTP_ENABLE_SSL"] ?? "true");
+        });
+
         services.AddScoped<IEmailService, SmtpEmailService>();
 
         return services;
