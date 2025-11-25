@@ -134,7 +134,7 @@ public class AppDbContext : DbContext
                 Email = "juanperez@example.com",
                 PhoneNumber = "3109876543",
                 Address = "Carrera 10 #45-67, Medellín",
-                Role = "Customer"
+                Role = "Client"
             },
             new Clients
             {
@@ -144,7 +144,7 @@ public class AppDbContext : DbContext
                 Email = "mariarodriguez@example.com",
                 PhoneNumber = "3157654321",
                 Address = "Avenida 15 #89-12, Cali",
-                Role = "Customer"
+                Role = "Client"
             }
         );
         
