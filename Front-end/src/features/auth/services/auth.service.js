@@ -12,8 +12,13 @@ import { API_ENDPOINTS, STORAGE_KEYS } from '@/lib/constants';
  * @returns {Promise<Object>} - API response
  */
 export const register = async (data) => {
-    const response = await apiClient.post(API_ENDPOINTS.AUTH.REGISTER, data);
-    return response.data;
+    try {
+        const response = await apiClient.post(API_ENDPOINTS.AUTH.REGISTER, data);
+        return response.data;
+    } catch (error) {
+        console.error("❌ Backend says:", error.response?.data);
+        throw error;
+    }
 };
 
 /**
@@ -54,3 +59,4 @@ export const getCurrentUser = () => {
 export const getToken = () => {
     return localStorage.getItem(STORAGE_KEYS.AUTH_TOKEN);
 };
+

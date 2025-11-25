@@ -79,7 +79,7 @@ public class ExcelImporterServices : IExcelImporter
                         existingClient.LastName = lastName;
                         existingClient.PhoneNumber = phone;
                         existingClient.Address = address;
-                        existingClient.Role = string.IsNullOrWhiteSpace(role) ? "Customer" : role;
+                        existingClient.Role = string.IsNullOrWhiteSpace(role) ? "Client" : role;
 
                         result.Updated++;
                     }
@@ -87,7 +87,7 @@ public class ExcelImporterServices : IExcelImporter
                     {
                         // INSERT
                         var newClient = new Clients(firstName, lastName, email, phone, address,
-                            string.IsNullOrWhiteSpace(role) ? "Customer" : role);
+                            string.IsNullOrWhiteSpace(role) ? "Client" : role);
 
                         _context.Users.Add(newClient);
                         result.Inserted++;

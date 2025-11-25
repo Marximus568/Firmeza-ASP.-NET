@@ -9,7 +9,7 @@
  * @property {string} lastName - User's last name
  * @property {string} email - User's email address
  * @property {string} password - User's password
- * @property {string} dateOfBirth - Date of birth (ISO format)
+ * @property {string} confirmPassword - Password confirmation
  * @property {string} phoneNumber - Phone number
  * @property {string} address - Physical address
  * @property {string} role - User role (default: "Client")

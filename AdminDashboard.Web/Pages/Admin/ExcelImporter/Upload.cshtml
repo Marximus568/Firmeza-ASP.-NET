@@ -54,6 +54,54 @@
         </div>
     </div>
 
+    <!-- Instructions Section -->
+    <div class="card mb-4 shadow-sm animate-fade-in border-info">
+        <div class="card-header bg-info text-white">
+            <h5 class="mb-0"><i class="bi bi-info-circle"></i> Instrucciones de Importación</h5>
+        </div>
+        <div class="card-body">
+            <p class="mb-3">
+                Antes de importar archivos Excel, es importante conocer la estructura exacta que debe tener cada tipo de entidad.
+            </p>
+            <div class="alert alert-info mb-3" role="alert">
+                <h6 class="alert-heading"><i class="bi bi-file-earmark-text"></i> Guía Completa de Importación</h6>
+                <p class="mb-2">
+                    Consulta el documento de instrucciones detalladas que incluye:
+                </p>
+                <ul class="mb-2">
+                    <li>Estructura exacta de columnas para cada tabla</li>
+                    <li>Tipos de datos y validaciones requeridas</li>
+                    <li>Ejemplos prácticos para cada entidad</li>
+                    <li>Solución de errores comunes</li>
+                </ul>
+                <a href="~/INSTRUCCIONES_IMPORTACION_EXCEL.md" target="_blank" class="btn btn-sm btn-info" download>
+                    <i class="bi bi-download"></i> Descargar Instrucciones (MD)
+                </a>
+                <a href="https://github.com" class="btn btn-sm btn-outline-info ms-2" target="_blank">
+                    <i class="bi bi-book"></i> Ver en GitHub
+                </a>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <h6><i class="bi bi-people"></i> Clients</h6>
+                    <small class="text-muted">FirstName, LastName, Email, PhoneNumber, Address, Role</small>
+                </div>
+                <div class="col-md-6">
+                    <h6><i class="bi bi-box-seam"></i> Products</h6>
+                    <small class="text-muted">Name, Description, UnitPrice, Stock, CategoryId</small>
+                </div>
+                <div class="col-md-6 mt-3">
+                    <h6><i class="bi bi-cart"></i> Sales</h6>
+                    <small class="text-muted">InvoiceNumber, SaleDate, ClientId, Subtotal, TaxRate, Total, PaymentMethod, IsPaid, Notes</small>
+                </div>
+                <div class="col-md-6 mt-3">
+                    <h6><i class="bi bi-list-ul"></i> Sale Items</h6>
+                    <small class="text-muted">SalesId, ProductId, Quantity, UnitPrice</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Step 2: Import Data -->
     <div class="card mb-4 shadow-sm animate-fade-in">
         <div class="card-header bg-info text-white">

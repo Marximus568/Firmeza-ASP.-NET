@@ -15,7 +15,7 @@ const RegisterPage = () => {
         lastName: '',
         email: '',
         password: '',
-        dateOfBirth: '',
+        confirmPassword: '',
         phoneNumber: '',
         address: '',
         role: 'Client',
@@ -108,36 +108,35 @@ const RegisterPage = () => {
                             disabled={isLoading}
                         />
                     </div>
+                    <div className="form-group">
+                        <label htmlFor="confirmPassword">Confirm Password</label>
+                        <input
+                            id="confirmPassword"
+                            type="password"
+                            name="confirmPassword"
+                            value={formData.confirmPassword}
+                            onChange={handleChange}
+                            placeholder="••••••••"
+                            required
+                            minLength={6}
+                            disabled={isLoading}
+                        />
+                    </div>
 
-                    <div className="form-row">
-                        <div className="form-group">
-                            <label htmlFor="dateOfBirth">Date of Birth</label>
-                            <input
-                                id="dateOfBirth"
-                                type="date"
-                                name="dateOfBirth"
-                                value={formData.dateOfBirth}
-                                onChange={handleChange}
-                                required
-                                disabled={isLoading}
-                            />
-                        </div>
-
-                        <div className="form-group">
-                            <label htmlFor="phoneNumber">Phone Number</label>
-                            <input
-                                id="phoneNumber"
-                                type="tel"
-                                name="phoneNumber"
-                                value={formData.phoneNumber}
-                                onChange={handleChange}
-                                placeholder="+1234567890"
-                                required
-                                minLength={7}
-                                maxLength={15}
-                                disabled={isLoading}
-                            />
-                        </div>
+                    <div className="form-group">
+                        <label htmlFor="phoneNumber">Phone Number</label>
+                        <input
+                            id="phoneNumber"
+                            type="tel"
+                            name="phoneNumber"
+                            value={formData.phoneNumber}
+                            onChange={handleChange}
+                            placeholder="+1234567890"
+                            required
+                            minLength={7}
+                            maxLength={15}
+                            disabled={isLoading}
+                        />
                     </div>
 
                     <div className="form-group">
