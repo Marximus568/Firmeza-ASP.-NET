@@ -25,14 +25,14 @@ public static class AppRouting
         // Razor Pages conventions
         services.AddRazorPages(options =>
         {
-            // 🔒 Admin-only sections
+            // Admin-only sections
             options.Conventions.AuthorizeFolder("/Admin/Products", "AdminOnly");
             options.Conventions.AuthorizeFolder("/Admin/Users", "AdminOnly");
             options.Conventions.AuthorizeFolder("/Admin/ExcelImporter", "AdminOnly");
             options.Conventions.AuthorizeFolder("/Admin/Reports", "AdminOnly");
             options.Conventions.AuthorizePage("/Admin/Index", "AdminOnly");
 
-            // 🟢 Public sections (no authentication required)
+            // Public sections (no authentication required)
             options.Conventions.AllowAnonymousToPage("/Index");       // Home page
             options.Conventions.AllowAnonymousToFolder("/Account");  // Login, register, etc.
         });

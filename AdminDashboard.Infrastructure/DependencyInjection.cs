@@ -22,7 +22,7 @@ public static class DependencyInjection
         IConfiguration configuration)
     {
         // ======================================
-        // 🌱 Environment + Database
+        // Environment + Database
         // ======================================
         var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION");
 
@@ -37,24 +37,24 @@ public static class DependencyInjection
         );
 
         // ======================================
-        // 🔐 Identity + JWT
+        // Identity + JWT
         // ======================================
         services.AddIdentityInfrastructure(configuration);
 
         // ======================================
-        // 📦 Domain Services
+        // Domain Services
         // ======================================
         services.AddScoped<IUsersService, UsersService>();
         services.AddScoped<IProductServices, ProductService>();
 
         // ======================================
-        // 🗄️ Repositories
+        // Repositories
         // ======================================
         services.AddScoped<IProductRepository, ProductsRepository>();
         services.AddScoped<ICustomerRepository, CustomerRepository>();
 
         // ======================================
-        // ✉️ Email
+        // Email
         // ======================================
         services.Configure<SmtpSettings.SmtpSettings>(options =>
         {
