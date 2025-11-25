@@ -10,34 +10,30 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
-var connectionString = builder.Configuration.GetConnectionString("IdentityContextConnection") ?? throw new InvalidOperationException("Connection string 'IdentityContextConnection' not found.");
 
-builder.Services.AddDbContext<IdentityContext>(options => options.UseSqlServer(connectionString));
-
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<IdentityContext>();
 
 // ====================================
-// 📦 Load environment variables
+// Load environment variables
 // ====================================
 Env.Load("../.env");
 
 // ====================================
-// 🔐 Authentication (JWT)
+// Authentication (JWT)
 // ====================================
 builder.Services.AddJwtAuthentication(builder.Configuration);
 
 // ====================================
-// 🧱 Application Layer (Use Cases)
+// Application Layer (Use Cases)
 // ====================================
 builder.Services.AddApplication();
 
 // ====================================
-// 🏗️ Infrastructure (DbContext, Repositories, Services)
+// Infrastructure (DbContext, Repositories, Services)
 // ====================================
 builder.Services.AddInfrastructure(builder.Configuration);
 
 // ====================================
-// 📧 SMTP (Email service)
+// SMTP (Email service)
 // ====================================
 builder.Services.Configure<SmtpSettings.SmtpSettings>(options =>
 {
@@ -51,12 +47,12 @@ builder.Services.Configure<SmtpSettings.SmtpSettings>(options =>
 });
 
 // ====================================
-// 🔐 Authorization
+// Authorization
 // ====================================
 builder.Services.AddAuthorization();
 
 // ====================================
-// 📌 Controllers + Global Filters
+// Controllers + Global Filters
 // ====================================
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
@@ -67,7 +63,27 @@ builder.Services.AddControllers(options =>
 });
 
 // ====================================
-// 📄 Swagger + JWT Support
+// CORS Policy (Allow React frontend)
+// ====================================
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowReactApp", policy =>
+    {
+        policy.WithOrigins(
+                "http://localhost:5173",
+                "http://localhost:5174", 
+                "http://localhost:5175",
+                "http://localhost:5176",
+                "http://localhost:3000"
+            )
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials();
+    });
+});
+
+// ====================================
+// Swagger + JWT Support
 // ====================================
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
@@ -112,12 +128,12 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 // ====================================
-// 🚀 Build App
+// Build App
 // ====================================
 var app = builder.Build();
 
 // ====================================
-// 🧱 Middleware Pipeline
+// Middleware Pipeline
 // ====================================
 if (app.Environment.IsDevelopment())
 {
@@ -126,6 +142,11 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+// ====================================
+// CORS must be before Authentication/Authorization
+// ====================================
+app.UseCors("AllowReactApp");
 
 app.UseAuthentication();
 app.UseAuthorization();

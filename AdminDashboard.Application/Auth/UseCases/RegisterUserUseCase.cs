@@ -25,16 +25,16 @@ public class RegisterUserUseCase
         RegisterDto registerDto,
         CancellationToken cancellationToken = default)
     {
-        // 1️⃣ Check if user already exists
+        // 1 Check if user already exists
         if (await _authService.UserExistsAsync(registerDto.Email, cancellationToken))
         {
             return AuthResultDto.Failure("A user with this email already exists");
         }
 
-        // 2️⃣ Set default role if not provided
+        // 2 Set default role if not provided
         var role = string.IsNullOrWhiteSpace(registerDto.Role) ? "Client" : registerDto.Role;
 
-        // 3️⃣ Create user DTO (now using centralized Contracts DTO)
+        // 3 Create user DTO (now using centralized Contracts DTO)
         var user = new UserDto
         {
             FirstName = registerDto.FirstName,
@@ -43,13 +43,13 @@ public class RegisterUserUseCase
             Role = role
         };
 
-        // 4️⃣ Delegate actual registration to IAuthService
+        // 4 Delegate actual registration to IAuthService
         var result = await _authService.RegisterAsync(user, registerDto.Password, cancellationToken);
 
         if (!result.Succeeded)
             return result;
 
-        // 5️⃣ Assign role using IRoleService (if needed)
+        // 5 Assign role using IRoleService (if needed)
         if (!string.IsNullOrEmpty(result.UserId))
         {
             await _roleService.AssignRoleAsync(result.UserId, role, cancellationToken);

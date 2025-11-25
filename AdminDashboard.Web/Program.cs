@@ -16,7 +16,7 @@ Env.Load("../.env");
 var builder = WebApplication.CreateBuilder(args);
 
 // ===================================================
-// 🔧 SERVICE REGISTRATION
+// SERVICE REGISTRATION
 // ===================================================
 
 // Logging
@@ -24,26 +24,26 @@ builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
 builder.Logging.AddDebug();
 
-// 1️⃣ Persistence (DbContext)
+// 1 Persistence (DbContext)
 builder.Services.AddPersistence(builder.Configuration);
 
-// 2️⃣ Infrastructure (Identity, JWT, Repositories, Domain Services)
+// 2 Infrastructure (Identity, JWT, Repositories, Domain Services)
 builder.Services.AddInfrastructure(builder.Configuration);
 
-// 3️⃣ Application Layer (UseCases + Handlers + AutoMapper)
+// 3 Application Layer (UseCases + Handlers + AutoMapper)
 builder.Services.AddApplication();
 
-// 3.5️⃣ ExcelImporter Services
+// 3.5 ExcelImporter Services
 builder.Services.AddExcelServices();
 
-// 4️⃣ Custom App Routing
+// 4 Custom App Routing
 builder.Services.AddAppRouting();
 
-//  ⃣ Services pdf
+// Services pdf
 // builder.Services.AddScoped<IPdfService, PdfService>();
 
 
-// 5️⃣ Identity cookie configuration (UI behavior)
+// 5 Identity cookie configuration (UI behavior)
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.LoginPath = "/Account/Login";
@@ -55,7 +55,7 @@ builder.Services.ConfigureApplicationCookie(options =>
 var app = builder.Build();
 
 // ===================================================
-// 🧪 SEEDERS (Optional)
+// SEEDERS (Optional)
 // ===================================================
 if (Environment.GetEnvironmentVariable("RUN_SEEDERS") == "1")
 {
@@ -76,7 +76,7 @@ if (Environment.GetEnvironmentVariable("RUN_SEEDERS") == "1")
 }
 
 // ===================================================
-// 🌐 MIDDLEWARE PIPELINE
+// MIDDLEWARE PIPELINE
 // ===================================================
 if (!app.Environment.IsDevelopment())
 {

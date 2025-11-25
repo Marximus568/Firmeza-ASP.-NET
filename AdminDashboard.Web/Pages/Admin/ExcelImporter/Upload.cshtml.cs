@@ -72,7 +72,7 @@ public class UploadModel : PageModel
             // Set success message in TempData instead of modifying the read-only Result.Message
             if (Result.Errors == 0)
             {
-                TempData["Success"] = $"✓ Import successful! {Result.TotalRows} rows processed, {Result.Inserted} inserted, {Result.Updated} updated.";
+                TempData["Success"] = $"Import successful! {Result.TotalRows} rows processed, {Result.Inserted} inserted, {Result.Updated} updated.";
             }
             else
             {
