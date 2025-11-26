@@ -2,8 +2,8 @@ namespace SalePDF.DTOs;
 
 public class SaleProductDto
 {
-    public string Name { get; set; }
-    public int Qty { get; set; }
+    public string Name { get; set; } = string.Empty;
+    public int Quantity { get; set; }
     public decimal UnitPrice { get; set; }
-    public decimal Total => Qty * UnitPrice;
+    public decimal Subtotal => Quantity * UnitPrice;
 }

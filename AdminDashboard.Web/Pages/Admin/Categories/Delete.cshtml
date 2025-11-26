@@ -1,0 +1,113 @@
+@page
+@model DeleteModel
+@{
+    ViewData["Title"] = "Delete Category";
+}
+
+<div class="container-fluid py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <!-- Header -->
+            <div class="d-flex align-items-center mb-4">
+                <a asp-page="Index" class="btn btn-outline-secondary me-3">
+                    <i class="fas fa-arrow-left"></i>
+                </a>
+                <h2 class="mb-0">
+                    <i class="fas fa-trash-alt text-danger me-2"></i>
+                    Delete Category
+                </h2>
+            </div>
+
+            <!-- Warning Alert -->
+            <div class="alert alert-danger d-flex align-items-center" role="alert">
+                <i class="fas fa-exclamation-triangle fa-2x me-3"></i>
+                <div>
+                    <h5 class="alert-heading mb-1">Warning!</h5>
+                    <p class="mb-0">
+                        You are about to delete this category. This action cannot be undone.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Category Details Card -->
+            <div class="card shadow-sm mb-3">
+                <div class="card-header bg-danger text-white">
+                    <h5 class="mb-0"><i class="fas fa-info-circle me-2"></i>Category Details</h5>
+                </div>
+                <div class="card-body">
+                    <dl class="row mb-0">
+                        <dt class="col-sm-4">
+                            <i class="fas fa-hashtag me-1"></i>ID:
+                        </dt>
+                        <dd class="col-sm-8">
+                            <span class="badge bg-secondary">@Model.Category.Id</span>
+                        </dd>
+
+                        <dt class="col-sm-4">
+                            <i class="fas fa-tag me-1"></i>Name:
+                        </dt>
+                        <dd class="col-sm-8">
+                            <strong>@Model.Category.Name</strong>
+                        </dd>
+
+                        <dt class="col-sm-4">
+                            <i class="fas fa-box me-1"></i>Associated Products:
+                        </dt>
+                        <dd class="col-sm-8">
+                            @if (Model.ProductCount > 0)
+                            {
+                                <span class="badge bg-warning text-dark">
+                                    <i class="fas fa-exclamation-triangle me-1"></i>
+                                    @Model.ProductCount product(s)
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-success">
+                                    <i class="fas fa-check me-1"></i>
+                                    No associated products
+                                </span>
+                            }
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+
+            <!-- Product Warning -->
+            @if (Model.ProductCount > 0)
+            {
+                <div class="alert alert-warning" role="alert">
+                    <h6 class="alert-heading">
+                        <i class="fas fa-exclamation-circle me-2"></i>Cannot delete
+                    </h6>
+                    <p class="mb-0">
+                        This category has <strong>@Model.ProductCount product(s)</strong> associated. 
+                        You must reassign or delete the products before deleting the category.
+                    </p>
+                </div>
+
+                <div class="d-grid">
+                    <a asp-page="Index" class="btn btn-secondary btn-lg">
+                        <i class="fas fa-arrow-left me-2"></i>Back to List
+                    </a>
+                </div>
+            }
+            else
+            {
+                <!-- Confirmation Form -->
+                <form method="post">
+                    <input type="hidden" asp-for="Category.Id" />
+                    
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-danger btn-lg">
+                            <i class="fas fa-trash-alt me-2"></i>Yes, Delete Category
+                        </button>
+                        <a asp-page="Index" class="btn btn-outline-secondary">
+                            <i class="fas fa-times me-2"></i>Cancel
+                        </a>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>

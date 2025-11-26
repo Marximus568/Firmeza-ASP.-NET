@@ -7,13 +7,30 @@ import { API_ENDPOINTS, STORAGE_KEYS } from '@/lib/constants';
  */
 
 /**
+ * Helper function to convert camelCase keys to PascalCase
+ * @param {Object} obj - Object with camelCase keys
+ * @returns {Object} - Object with PascalCase keys
+ */
+const toPascalCase = (obj) => {
+    const pascalObj = {};
+    for (const [key, value] of Object.entries(obj)) {
+        // Convert first letter to uppercase
+        const pascalKey = key.charAt(0).toUpperCase() + key.slice(1);
+        pascalObj[pascalKey] = value;
+    }
+    return pascalObj;
+};
+
+/**
  * Register a new user
  * @param {import('../types/auth.types').RegisterDto} data - Registration data
  * @returns {Promise<Object>} - API response
  */
 export const register = async (data) => {
     try {
-        const response = await apiClient.post(API_ENDPOINTS.AUTH.REGISTER, data);
+        // Convert camelCase to PascalCase for C# backend
+        const pascalCaseData = toPascalCase(data);
+        const response = await apiClient.post(API_ENDPOINTS.AUTH.REGISTER, pascalCaseData);
         return response.data;
     } catch (error) {
         console.error("❌ Backend says:", error.response?.data);

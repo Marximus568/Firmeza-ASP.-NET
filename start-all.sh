@@ -28,52 +28,54 @@ echo "==================================================="
 echo "📁 Los logs se guardarán en: $LOGS_DIR/"
 echo ""
 
+# Function to wait for a service to start
+wait_for_service() {
+    local url=$1
+    local pid=$2
+    local name=$3
+    local log_file=$4
+    local max_retries=60  # Wait up to 60 seconds (30 * 2s)
+    local count=0
+
+    echo "   ⏳ Esperando a que $name inicie en $url (PID: $pid)..."
+
+    while [ $count -lt $max_retries ]; do
+        if ! kill -0 $pid 2>/dev/null; then
+            echo "   ❌ $name se detuvo inesperadamente."
+            echo "   📄 Revisar log: $log_file"
+            tail -10 "$log_file"
+            return 1
+        fi
+
+        # Check if service is responding (200, 302, or even 404 means it's listening)
+        if curl -s -o /dev/null -w "%{http_code}" "$url" | grep -q -E "200|302|404"; then
+            echo "   ✅ $name iniciado correctamente!"
+            return 0
+        fi
+
+        sleep 2
+        count=$((count + 1))
+        echo -ne "      Intentando conectar... ($count/$max_retries)\r"
+    done
+
+    echo ""
+    echo "   ⚠️  $name no respondió después de $((max_retries * 2)) segundos."
+    echo "   📄 Revisar log: $log_file"
+    return 1
+}
+
 # 1. Start WebApi (Backend)
 echo "🔹 Iniciando WebApi (Backend)..."
 dotnet run --project Firmeza.WebApi/Firmeza.WebApi.csproj --urls "http://localhost:5000" > "$LOGS_DIR/webapi.log" 2>&1 &
 API_PID=$!
-echo "   ⏳ Esperando inicio del WebApi..."
-sleep 3
-
-# Check if WebApi is running
-if kill -0 $API_PID 2>/dev/null; then
-    # Check if it's actually listening
-    if curl -s http://localhost:5000 > /dev/null 2>&1 || curl -s -o /dev/null -w "%{http_code}" http://localhost:5000 | grep -q "404"; then
-        echo "   ✅ WebApi iniciada en http://localhost:5000 (PID: $API_PID)"
-        echo "   📄 Log: $LOGS_DIR/webapi.log"
-    else
-        echo "   ⚠️  WebApi iniciada pero no responde en http://localhost:5000"
-        echo "   📄 Revisar log: $LOGS_DIR/webapi.log"
-    fi
-else
-    echo "   ❌ Error al iniciar WebApi"
-    echo "   📄 Revisar log: $LOGS_DIR/webapi.log"
-    tail -20 "$LOGS_DIR/webapi.log"
-    cleanup
-fi
+wait_for_service "http://localhost:5000" $API_PID "WebApi" "$LOGS_DIR/webapi.log"
 
 # 2. Start AdminDashboard
 echo ""
 echo "🔹 Iniciando AdminDashboard..."
 dotnet run --project AdminDashboard.Web/AdminDashboard.Web.csproj --urls "http://localhost:5001" > "$LOGS_DIR/admin.log" 2>&1 &
 ADMIN_PID=$!
-echo "   ⏳ Esperando inicio del AdminDashboard..."
-sleep 3
-
-# Check if AdminDashboard is running
-if kill -0 $ADMIN_PID 2>/dev/null; then
-    if curl -s http://localhost:5001 > /dev/null 2>&1 || curl -s -o /dev/null -w "%{http_code}" http://localhost:5001 | grep -q -E "200|302|404"; then
-        echo "   ✅ AdminDashboard iniciado en http://localhost:5001 (PID: $ADMIN_PID)"
-        echo "   📄 Log: $LOGS_DIR/admin.log"
-    else
-        echo "   ⚠️  AdminDashboard iniciado pero no responde en http://localhost:5001"
-        echo "   📄 Revisar log: $LOGS_DIR/admin.log"
-    fi
-else
-    echo "   ❌ Error al iniciar AdminDashboard"
-    echo "   📄 Revisar log: $LOGS_DIR/admin.log"
-    tail -20 "$LOGS_DIR/admin.log"
-fi
+wait_for_service "http://localhost:5001" $ADMIN_PID "AdminDashboard" "$LOGS_DIR/admin.log"
 
 # 3. Start Frontend
 echo ""
@@ -91,7 +93,7 @@ echo "🎉 ¡Todo listo! El sistema está corriendo."
 echo "==================================================="
 echo "   - 🔌 API Backend:      http://localhost:5000"
 echo "   - 🛠️ Admin Dashboard:  http://localhost:5001"
-echo "   - 💻 Frontend React:   http://localhost:5173 (espera ~10s)"
+echo "   - 💻 Frontend React:   http://localhost:5173"
 echo ""
 echo "📝 Presiona Ctrl+C para detener todos los servicios."
 echo "📁 Logs disponibles en: $LOGS_DIR/"

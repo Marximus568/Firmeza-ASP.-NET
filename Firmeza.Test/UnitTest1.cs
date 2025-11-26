@@ -1,4 +1,4 @@
-namespace FIrmeza.Test;
+namespace Firmeza.Test;
 
 public class UnitTest1
 {

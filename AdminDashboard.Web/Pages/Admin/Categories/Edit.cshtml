@@ -1,0 +1,80 @@
+@page
+@model EditModel
+@{
+    ViewData["Title"] = "Edit Category";
+}
+
+<div class="container-fluid py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <!-- Header -->
+            <div class="d-flex align-items-center mb-4">
+                <a asp-page="Index" class="btn btn-outline-secondary me-3">
+                    <i class="fas fa-arrow-left"></i>
+                </a>
+                <h2 class="mb-0">
+                    <i class="fas fa-edit text-warning me-2"></i>
+                    Edit Category
+                </h2>
+            </div>
+
+            <!-- Form Card -->
+            <div class="card shadow-sm">
+                <div class="card-header bg-warning text-dark">
+                    <h5 class="mb-0"><i class="fas fa-pencil-alt me-2"></i>Modify Data</h5>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+                        <input type="hidden" asp-for="Category.Id" />
+
+                        <div class="mb-4">
+                            <label class="form-label text-muted small mb-1">
+                                <i class="fas fa-hashtag me-1"></i>Category ID
+                            </label>
+                            <div class="form-control-plaintext">
+                                <span class="badge bg-secondary">@Model.Category.Id</span>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="Category.Name" class="form-label">
+                                <i class="fas fa-tag me-1"></i>Category Name
+                                <span class="text-danger">*</span>
+                            </label>
+                            <input asp-for="Category.Name" 
+                                   class="form-control form-control-lg" 
+                                   required />
+                            <span asp-validation-for="Category.Name" class="text-danger small"></span>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-warning btn-lg">
+                                <i class="fas fa-save me-2"></i>Save Changes
+                            </button>
+                            <a asp-page="Index" class="btn btn-outline-secondary">
+                                <i class="fas fa-times me-2"></i>Cancel
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Info Card -->
+            <div class="card mt-3 border-warning">
+                <div class="card-body">
+                    <h6 class="card-title text-warning">
+                        <i class="fas fa-exclamation-triangle me-2"></i>Important Note
+                    </h6>
+                    <p class="small mb-0">
+                        Changes will affect all products associated with this category.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -54,49 +54,414 @@
         </div>
     </div>
 
-    <!-- Instructions Section -->
-    <div class="card mb-4 shadow-sm animate-fade-in border-info">
+    <!-- Dynamic Instructions Section -->
+    <div class="card mb-4 shadow-sm animate-fade-in border-info" id="instructionsCard" style="display: none;">
         <div class="card-header bg-info text-white">
-            <h5 class="mb-0"><i class="bi bi-info-circle"></i> Instrucciones de Importación</h5>
+            <h5 class="mb-0"><i class="bi bi-info-circle"></i> Instrucciones de Importación - <span id="entityTypeName"></span></h5>
         </div>
         <div class="card-body">
-            <p class="mb-3">
-                Antes de importar archivos Excel, es importante conocer la estructura exacta que debe tener cada tipo de entidad.
-            </p>
-            <div class="alert alert-info mb-3" role="alert">
-                <h6 class="alert-heading"><i class="bi bi-file-earmark-text"></i> Guía Completa de Importación</h6>
-                <p class="mb-2">
-                    Consulta el documento de instrucciones detalladas que incluye:
-                </p>
-                <ul class="mb-2">
-                    <li>Estructura exacta de columnas para cada tabla</li>
-                    <li>Tipos de datos y validaciones requeridas</li>
-                    <li>Ejemplos prácticos para cada entidad</li>
-                    <li>Solución de errores comunes</li>
-                </ul>
-                <a href="~/INSTRUCCIONES_IMPORTACION_EXCEL.md" target="_blank" class="btn btn-sm btn-info" download>
-                    <i class="bi bi-download"></i> Descargar Instrucciones (MD)
-                </a>
-                <a href="https://github.com" class="btn btn-sm btn-outline-info ms-2" target="_blank">
-                    <i class="bi bi-book"></i> Ver en GitHub
-                </a>
+            <!-- Clients Instructions -->
+            <div id="instructions-Clients" class="entity-instructions" style="display: none;">
+                <h6 class="text-primary"><i class="bi bi-people-fill"></i> Importación de Clientes</h6>
+                <p class="text-muted">El archivo Excel debe tener exactamente estas columnas en este orden:</p>
+                
+                <div class="table-responsive">
+                    <table class="table table-bordered table-sm">
+                        <thead class="table-light">
+                            <tr>
+                                <th>#</th>
+                                <th>Columna</th>
+                                <th>Tipo</th>
+                                <th>Obligatorio</th>
+                                <th>Descripción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td><code>FirstName</code></td>
+                                <td>Texto</td>
+                                <td><span class="badge bg-danger">Sí</span></td>
+                                <td>Nombre (máx 100 caracteres)</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td><code>LastName</code></td>
+                                <td>Texto</td>
+                                <td><span class="badge bg-danger">Sí</span></td>
+                                <td>Apellido (máx 100 caracteres)</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td><code>Email</code></td>
+                                <td>Texto</td>
+                                <td><span class="badge bg-danger">Sí</span></td>
+                                <td>Email válido (se usa para detectar duplicados)</td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td><code>PhoneNumber</code></td>
+                                <td>Texto</td>
+                                <td><span class="badge bg-secondary">No</span></td>
+                                <td>Teléfono (máx 15 caracteres)</td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td><code>Address</code></td>
+                                <td>Texto</td>
+                                <td><span class="badge bg-secondary">No</span></td>
+                                <td>Dirección completa</td>
+                            </tr>
+                            <tr>
+                                <td>6</td>
+                                <td><code>Role</code></td>
+                                <td>Texto</td>
+                                <td><span class="badge bg-secondary">No</span></td>
+                                <td>Rol (por defecto: "Client")</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="alert alert-warning mt-3">
+                    <strong><i class="bi bi-exclamation-triangle"></i> Importante:</strong>
+                    <ul class="mb-0">
+                        <li>Si el email ya existe, se actualizará el cliente</li>
+                        <li>Si el email no existe, se creará un nuevo cliente</li>
+                        <li>El email debe tener formato válido (usuario@dominio.com)</li>
+                    </ul>
+                </div>
             </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <h6><i class="bi bi-people"></i> Clients</h6>
-                    <small class="text-muted">FirstName, LastName, Email, PhoneNumber, Address, Role</small>
+
+            <!-- Products Instructions -->
+            <div id="instructions-Products" class="entity-instructions" style="display: none;">
+                <h6 class="text-primary"><i class="bi bi-box-seam-fill"></i> Importación de Productos</h6>
+                <p class="text-muted">El archivo Excel debe tener exactamente estas columnas en este orden:</p>
+                
+                <div class="table-responsive">
+                    <table class="table table-bordered table-sm">
+                        <thead class="table-light">
+                            <tr>
+                                <th>#</th>
+                                <th>Columna</th>
+                                <th>Tipo</th>
+                                <th>Obligatorio</th>
+                                <th>Descripción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td><code>Name</code></td>
+                                <td>Texto</td>
+                                <td><span class="badge bg-danger">Sí</span></td>
+                                <td>Nombre del producto (máx 150 caracteres, se usa para detectar duplicados)</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td><code>Description</code></td>
+                                <td>Texto</td>
+                                <td><span class="badge bg-secondary">No</span></td>
+                                <td>Descripción del producto</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td><code>UnitPrice</code></td>
+                                <td>Número decimal</td>
+                                <td><span class="badge bg-danger">Sí</span></td>
+                                <td>Precio unitario (debe ser ≥ 0)</td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td><code>Stock</code></td>
+                                <td>Número entero</td>
+                                <td><span class="badge bg-danger">Sí</span></td>
+                                <td>Cantidad en inventario (debe ser ≥ 0)</td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td><code>CategoryId</code></td>
+                                <td>Número entero</td>
+                                <td><span class="badge bg-secondary">No</span></td>
+                                <td>ID de categoría (opcional, puede dejarse vacío)</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
-                <div class="col-md-6">
-                    <h6><i class="bi bi-box-seam"></i> Products</h6>
-                    <small class="text-muted">Name, Description, UnitPrice, Stock, CategoryId</small>
+
+                <div class="alert alert-warning mt-3">
+                    <strong><i class="bi bi-exclamation-triangle"></i> Importante:</strong>
+                    <ul class="mb-0">
+                        <li>Si el nombre del producto ya existe, se actualizará</li>
+                        <li>Si el nombre no existe, se creará un nuevo producto</li>
+                        <li>Los precios y stock no pueden ser negativos</li>
+                    </ul>
                 </div>
-                <div class="col-md-6 mt-3">
-                    <h6><i class="bi bi-cart"></i> Sales</h6>
-                    <small class="text-muted">InvoiceNumber, SaleDate, ClientId, Subtotal, TaxRate, Total, PaymentMethod, IsPaid, Notes</small>
+            </div>
+
+            <!-- Sales Instructions -->
+            <div id="instructions-Sales" class="entity-instructions" style="display: none;">
+                <h6 class="text-primary"><i class="bi bi-cart-fill"></i> Importación de Ventas</h6>
+                <p class="text-muted">El archivo Excel debe tener exactamente estas columnas en este orden:</p>
+                
+                <div class="table-responsive">
+                    <table class="table table-bordered table-sm">
+                        <thead class="table-light">
+                            <tr>
+                                <th>#</th>
+                                <th>Columna</th>
+                                <th>Tipo</th>
+                                <th>Obligatorio</th>
+                                <th>Descripción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td><code>InvoiceNumber</code></td>
+                                <td>Texto</td>
+                                <td><span class="badge bg-danger">Sí</span></td>
+                                <td>Número de factura único</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td><code>SaleDate</code></td>
+                                <td>Fecha</td>
+                                <td><span class="badge bg-danger">Sí</span></td>
+                                <td>Fecha de venta (YYYY-MM-DD)</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td><code>ClientId</code></td>
+                                <td>Número entero</td>
+                                <td><span class="badge bg-danger">Sí</span></td>
+                                <td>ID del cliente (debe existir)</td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td><code>Subtotal</code></td>
+                                <td>Número decimal</td>
+                                <td><span class="badge bg-danger">Sí</span></td>
+                                <td>Subtotal de la venta</td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td><code>TaxRate</code></td>
+                                <td>Número decimal</td>
+                                <td><span class="badge bg-secondary">No</span></td>
+                                <td>Tasa de impuesto (por defecto: 0.19)</td>
+                            </tr>
+                            <tr>
+                                <td>6</td>
+                                <td><code>Total</code></td>
+                                <td>Número decimal</td>
+                                <td><span class="badge bg-danger">Sí</span></td>
+                                <td>Total de la venta</td>
+                            </tr>
+                            <tr>
+                                <td>7</td>
+                                <td><code>PaymentMethod</code></td>
+                                <td>Texto</td>
+                                <td><span class="badge bg-secondary">No</span></td>
+                                <td>Método de pago</td>
+                            </tr>
+                            <tr>
+                                <td>8</td>
+                                <td><code>IsPaid</code></td>
+                                <td>Booleano</td>
+                                <td><span class="badge bg-secondary">No</span></td>
+                                <td>true/false o 1/0</td>
+                            </tr>
+                            <tr>
+                                <td>9</td>
+                                <td><code>Notes</code></td>
+                                <td>Texto</td>
+                                <td><span class="badge bg-secondary">No</span></td>
+                                <td>Notas adicionales</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
-                <div class="col-md-6 mt-3">
-                    <h6><i class="bi bi-list-ul"></i> Sale Items</h6>
-                    <small class="text-muted">SalesId, ProductId, Quantity, UnitPrice</small>
+
+                <div class="alert alert-warning mt-3">
+                    <strong><i class="bi bi-exclamation-triangle"></i> Importante:</strong>
+                    <ul class="mb-0">
+                        <li>Si el InvoiceNumber ya existe, se actualizará la venta</li>
+                        <li>El ClientId debe existir en la base de datos</li>
+                        <li>Formato de fecha recomendado: YYYY-MM-DD (ej: 2025-11-25)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- SaleItems Instructions -->
+            <div id="instructions-SaleItems" class="entity-instructions" style="display: none;">
+                <h6 class="text-primary"><i class="bi bi-list-ul"></i> Importación de Detalles de Venta</h6>
+                <p class="text-muted">El archivo Excel debe tener exactamente estas columnas en este orden:</p>
+                
+                <div class="table-responsive">
+                    <table class="table table-bordered table-sm">
+                        <thead class="table-light">
+                            <tr>
+                                <th>#</th>
+                                <th>Columna</th>
+                                <th>Tipo</th>
+                                <th>Obligatorio</th>
+                                <th>Descripción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td><code>SalesId</code></td>
+                                <td>Número entero</td>
+                                <td><span class="badge bg-danger">Sí</span></td>
+                                <td>ID de la venta (debe existir)</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td><code>ProductId</code></td>
+                                <td>Número entero</td>
+                                <td><span class="badge bg-danger">Sí</span></td>
+                                <td>ID del producto (debe existir)</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td><code>Quantity</code></td>
+                                <td>Número entero</td>
+                                <td><span class="badge bg-danger">Sí</span></td>
+                                <td>Cantidad vendida</td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td><code>UnitPrice</code></td>
+                                <td>Número decimal</td>
+                                <td><span class="badge bg-danger">Sí</span></td>
+                                <td>Precio unitario en esta venta</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="alert alert-warning mt-3">
+                    <strong><i class="bi bi-exclamation-triangle"></i> Importante:</strong>
+                    <ul class="mb-0">
+                        <li>Tanto el SalesId como el ProductId deben existir en la base de datos</li>
+                        <li>Si ya existe un ítem con el mismo SalesId y ProductId, se actualizará</li>
+                        <li>Importa Sales primero, luego SaleItems</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- MixedData Instructions -->
+            <div id="instructions-MixedData" class="entity-instructions" style="display: none;">
+                <h6 class="text-primary"><i class="bi bi-shuffle"></i> Importación de Datos Mezclados (Auto-Detección)</h6>
+                <p class="text-muted">El sistema detecta automáticamente el tipo de cada fila basándose en los campos presentes.</p>
+                
+                <div class="alert alert-info">
+                    <strong><i class="bi bi-lightbulb"></i> Cómo Funciona:</strong>
+                    <p class="mb-2">El sistema analiza cada fila y determina automáticamente si es un Cliente, Producto, Venta o Detalle de Venta basándose en qué campos tienen datos.</p>
+                    <ul class="mb-0">
+                        <li><strong>Cliente:</strong> Detectado si tiene FirstName, LastName y Email (sin InvoiceNumber ni UnitPrice)</li>
+                        <li><strong>Producto:</strong> Detectado si tiene Name, UnitPrice y Stock (sin Email ni InvoiceNumber)</li>
+                        <li><strong>Venta:</strong> Detectado si tiene InvoiceNumber y ClientId/ClientEmail (sin SalesId)</li>
+                        <li><strong>Detalle Venta:</strong> Detectado si tiene Quantity y referencia a venta (SalesId o InvoiceNumber)</li>
+                    </ul>
+                </div>
+
+                <h6 class="mt-4">Campos Soportados por Tipo</h6>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card mb-3">
+                            <div class="card-header bg-light"><strong>Clientes</strong></div>
+                            <div class="card-body">
+                                <small>
+                                    • FirstName (requerido)<br>
+                                    • LastName (requerido)<br>
+                                    • Email (requerido)<br>
+                                    • PhoneNumber<br>
+                                    • Address<br>
+                                    • Role
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card mb-3">
+                            <div class="card-header bg-light"><strong>Productos</strong></div>
+                            <div class="card-body">
+                                <small>
+                                    • Name (requerido)<br>
+                                    • UnitPrice (requerido)<br>
+                                    • Stock (requerido)<br>
+                                    • Description<br>
+                                    • CategoryId
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card mb-3">
+                            <div class="card-header bg-light"><strong>Ventas</strong></div>
+                            <div class="card-body">
+                                <small>
+                                    • InvoiceNumber (requerido)<br>
+                                    • ClientId o ClientEmail (requerido)<br>
+                                    • Subtotal (requerido)<br>
+                                    • Total (requerido)<br>
+                                    • SaleDate<br>
+                                    • TaxRate<br>
+                                    • PaymentMethod<br>
+                                    • IsPaid<br>
+                                    • Notes
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card mb-3">
+                            <div class="card-header bg-light"><strong>Detalles de Venta</strong></div>
+                            <div class="card-body">
+                                <small>
+                                    • SalesId o InvoiceNumber (requerido)<br>
+                                    • ProductId o ProductName (requerido)<br>
+                                    • Quantity (requerido)<br>
+                                    • UnitPrice (requerido)
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="alert alert-success mt-3">
+                    <strong><i class="bi bi-check-circle"></i> Referencias Flexibles:</strong>
+                    <p class="mb-2">Puedes usar IDs o nombres/emails para referenciar entidades:</p>
+                    <ul class="mb-0">
+                        <li><strong>ClientEmail:</strong> Usa el email en lugar de ClientId para ventas</li>
+                        <li><strong>ProductName:</strong> Usa el nombre en lugar de ProductId para detalles de venta</li>
+                        <li><strong>InvoiceNumber:</strong> Usa el número de factura en lugar de SalesId para detalles de venta</li>
+                    </ul>
+                    <small class="text-muted">El sistema busca primero en <strong>filas importadas en el mismo archivo</strong>, luego en la base de datos.</small>
+                </div>
+
+                <h6 class="mt-4">Ejemplo de Archivo Mixed Data</h6>
+                <pre class="bg-light p-3 rounded"><code>FirstName | LastName | Email           | Name   | UnitPrice | Stock | InvoiceNumber | ClientEmail     | Subtotal | Total  | Quantity | ProductName
+----------|----------|-----------------|--------|-----------|-------|---------------|-----------------|----------|--------|----------|------------
+Juan      | Pérez    | juan@email.com  |        |           |       |               |                 |          |        |          |
+María     | García   | maria@email.com |        |           |       |               |                 |          |        |          |
+          |          |                 | Laptop | 3500      | 25    |               |                 |          |        |          |
+          |          |                 | Mouse  | 45        | 150   |               |                 |          |        |          |
+          |          |                 |        |           |       | FAC-001       | juan@email.com  | 3500     | 4165   |          |
+          |          |                 |        |           |       |               |                 |          |        | 1        | Laptop</code></pre>
+
+                <div class="alert alert-warning mt-3">
+                    <strong><i class="bi bi-exclamation-triangle"></i> Importante:</strong>
+                    <ul class="mb-0">
+                        <li>El sistema procesa en orden: Clientes → Productos → Ventas → Detalles de Venta</li>
+                        <li>Puedes mezclar diferentes tipos de datos en cualquier orden en el archivo</li>
+                        <li>Asegúrate de que las referencias (emails, nombres, facturas) coincidan exactamente</li>
+                        <li>Si una fila no puede ser clasificada, se reportará como error</li>
+                    </ul>
                 </div>
             </div>
         </div>
@@ -111,15 +476,16 @@
             <form method="post" enctype="multipart/form-data" id="importForm">
                 <div class="row">
                     <div class="col-md-4 mb-3">
-                        <label asp-for="EntityType" class="form-label">Entity Type</label>
-                        <select asp-for="EntityType" class="form-select" required>
-                            <option value="">-- Select Entity --</option>
-                            <option value="Clients">Clients</option>
-                            <option value="Products">Products</option>
-                            <option value="Sales">Sales</option>
-                            <option value="SaleItems">Sale Items</option>
-                        </select>
-                    </div>
+                        <label for="entityType" class="form-label">Entity Type</label>
+                    <select id="entityType" name="EntityType" class="form-select" required>
+                        <option value="">-- Select Entity Type --</option>
+                        <option value="Clients">Clients</option>
+                        <option value="Products">Products</option>
+                        <option value="Sales">Sales</option>
+                        <option value="SaleItems">Sale Items</option>
+                        <option value="MixedData">Mixed Data (Auto-Detect)</option>
+                    </select>
+                </div>
                     <div class="col-md-8 mb-3">
                         <label asp-for="UploadedFile" class="form-label">Excel File (.xlsx)</label>
                         <input asp-for="UploadedFile" class="form-control" accept=".xlsx" required />
@@ -233,6 +599,37 @@
 
 @section Scripts {
     <script>
+        // Handle EntityType dropdown change to show/hide dynamic instructions
+        const entityTypeSelect = document.querySelector('select[name="EntityType"]');
+        const instructionsCard = document.getElementById('instructionsCard');
+        const entityTypeName = document.getElementById('entityTypeName');
+        const allInstructions = document.querySelectorAll('.entity-instructions');
+
+        entityTypeSelect.addEventListener('change', function() {
+            const selectedValue = this.value;
+            
+            // Hide all instructions first
+            allInstructions.forEach(inst => inst.style.display = 'none');
+            
+            if (selectedValue) {
+                // Show instructions card
+                instructionsCard.style.display = 'block';
+                
+                // Update entity type name in header
+                entityTypeName.textContent = selectedValue;
+                
+                // Show specific instructions for selected entity
+                const targetInstructions = document.getElementById('instructions-' + selectedValue);
+                if (targetInstructions) {
+                    targetInstructions.style.display = 'block';
+                }
+            } else {
+                // Hide instructions card if no entity selected
+                instructionsCard.style.display = 'none';
+            }
+        });
+
+        // Handle form submission
         document.getElementById('importForm').addEventListener('submit', function() {
             const btn = document.getElementById('importBtn');
             btn.disabled = true;

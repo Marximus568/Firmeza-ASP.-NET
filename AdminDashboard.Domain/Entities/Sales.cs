@@ -44,4 +44,7 @@ public class Sales
 
     [MaxLength(300)]
     public string Notes { get; set; } = string.Empty;
+
+    [MaxLength(500)]
+    public string? ReceiptPath { get; set; }
 }

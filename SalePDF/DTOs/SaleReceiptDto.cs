@@ -3,6 +3,7 @@ namespace SalePDF.DTOs;
 public class SaleReceiptDto
 {
     public int SaleId { get; set; }
+    public string InvoiceNumber { get; set; } = string.Empty;
     public DateTime Date { get; set; }
     
     // Customer data

@@ -1,5 +1,7 @@
+using AdminDashboard.Infrastructure.Persistence.Context;
 using ExcelImporter.Interfaces;
 using ExcelImporter.Models;
+using ExcelImporter.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -9,15 +11,18 @@ public class UploadModel : PageModel
 {
     private readonly IExcelImporter _importer;
     private readonly IExcelExporter _exporter;
+    private readonly AppDbContext _context;
     private readonly ILogger<UploadModel> _logger;
 
     public UploadModel(
         IExcelImporter importer,
         IExcelExporter exporter,
+        AppDbContext context,
         ILogger<UploadModel> logger)
     {
         _importer = importer;
         _exporter = exporter;
+        _context = context;
         _logger = logger;
     }
 
@@ -59,14 +64,23 @@ public class UploadModel : PageModel
         {
             using (var stream = UploadedFile.OpenReadStream())
             {
-                Result = EntityType switch
+                // For MixedData, use MixedDataExcelImporter directly
+                if (EntityType == "MixedData")
                 {
-                    "Clients" => await _importer.ImportClientsAsync(stream),
-                    "Products" => await _importer.ImportProductsAsync(stream),
-                    "Sales" => await _importer.ImportSalesAsync(stream),
-                    "SaleItems" => await _importer.ImportSaleItemsAsync(stream),
-                    _ => throw new ArgumentException("Invalid entity type")
-                };
+                    var mixedImporter = new MixedDataExcelImporter(_context);
+                    Result = await mixedImporter.ImportMixedDataAsync(stream);
+                }
+                else
+                {
+                    Result = EntityType switch
+                    {
+                        "Clients" => await _importer.ImportClientsAsync(stream),
+                        "Products" => await _importer.ImportProductsAsync(stream),
+                        "Sales" => await _importer.ImportSalesAsync(stream),
+                        "SaleItems" => await _importer.ImportSaleItemsAsync(stream),
+                        _ => throw new ArgumentException("Invalid entity type")
+                    };
+                }
             }
 
             // Set success message in TempData instead of modifying the read-only Result.Message

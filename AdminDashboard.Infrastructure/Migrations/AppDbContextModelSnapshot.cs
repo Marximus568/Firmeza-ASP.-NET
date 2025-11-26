@@ -37,7 +37,7 @@ namespace AdminDashboard.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
 
                     b.HasData(
                         new
@@ -78,6 +78,10 @@ namespace AdminDashboard.Infrastructure.Migrations
                     b.Property<DateOnly>("DateOfBirth")
                         .HasColumnType("date");
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("text");
@@ -104,7 +108,7 @@ namespace AdminDashboard.Infrastructure.Migrations
 
                     b.ToTable("Users", (string)null);
 
-                    b.HasDiscriminator().HasValue("Clients");
+                    b.HasDiscriminator<string>("Discriminator").HasValue("Clients");
 
                     b.HasData(
                         new
@@ -179,7 +183,7 @@ namespace AdminDashboard.Infrastructure.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Products");
+                    b.ToTable("Products", (string)null);
 
                     b.HasData(
                         new
@@ -313,7 +317,7 @@ namespace AdminDashboard.Infrastructure.Migrations
 
                     b.HasIndex("SalesId");
 
-                    b.ToTable("SaleItems");
+                    b.ToTable("SaleItems", (string)null);
                 });
 
             modelBuilder.Entity("AdminDashboard.Domain.Entities.Sales", b =>

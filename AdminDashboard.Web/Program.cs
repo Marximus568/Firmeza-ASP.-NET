@@ -36,6 +36,13 @@ builder.Services.AddApplication();
 // 3.5 ExcelImporter Services
 builder.Services.AddExcelServices();
 
+// 3.5 ExcelImporter Services
+builder.Services.AddExcelServices();
+
+// 3.6 PDF Services
+builder.Services.AddScoped<IPdfService, SalePDF.Services.PdfService>();
+
+
 // 4 Custom App Routing
 builder.Services.AddAppRouting();
 

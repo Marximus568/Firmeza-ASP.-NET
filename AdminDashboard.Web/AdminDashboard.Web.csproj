@@ -131,16 +131,16 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Content Include="..\.dockerignore">
-        <Link>.dockerignore</Link>
-      </Content>
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\AdminDashboard.Infrastructure\AdminDashboard.Infrastructure.csproj" />
       <ProjectReference Include="..\AdminDashboard.Application\AdminDashboard.Application.csproj" />
       <ProjectReference Include="..\ExcelImporter\ExcelImporter.csproj" />
       <ProjectReference Include="..\SalePDF\SalePDF.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="..\.dockerignore">
+        <Link>.dockerignore</Link>
+      </Content>
     </ItemGroup>
 
 </Project>

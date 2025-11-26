@@ -626,4 +626,9 @@ public class ExcelImporterServices : IExcelImporter
             return false;
         }
     }
+
+    public Task<ImportResult> ImportMixedDataAsync(Stream fileStream)
+    {
+        throw new NotImplementedException("Mixed data import not supported in this service. Use MixedDataExcelImporter.");
+    }
 }
