@@ -37,7 +37,7 @@ namespace AdminDashboard.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories", (string)null);
+                    b.ToTable("Categories");
 
                     b.HasData(
                         new
@@ -78,10 +78,6 @@ namespace AdminDashboard.Infrastructure.Migrations
                     b.Property<DateOnly>("DateOfBirth")
                         .HasColumnType("date");
 
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("text");
@@ -108,7 +104,7 @@ namespace AdminDashboard.Infrastructure.Migrations
 
                     b.ToTable("Users", (string)null);
 
-                    b.HasDiscriminator<string>("Discriminator").HasValue("Clients");
+                    b.HasDiscriminator().HasValue("Clients");
 
                     b.HasData(
                         new
@@ -131,7 +127,7 @@ namespace AdminDashboard.Infrastructure.Migrations
                             FirstName = "Juan",
                             LastName = "Pérez",
                             PhoneNumber = "3109876543",
-                            Role = "Customer"
+                            Role = "Client"
                         },
                         new
                         {
@@ -142,7 +138,7 @@ namespace AdminDashboard.Infrastructure.Migrations
                             FirstName = "María",
                             LastName = "Rodríguez",
                             PhoneNumber = "3157654321",
-                            Role = "Customer"
+                            Role = "Client"
                         });
                 });
 
@@ -183,7 +179,7 @@ namespace AdminDashboard.Infrastructure.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Products", (string)null);
+                    b.ToTable("Products");
 
                     b.HasData(
                         new
@@ -317,7 +313,7 @@ namespace AdminDashboard.Infrastructure.Migrations
 
                     b.HasIndex("SalesId");
 
-                    b.ToTable("SaleItems", (string)null);
+                    b.ToTable("SaleItems");
                 });
 
             modelBuilder.Entity("AdminDashboard.Domain.Entities.Sales", b =>
@@ -348,6 +344,10 @@ namespace AdminDashboard.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
+
+                    b.Property<string>("ReceiptPath")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
 
                     b.Property<DateTime>("SaleDate")
                         .HasColumnType("timestamp with time zone");
