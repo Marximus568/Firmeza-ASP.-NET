@@ -6,19 +6,21 @@ public record AuthResultDto
     public bool Succeeded { get; init; }
     public string? UserId { get; init; }
     public string? Email { get; init; }
+    public string? Token { get; init; }
     public IEnumerable<string> Roles { get; init; } = Array.Empty<string>();
     public IEnumerable<string> Errors { get; init; } = Array.Empty<string>();
 
     /// <summary>
     /// Creates a successful authentication result
     /// </summary>
-    public static AuthResultDto Success(string userId, string email, IEnumerable<string> roles)
+    public static AuthResultDto Success(string userId, string email, IEnumerable<string> roles, string token)
         => new()
         {
             Succeeded = true,
             UserId = userId,
             Email = email,
-            Roles = roles
+            Roles = roles,
+            Token = token
         };
 
     /// <summary>

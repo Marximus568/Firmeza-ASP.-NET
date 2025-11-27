@@ -25,6 +25,11 @@ public class CreateUserDto
     
     [StringLength(200, MinimumLength = 5)]
     public string Address { get; set; } = string.Empty;
+    
+    [StringLength(200, MinimumLength = 5)]
+    public string Password { get; set; } = string.Empty;
+    
+    
 
     [Required]
     [StringLength(20)]

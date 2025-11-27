@@ -60,37 +60,35 @@ public class LoginModel : PageModel
             return Page();
         }
 
-        // Check if user is a Client trying to access admin panel
-        if (result.Roles.Contains(UserRole.Client) && !result.Roles.Contains(UserRole.Admin))
+        if (!string.IsNullOrEmpty(result.Token))
         {
-            _logger.LogWarning(
-                "Client user {Email} attempted to access admin panel", 
-                result.Email
-            );
-
-            // Sign out the user
-            await _loginUseCase.ExecuteAsync(new LoginDto 
-            { 
-                Email = string.Empty, 
-                Password = string.Empty 
+            Response.Cookies.Append("access_token", result.Token, new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true, // Ensure this is true in production
+                SameSite = SameSiteMode.Strict,
+                Expires = DateTime.UtcNow.AddDays(7)
             });
-
-            ErrorMessage = "You do not have permission to access the admin panel. " +
-                          "Please contact an administrator if you believe this is an error.";
-            
-            return RedirectToPage("/Account/AccessDenied");
         }
 
-        _logger.LogInformation("User {Email} logged in successfully", result.Email);
+        _logger.LogInformation("User {Email} logged in successfully with roles: {Roles}", 
+            result.Email, string.Join(", ", result.Roles));
         
-        // Always redirect Admin users to AdminDashboard.Web
+        // Role-based redirection
         if (result.Roles.Contains(UserRole.Admin))
         {
-            // Redirect to the AdminDashboard Index Razor Page
+            _logger.LogInformation("Redirecting admin user {Email} to Admin Dashboard", result.Email);
             return RedirectToPage("/Admin/Index");
         }
         
+        if (result.Roles.Contains(UserRole.Client))
+        {
+            _logger.LogInformation("Redirecting client user {Email} to Products page", result.Email);
+            return RedirectToPage("/Admin/Products/Index");
+        }
         
+        // Default fallback for other roles
+        _logger.LogInformation("Redirecting user {Email} to default page", result.Email);
         return LocalRedirect(returnUrl);
     }
 }

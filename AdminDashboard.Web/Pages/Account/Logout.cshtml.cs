@@ -25,6 +25,7 @@ public class LogoutModel : PageModel
     {
         var userEmail = User.Identity?.Name ?? "Unknown";
         
+        Response.Cookies.Delete("access_token");
         await _authService.LogoutAsync();
         
         _logger.LogInformation("User {Email} logged out", userEmail);

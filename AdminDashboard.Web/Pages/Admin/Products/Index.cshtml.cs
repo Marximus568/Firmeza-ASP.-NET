@@ -1,9 +1,10 @@
 using AdminDashboard.Application.Product;
-using AdminDashboard.Infrastructure.Security;
 using AdminDashboardApplication.DTOs.Products;
 using AdminDashboardApplication.DTOs.Products.Interfaces;
 using ExcelImporter.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
 
 namespace AdminDashboard.Pages.Admin.Products;
@@ -11,7 +12,8 @@ namespace AdminDashboard.Pages.Admin.Products;
 /// <summary>
 /// Page model for listing and searching products.
 /// </summary>
-public class IndexModel : AdminPageModel
+[Authorize(Roles = "Admin")]
+public class IndexModel : PageModel
 {
     private readonly IProductServices _productService;
     private readonly IExcelExporter _excelExporter;

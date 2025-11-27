@@ -17,6 +17,9 @@ public class Clients : Person
     
     [MaxLength(20)]
     public string Role { get; set; } = "Client";
+
+    [MaxLength(100)]
+    public string Password { get; set; } = string.Empty;
     
     // Navigation property: One client can have many sales
     public ICollection<Sales> Sales { get; set; } = new List<Sales>();

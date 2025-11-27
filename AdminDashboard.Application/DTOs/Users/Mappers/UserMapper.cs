@@ -18,7 +18,7 @@ namespace AdminDashboardApplication.DTOs.Users.Mappers
                 LastName = dto.LastName,
                 Email = dto.Email,
 
-                // dto.DateOfBirth YA ES DateOnly → no convertir
+                Password = dto.Password,
                 DateOfBirth = dto.DateOfBirth,
 
                 PhoneNumber = dto.PhoneNumber,

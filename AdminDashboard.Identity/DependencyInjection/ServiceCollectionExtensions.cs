@@ -56,6 +56,36 @@ public static class ServiceCollectionExtensions
 
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<IRoleService, RoleService>();
+        services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
+
+        //Setup JWT Authentication
+        services.AddAuthentication(options =>
+        {
+            options.DefaultAuthenticateScheme = Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme;
+        })
+        .AddJwtBearer(options =>
+        {
+            options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(System.Text.Encoding.ASCII.GetBytes(configuration["JWT_SECRET"] ?? "super_secret_key_must_be_long_enough_12345")),
+                ValidateIssuer = false,
+                ValidateAudience = false,
+                ClockSkew = TimeSpan.Zero
+            };
+            options.Events = new Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerEvents
+            {
+                OnMessageReceived = context =>
+                {
+                    if (context.Request.Cookies.ContainsKey("access_token"))
+                    {
+                        context.Token = context.Request.Cookies["access_token"];
+                    }
+                    return Task.CompletedTask;
+                }
+            };
+        });
 
         return services;
     }

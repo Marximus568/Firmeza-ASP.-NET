@@ -58,6 +58,18 @@
                             </div>
                             <span asp-validation-for="CreateUserDto.Email" class="text-danger"></span>
                         </div>
+                        <div class="mb-4">
+                            <label asp-for="CreateUserDto.Password" class="form-label">
+                                <i class="fas fa-envelope me-2"></i>Password
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-white">
+                                    <i class="fas fa-envelope text-primary"></i>
+                                </span>
+                                <input asp-for="CreateUserDto.Password" class="form-control" placeholder="email@example.com" />
+                            </div>
+                            <span asp-validation-for="CreateUserDto.Password" class="text-danger"></span>
+                        </div>
 
                         <div class="row">
                             <div class="col-md-6 mb-4">
