@@ -28,7 +28,6 @@
   <ItemGroup>
     <ProjectReference Include="..\AdminDashboard.Domain\AdminDashboard.Domain.csproj" />
     <ProjectReference Include="..\AdminDashboard.Infrastructure\AdminDashboard.Infrastructure.csproj" />
-    <ProjectReference Include="..\AdminDashboard.Web\AdminDashboard.Web.csproj" />
     <ProjectReference Include="..\SmtpSettings\SmtpSettings.csproj" />
   </ItemGroup>
 

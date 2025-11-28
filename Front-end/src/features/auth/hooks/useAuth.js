@@ -35,7 +35,7 @@ const useAuth = () => {
                 // If user is Admin, redirect to the main admin panel (ASP.NET MVC app)
                 if (userRole === 'admin') {
                     // Store JWT token in a cookie for the admin dashboard to read
-                    document.cookie = `auth_token=${response.Token}; path=/; domain=localhost; SameSite=Lax`;
+                    document.cookie = `auth_token=${response.token}; path=/; domain=localhost; SameSite=Lax`;
                     // Redirect with token as query param for SSO (optional)
                     window.location.href = ADMIN_DASHBOARD_URL;
                     return;
