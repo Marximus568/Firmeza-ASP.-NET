@@ -26,7 +26,9 @@ public class CreateUserDto
     [StringLength(200, MinimumLength = 5)]
     public string Address { get; set; } = string.Empty;
     
-    [StringLength(200, MinimumLength = 5)]
+    
+    [Required(ErrorMessage = "Password is required")]
+    [StringLength(200, MinimumLength = 8, ErrorMessage = "Password must be at least 8 characters long")]
     public string Password { get; set; } = string.Empty;
     
     

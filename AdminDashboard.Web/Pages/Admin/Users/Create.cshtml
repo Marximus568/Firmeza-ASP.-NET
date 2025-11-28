@@ -60,13 +60,13 @@
                         </div>
                         <div class="mb-4">
                             <label asp-for="CreateUserDto.Password" class="form-label">
-                                <i class="fas fa-envelope me-2"></i>Password
+                                <i class="fas fa-lock me-2"></i>Password
                             </label>
                             <div class="input-group">
                                 <span class="input-group-text bg-white">
-                                    <i class="fas fa-envelope text-primary"></i>
+                                    <i class="fas fa-lock text-primary"></i>
                                 </span>
-                                <input asp-for="CreateUserDto.Password" class="form-control" placeholder="email@example.com" />
+                                <input asp-for="CreateUserDto.Password" type="password" class="form-control" placeholder="Enter secure password" />
                             </div>
                             <span asp-validation-for="CreateUserDto.Password" class="text-danger"></span>
                         </div>
@@ -104,6 +104,15 @@
                         </div>
 
                         <hr class="my-4">
+
+                        <div class="d-flex justify-content-between gap-3">
+                            <a asp-page="Index" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left me-2"></i>Back to List
+                            </a>
+                            <button type="submit" class="btn btn-primary btn-lg shadow-glow">
+                                <i class="fas fa-user-plus me-2"></i>Create User
+                            </button>
+                        </div>
                     </form>
                 </div>
             </div>

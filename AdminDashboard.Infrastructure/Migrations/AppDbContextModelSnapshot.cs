@@ -90,6 +90,11 @@ namespace AdminDashboard.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasMaxLength(15)
@@ -115,6 +120,7 @@ namespace AdminDashboard.Infrastructure.Migrations
                             Email = "admin@firmeza.com",
                             FirstName = "Admin",
                             LastName = "System",
+                            Password = "$2a$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LwFfh.8QW9h4bQ.Rm",
                             PhoneNumber = "3001234567",
                             Role = "Admin"
                         },
@@ -126,6 +132,7 @@ namespace AdminDashboard.Infrastructure.Migrations
                             Email = "juanperez@example.com",
                             FirstName = "Juan",
                             LastName = "Pérez",
+                            Password = "$2a$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LwFfh.8QW9h4bQ.Rm",
                             PhoneNumber = "3109876543",
                             Role = "Client"
                         },
@@ -137,6 +144,7 @@ namespace AdminDashboard.Infrastructure.Migrations
                             Email = "mariarodriguez@example.com",
                             FirstName = "María",
                             LastName = "Rodríguez",
+                            Password = "$2a$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LwFfh.8QW9h4bQ.Rm",
                             PhoneNumber = "3157654321",
                             Role = "Client"
                         });

@@ -9,6 +9,8 @@ using AdminDashboardApplication.DTOs.Users.Interface;
 using AdminDashboardApplication.DTOs.Products.Interfaces;
 using AdminDashboard.Infrastructure.Email;
 using AdminDashboard.Identity.DependencyInjection;
+using AdminDashboardApplication.Services;
+using AdminDashboard.Infrastructure.Services.PasswordHasher;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -35,6 +37,11 @@ public static class DependencyInjection
                 b => b.MigrationsAssembly(typeof(AppDbContext).Assembly.FullName)
             )
         );
+    
+        // ======================================
+        // Automapper
+        // ======================================
+        services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
         // ======================================
         // Identity + JWT
@@ -66,8 +73,12 @@ public static class DependencyInjection
             options.Password = configuration["SMTP_PASSWORD"] ?? "";
             options.EnableSsl = bool.Parse(configuration["SMTP_ENABLE_SSL"] ?? "true");
         });
-
+        
+        // Register Email Service
         services.AddScoped<IEmailService, SmtpEmailService>();
+        
+        // Register Password Hasher Service
+        services.AddSingleton<IPasswordHasher, PasswordHasher>();
 
         return services;
     }
