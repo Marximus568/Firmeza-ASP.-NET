@@ -1,0 +1,59 @@
+﻿services:
+  postgres:
+    image: postgres:17
+    restart: always
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASS}
+      - POSTGRES_DB=${DB_NAME}
+    ports:
+      - "5432:5432"
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+
+  tests:
+    build:
+      context: .
+      dockerfile: Firmeza.Test/Dockerfile
+    environment:
+      - ConnectionStrings__Default=Host=postgres;Port=${DB_PORT};Database=${DB_NAME};Username=${DB_USER};Password=${DB_PASS};
+    depends_on:
+      - postgres
+    command: [ "dotnet", "test", "--logger:trx" ]
+
+  api:
+    build:
+      context: .
+      dockerfile: Firmeza.WebApi/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__Default=Host=postgres;Port=${DB_PORT};Database=${DB_NAME};Username=${DB_USER};Password=${DB_PASS};
+    depends_on:
+      tests:
+        condition: service_completed_successfully
+    ports:
+      - "5000:8080"
+
+  admin:
+    build:
+      context: .
+      dockerfile: AdminDashboard.Web/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__Default=Host=postgres;Port=${DB_PORT};Database=${DB_NAME};Username=${DB_USER};Password=${DB_PASS};
+    depends_on:
+      - api
+    ports:
+      - "5001:8080"
+
+  front-end:
+    build:
+      context: Front-end
+      dockerfile: Dockerfile
+    depends_on:
+      - api
+    ports:
+      - "5173:80"
+
+volumes:
+  dbdata:
