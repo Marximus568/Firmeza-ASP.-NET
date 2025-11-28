@@ -2,19 +2,29 @@
   postgres:
     image: postgres:17
     restart: always
+    env_file:
+      - .env
+    container_name: Firmeza-Postgres
     environment:
       - POSTGRES_USER=${DB_USER}
       - POSTGRES_PASSWORD=${DB_PASS}
       - POSTGRES_DB=${DB_NAME}
     ports:
-      - "5432:5432"
+      - "5433:5432"
     volumes:
       - dbdata:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${DB_USER}" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   tests:
     build:
       context: .
       dockerfile: Firmeza.Test/Dockerfile
+    env_file:
+      - .env
     environment:
       - ConnectionStrings__Default=Host=postgres;Port=${DB_PORT};Database=${DB_NAME};Username=${DB_USER};Password=${DB_PASS};
     depends_on:
@@ -25,6 +35,8 @@
     build:
       context: .
       dockerfile: Firmeza.WebApi/Dockerfile
+    env_file:
+      - .env
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__Default=Host=postgres;Port=${DB_PORT};Database=${DB_NAME};Username=${DB_USER};Password=${DB_PASS};
@@ -38,6 +50,8 @@
     build:
       context: .
       dockerfile: AdminDashboard.Web/Dockerfile
+    env_file:
+      - .env
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__Default=Host=postgres;Port=${DB_PORT};Database=${DB_NAME};Username=${DB_USER};Password=${DB_PASS};
