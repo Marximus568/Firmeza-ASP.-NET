@@ -8,6 +8,15 @@ RUN npm install
 
 # Copy source files and build
 COPY . .
+
+# Accept build arguments
+ARG VITE_API_BASE_URL
+ARG VITE_ADMIN_DASHBOARD_URL
+
+# Set environment variables for build
+ENV VITE_API_BASE_URL=$VITE_API_BASE_URL
+ENV VITE_ADMIN_DASHBOARD_URL=$VITE_ADMIN_DASHBOARD_URL
+
 RUN npm run build
 
 # Stage 2 — NGINX

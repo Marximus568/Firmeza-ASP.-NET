@@ -38,6 +38,29 @@ public class AuthService : IAuthService
 
     public async Task<AuthResultDto> RegisterAsync(UserDto userDto, string password, CancellationToken cancellationToken = default)
     {
+        var identityUser = new ApplicationUserIdentity
+        {
+            UserName = userDto.Email,
+            Email = userDto.Email,
+            FirstName = userDto.FirstName,
+            LastName = userDto.LastName,
+            PhoneNumber = userDto.PhoneNumber,
+            Address = userDto.Address,
+            IsActive = true,
+            CreatedAt = DateTime.UtcNow
+        };
+
+        // Create user in Identity with hashed password
+        var result = await _userManager.CreateAsync(identityUser, password);
+
+        if (!result.Succeeded)
+            return AuthResultDto.Failure(result.Errors.Select(e => e.Description));
+
+        // Add role to Identity user
+        if (!string.IsNullOrEmpty(userDto.Role))
+            await _userManager.AddToRoleAsync(identityUser, userDto.Role);
+
+        // Create client record for business database with hashed password from Identity
         var users = new Clients
         {
             FirstName = userDto.FirstName,
@@ -46,36 +69,14 @@ public class AuthService : IAuthService
             Role = userDto.Role,
             PhoneNumber = userDto.PhoneNumber,
             Address = userDto.Address,
-            Password = password
+            Password = identityUser.PasswordHash ?? string.Empty // Store hashed password, not plain text
         };
-
-        var identityUser = new ApplicationUserIdentity
-        {
-            UserName = users.Email,
-            Email = users.Email,
-            FirstName = users.FirstName,
-            LastName = users.LastName,
-            PhoneNumber = users.PhoneNumber,
-            Address = users.Address,
-            IsActive = true,
-            CreatedAt = DateTime.UtcNow
-        };
-
-        var result = await _userManager.CreateAsync(identityUser, password);
-
-        if (!result.Succeeded)
-            return AuthResultDto.Failure(result.Errors.Select(e => e.Description));
-
-
-
-        if (!string.IsNullOrEmpty(users.Role))
-            await _userManager.AddToRoleAsync(identityUser, users.Role);
 
         // Save client to business database
         try 
         {
             await _customerRepository.AddCustomerAsync(users);
-            _logger.LogInformation("Client {Email} saved to business database", users.Email);
+            _logger.LogInformation("Client {Email} saved to business database with hashed password", users.Email);
         }
         catch (Exception ex)
         {
