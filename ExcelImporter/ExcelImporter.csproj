@@ -5,15 +5,20 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Reference Include="EPPlus">
-        <HintPath>..\..\..\.nuget\packages\epplus\5.0.3\lib\netstandard2.1\EPPlus.dll</HintPath>
-      </Reference>
+      <PackageReference Include="EPPlus" Version="5.0.3" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="..\.dockerignore">
+        <Link>.dockerignore</Link>
+      </Content>
     </ItemGroup>
 
     <PropertyGroup>
         <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     </PropertyGroup>
 
 </Project>

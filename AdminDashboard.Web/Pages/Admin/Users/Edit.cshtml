@@ -104,6 +104,22 @@
                             <span asp-validation-for="UpdateUserDto.Role" class="text-danger"></span>
                         </div>
 
+                        <div class="mb-4">
+                            <label asp-for="UpdateUserDto.Password" class="form-label">
+                                <i class="fas fa-lock me-2"></i>Change Password (Optional)
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-white">
+                                    <i class="fas fa-lock text-warning"></i>
+                                </span>
+                                <input asp-for="UpdateUserDto.Password" type="password" class="form-control" placeholder="Leave empty to keep current password" />
+                            </div>
+                            <span asp-validation-for="UpdateUserDto.Password" class="text-danger"></span>
+                            <small class="form-text text-muted">
+                                <i class="fas fa-info-circle me-1"></i>Only fill this field if you want to change the user's password
+                            </small>
+                        </div>
+
                         <div class="alert alert-info" role="alert">
                             <i class="fas fa-info-circle me-2"></i>
                             Asegúrate de que toda la información sea correcta antes de guardar
