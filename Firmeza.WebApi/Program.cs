@@ -148,4 +148,25 @@ if (Environment.GetEnvironmentVariable("RUN_MIGRATIONS") == "true")
     await app.Services.ApplyMigrationsAsync();
 }
 
+// ====================================
+// Run Seeders (if configured)
+// ====================================
+if (Environment.GetEnvironmentVariable("RUN_SEEDERS") == "1")
+{
+    using var scope = app.Services.CreateScope();
+    var services = scope.ServiceProvider;
+
+    Console.WriteLine("[Seeder] Starting Identity seeder...");
+
+    try
+    {
+        await AdminDashboard.Identity.Seeders.IdentitySeeder.SeedAsync(services);
+        Console.WriteLine("[Seeder] Identity seeder finished.");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"[Seeder] ERROR: {ex}");
+    }
+}
+
 app.Run();

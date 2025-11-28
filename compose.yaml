@@ -46,6 +46,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - RUN_MIGRATIONS=true
+      - RUN_SEEDERS=1
       - ConnectionStrings__Default=Host=postgres;Port=${DB_PORT};Database=${DB_NAME};Username=${DB_USER};Password=${DB_PASS};
       - DB_CONNECTION=Server=postgres;Port=${DB_PORT};Database=${DB_NAME};Username=${DB_USER};Password=${DB_PASS};
     depends_on:

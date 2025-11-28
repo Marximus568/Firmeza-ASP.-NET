@@ -16,19 +16,17 @@ public class SmtpEmailService : IEmailService
 
     public async Task SendEmailAsync(string to, string subject, string body)
     {
-        // Setup SMTP client
         using var client = new SmtpClient(_settings.Host, _settings.Port)
         {
-            EnableSsl = _settings.EnableSsl, 
+            EnableSsl = _settings.EnableSsl,
+            UseDefaultCredentials = false,
             Credentials = new NetworkCredential(_settings.Username, _settings.Password)
         };
 
-        // Build proper From address (with optional display name)
         var fromAddress = string.IsNullOrWhiteSpace(_settings.FromName)
             ? new MailAddress(_settings.From)
             : new MailAddress(_settings.From, _settings.FromName);
 
-        // Build email
         using var mail = new MailMessage
         {
             From = fromAddress,
@@ -39,25 +37,22 @@ public class SmtpEmailService : IEmailService
 
         mail.To.Add(to);
 
-        // Send
         await client.SendMailAsync(mail);
     }
 
     public async Task SendEmailWithAttachmentAsync(string to, string subject, string body, byte[] attachmentBytes, string attachmentFileName)
     {
-        // Setup SMTP client
         using var client = new SmtpClient(_settings.Host, _settings.Port)
         {
             EnableSsl = _settings.EnableSsl,
+            UseDefaultCredentials = false,
             Credentials = new NetworkCredential(_settings.Username, _settings.Password)
         };
 
-        // Build proper From address (with optional display name)
         var fromAddress = string.IsNullOrWhiteSpace(_settings.FromName)
             ? new MailAddress(_settings.From)
             : new MailAddress(_settings.From, _settings.FromName);
 
-        // Build email
         using var mail = new MailMessage
         {
             From = fromAddress,
@@ -68,7 +63,6 @@ public class SmtpEmailService : IEmailService
 
         mail.To.Add(to);
 
-        // Add PDF attachment
         if (attachmentBytes != null && attachmentBytes.Length > 0)
         {
             var stream = new MemoryStream(attachmentBytes);
@@ -76,7 +70,6 @@ public class SmtpEmailService : IEmailService
             mail.Attachments.Add(attachment);
         }
 
-        // Send
         await client.SendMailAsync(mail);
     }
 }
