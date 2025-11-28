@@ -113,5 +113,13 @@ app.UseAuthorization();
 // Routes
 app.UseAppRouting();
 
+// ====================================
+// Apply Migrations (if configured)
+// ====================================
+if (Environment.GetEnvironmentVariable("RUN_MIGRATIONS") == "true")
+{
+    await app.Services.ApplyMigrationsAsync();
+}
+
 // Start
 app.Run();

@@ -6,6 +6,7 @@ using DotNetEnv;
 using Firmeza.WebApi;
 using Microsoft.OpenApi.Models;
 using AdminDashboard.Identity.Persistence.Context;
+using AdminDashboard.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -127,7 +128,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+// app.UseHttpsRedirection();
 
 // ====================================
 // CORS must be before Authentication/Authorization
@@ -138,5 +139,13 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+// ====================================
+// Apply Migrations (if configured)
+// ====================================
+if (Environment.GetEnvironmentVariable("RUN_MIGRATIONS") == "true")
+{
+    await app.Services.ApplyMigrationsAsync();
+}
 
 app.Run();
