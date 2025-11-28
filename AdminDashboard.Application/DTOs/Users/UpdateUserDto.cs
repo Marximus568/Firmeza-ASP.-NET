@@ -34,6 +34,10 @@ public class UpdateUserDto
     [StringLength(200, MinimumLength = 5)]
     public string Address { get; set; } = string.Empty;
 
+    // Optional password field - only updated if provided
+    [StringLength(200, MinimumLength = 8, ErrorMessage = "Password must be at least 8 characters long")]
+    public string? Password { get; set; }
+
     [Required]
     [StringLength(20)]
     public string Role { get; set; } = "User";

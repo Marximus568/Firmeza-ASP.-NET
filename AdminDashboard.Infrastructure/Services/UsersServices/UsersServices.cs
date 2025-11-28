@@ -1,7 +1,10 @@
 using AdminDashboard.Domain.Entities;
+using AdminDashboard.Identity.Entities;
 using AdminDashboard.Infrastructure.Persistence.Context;
 using AdminDashboardApplication.DTOs.Users;
 using AdminDashboardApplication.DTOs.Users.Interface;
+using AdminDashboardApplication.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using DateTime = System.DateTime;
 using Enumerable = System.Linq.Enumerable;
@@ -12,10 +15,14 @@ namespace AdminDashboard.Infrastructure.Services.UsersServices
     public class UsersService : IUsersService
     {
         private readonly AppDbContext _context;
+        private readonly IPasswordHasher _passwordHasher;
+        private readonly UserManager<ApplicationUserIdentity> _userManager;
 
-        public UsersService(AppDbContext context)
+        public UsersService(AppDbContext context, IPasswordHasher passwordHasher, UserManager<ApplicationUserIdentity> userManager)
         {
             _context = context;
+            _passwordHasher = passwordHasher;
+            _userManager = userManager;
         }
 
         // --------------------------------------------------------------------------------------------
@@ -27,6 +34,9 @@ namespace AdminDashboard.Infrastructure.Services.UsersServices
                 throw new InvalidOperationException($"Email '{createUserDto.Email}' is already in use.");
 
             var user = MapToEntity(createUserDto);
+            
+            // Hash the password before saving
+            user.Password = _passwordHasher.HashPassword(createUserDto.Password);
 
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
@@ -75,6 +85,12 @@ namespace AdminDashboard.Infrastructure.Services.UsersServices
                     $"Email '{updateUserDto.Email}' is already in use by another user.");
 
             UpdateEntity(updateUserDto, user);
+            
+            // Hash password if a new one was provided
+            if (!string.IsNullOrWhiteSpace(updateUserDto.Password))
+            {
+                user.Password = _passwordHasher.HashPassword(updateUserDto.Password);
+            }
 
             _context.Users.Update(user);
             await _context.SaveChangesAsync();
@@ -90,6 +106,20 @@ namespace AdminDashboard.Infrastructure.Services.UsersServices
             var user = await _context.Users.FindAsync(id);
             if (user == null)
                 return false;
+
+            // Also delete from Identity database to allow email reuse
+            var identityUser = await _userManager.FindByEmailAsync(user.Email);
+            if (identityUser != null)
+            {
+                var identityResult = await _userManager.DeleteAsync(identityUser);
+                if (!identityResult.Succeeded)
+                {
+                    // Log the error but continue with business database deletion
+                    // You could throw an exception here if you want strict synchronization
+                    var errors = string.Join(", ", identityResult.Errors.Select(e => e.Description));
+                    throw new InvalidOperationException($"Failed to delete user from Identity: {errors}");
+                }
+            }
 
             _context.Users.Remove(user);
             await _context.SaveChangesAsync();
@@ -271,6 +301,7 @@ namespace AdminDashboard.Infrastructure.Services.UsersServices
                 PhoneNumber = client.PhoneNumber,
                 Address = client.Address,
                 Role = client.Role,
+                Password = client.Password,
                 TotalSales = client.Sales?.Count ?? 0
             };
         }

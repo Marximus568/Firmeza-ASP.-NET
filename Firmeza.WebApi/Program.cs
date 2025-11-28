@@ -33,28 +33,14 @@ builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
 
 // ====================================
-// SMTP (Email service)
-// ====================================
-builder.Services.Configure<SmtpSettings.SmtpSettings>(options =>
-{
-    options.Host = Environment.GetEnvironmentVariable("SMTP_HOST");
-    options.Port = int.Parse(Environment.GetEnvironmentVariable("SMTP_PORT")!);
-    options.From = Environment.GetEnvironmentVariable("SMTP_FROM");
-    options.FromName = Environment.GetEnvironmentVariable("SMTP_FROM_NAME");
-    options.Username = Environment.GetEnvironmentVariable("SMTP_USERNAME");
-    options.Password = Environment.GetEnvironmentVariable("SMTP_PASSWORD");
-    options.EnableSsl = bool.Parse(Environment.GetEnvironmentVariable("SMTP_ENABLE_SSL") ?? "true");
-});
-
-// ====================================
 // Authorization
 // ====================================
 builder.Services.AddAuthorization();
 
+
 // ====================================
-// Controllers + Global Filters
+// MVC Controllers + Global Filters
 // ====================================
-builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddControllers(options =>
 {

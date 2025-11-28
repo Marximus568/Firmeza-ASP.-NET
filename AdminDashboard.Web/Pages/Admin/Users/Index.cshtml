@@ -162,6 +162,7 @@
                                 <th>Phone</th>
                                 <th>Age</th>
                                 <th>Role</th>
+                                <th>Password</th>
                                 <th>Total Sales</th>
                                 <th>Actions</th>
                             </tr>
@@ -181,6 +182,9 @@
                                         <span class="badge bg-@GetRoleBadgeClass(user.Role)">
                                             @user.Role
                                         </span>
+                                    </td>
+                                    <td>
+                                        <code class="text-muted" style="font-size: 0.7rem; word-break: break-all;">@user.Password</code>
                                     </td>
                                     <td>
                                         <span class="badge bg-info">@user.TotalSales</span>
