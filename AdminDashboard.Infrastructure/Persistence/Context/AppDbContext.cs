@@ -114,7 +114,10 @@ public class AppDbContext : DbContext
             new Categories { Id = 4, Name = "Madera y Derivados" }
         );
         
-        // Clients (Users)
+        // Clients (Users) - All with hashed password "password123"
+        // BCrypt hash for "password123" with work factor 12
+        var defaultPasswordHash = "$2a$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LwFfh.8QW9h4bQ.Rm";
+        
         modelBuilder.Entity<Clients>().HasData(
             new Clients
             {
@@ -124,7 +127,8 @@ public class AppDbContext : DbContext
                 Email = "admin@firmeza.com",
                 PhoneNumber = "3001234567",
                 Address = "Calle Principal #123, Bogotá",
-                Role = "Admin"
+                Role = "Admin",
+                Password = defaultPasswordHash
             },
             new Clients
             {
@@ -134,7 +138,8 @@ public class AppDbContext : DbContext
                 Email = "juanperez@example.com",
                 PhoneNumber = "3109876543",
                 Address = "Carrera 10 #45-67, Medellín",
-                Role = "Client"
+                Role = "Client",
+                Password = defaultPasswordHash
             },
             new Clients
             {
@@ -144,7 +149,8 @@ public class AppDbContext : DbContext
                 Email = "mariarodriguez@example.com",
                 PhoneNumber = "3157654321",
                 Address = "Avenida 15 #89-12, Cali",
-                Role = "Client"
+                Role = "Client",
+                Password = defaultPasswordHash
             }
         );
         
