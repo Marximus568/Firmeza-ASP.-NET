@@ -18,14 +18,26 @@ public class SmtpEmailService : IEmailService
     {
         using var client = new SmtpClient(_settings.Host, _settings.Port)
         {
-            EnableSsl = _settings.EnableSsl,
             UseDefaultCredentials = false,
             Credentials = new NetworkCredential(_settings.Username, _settings.Password)
         };
 
-        var fromAddress = string.IsNullOrWhiteSpace(_settings.FromName)
-            ? new MailAddress(_settings.From)
-            : new MailAddress(_settings.From, _settings.FromName);
+        // STARTTLS mode (port 587)
+        if (_settings.UseStartTls)
+        {
+            client.EnableSsl = true; // Required for STARTTLS handshake
+        }
+
+        // SSL direct mode (port 465)
+        if (_settings.EnableSsl && !_settings.UseStartTls)
+        {
+            client.EnableSsl = true;
+        }
+
+        var fromAddress = new MailAddress(
+            _settings.From,
+            string.IsNullOrWhiteSpace(_settings.FromName) ? null : _settings.FromName
+        );
 
         using var mail = new MailMessage
         {
@@ -44,14 +56,24 @@ public class SmtpEmailService : IEmailService
     {
         using var client = new SmtpClient(_settings.Host, _settings.Port)
         {
-            EnableSsl = _settings.EnableSsl,
             UseDefaultCredentials = false,
             Credentials = new NetworkCredential(_settings.Username, _settings.Password)
         };
 
-        var fromAddress = string.IsNullOrWhiteSpace(_settings.FromName)
-            ? new MailAddress(_settings.From)
-            : new MailAddress(_settings.From, _settings.FromName);
+        if (_settings.UseStartTls)
+        {
+            client.EnableSsl = true;
+        }
+
+        if (_settings.EnableSsl && !_settings.UseStartTls)
+        {
+            client.EnableSsl = true;
+        }
+
+        var fromAddress = new MailAddress(
+            _settings.From,
+            string.IsNullOrWhiteSpace(_settings.FromName) ? null : _settings.FromName
+        );
 
         using var mail = new MailMessage
         {
@@ -63,6 +85,7 @@ public class SmtpEmailService : IEmailService
 
         mail.To.Add(to);
 
+        // Add attachment
         if (attachmentBytes != null && attachmentBytes.Length > 0)
         {
             var stream = new MemoryStream(attachmentBytes);
