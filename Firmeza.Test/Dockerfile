@@ -1,21 +1,28 @@
-﻿FROM mcr.microsoft.com/dotnet/runtime:8.0 AS base
-USER $APP_UID
-WORKDIR /app
-
+﻿# ---------------------------------------------
+# 1. Build stage
+# ---------------------------------------------
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
-ARG BUILD_CONFIGURATION=Release
+
 WORKDIR /src
-COPY ["Firmeza.Test/Firmeza.Test.csproj", "Firmeza.Test/"]
-RUN dotnet restore "Firmeza.Test/Firmeza.Test.csproj"
+
+# Copy entire solution (important!)
 COPY . .
-WORKDIR "/src/Firmeza.Test"
-RUN dotnet build "./Firmeza.Test.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
-FROM build AS publish
-ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./Firmeza.Test.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+# Restore dependencies
+RUN dotnet restore Firmeza.sln
 
-FROM base AS final
-WORKDIR /app
-COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "Firmeza.Test.dll"]
+# Build solution
+RUN dotnet build Firmeza.sln --configuration Release --no-restore
+
+# ---------------------------------------------
+# 2. Test stage (final)
+# ---------------------------------------------
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS test
+
+WORKDIR /src
+
+# Copy everything from build stage
+COPY --from=build /src .
+
+# Run tests – if any test fails, container exits with non-zero code
+CMD ["dotnet", "test", "Firmeza.Test/Firmeza.Test.csproj", "--logger:trx", "--no-build"]
