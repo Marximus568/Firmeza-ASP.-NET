@@ -23,23 +23,33 @@ public class JwtTokenGenerator : IJwtTokenGenerator
 
     public string GenerateToken(ApplicationUserIdentity user, IEnumerable<string> roles)
     {
+
+        var keyString = _configuration["Jwt__Key"] 
+                        ?? Environment.GetEnvironmentVariable("Jwt__Key");
+
+        var issuer = _configuration["Jwt__Issuer"];
+        var audience = _configuration["Jwt__Audience"];
+
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(keyString!));
+
         var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Encoding.ASCII.GetBytes(_configuration["JWT_SECRET"] ?? "super_secret_key_must_be_long_enough_12345");
 
         var claims = new List<Claim>
         {
-            new(ClaimTypes.NameIdentifier, user.Id),
-            new(ClaimTypes.Email, user.Email!),
-            new(ClaimTypes.Name, user.UserName!)
+            new Claim(ClaimTypes.NameIdentifier, user.Id),
+            new Claim(ClaimTypes.Email, user.Email!),
+            new Claim(ClaimTypes.Name, user.UserName!)
         };
 
-        claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
+        claims.AddRange(roles.Select(r => new Claim(ClaimTypes.Role, r)));
 
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity(claims),
             Expires = DateTime.UtcNow.AddDays(7),
-            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            Issuer = issuer,
+            Audience = audience,
+            SigningCredentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature)
         };
 
         var token = tokenHandler.CreateToken(tokenDescriptor);

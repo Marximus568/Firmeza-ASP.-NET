@@ -1,6 +1,7 @@
 ﻿version: "3.9"
 
 services:
+# DATABASE
   postgres:
     image: postgres:17
     restart: always
@@ -22,7 +23,7 @@ services:
       retries: 5
     networks:
       - firmeza-network
-
+# TEST
   tests:
     build:
       context: .
@@ -36,7 +37,7 @@ services:
     command: [ "dotnet", "test", "--logger:trx" ]
     networks:
       - firmeza-network
-
+# API
   api:
     build:
       context: .
@@ -55,7 +56,7 @@ services:
       - "5000:8080"
     networks:
       - firmeza-network
-
+#ADMINDASHBOARD
   admin:
     build:
       context: .
@@ -63,6 +64,9 @@ services:
     env_file:
       - .env
     environment:
+      - Jwt__Key=${Jwt__Key}
+      - Jwt__Issuer=${Jwt__Issuer}
+      - Jwt__Audience=${Jwt__Audience}
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__Default=Host=postgres;Port=${DB_PORT};Database=${DB_NAME};Username=${DB_USER};Password=${DB_PASS};
       - DB_CONNECTION=Server=postgres;Port=${DB_PORT};Database=${DB_NAME};Username=${DB_USER};Password=${DB_PASS};
@@ -72,7 +76,7 @@ services:
       - "5001:8080"
     networks:
       - firmeza-network
-
+#FRONT-END
   front-end:
     build:
       context: Front-end

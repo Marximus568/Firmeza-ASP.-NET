@@ -1,9 +1,7 @@
+using System.Security.Claims;
 using AdminDashboard.Infrastructure.Persistence.Context;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.DependencyInjection;
 
-namespace AdminDashboard.Infrastructure.Routing;
+namespace AdminDashboard.Routing;
 
 /// <summary>
 /// Centralizes global routing and authorization for Razor Pages.
@@ -18,8 +16,11 @@ public static class AppRouting
         // Authorization policies
         services.AddAuthorization(options =>
         {
+            // Policy that requires the user to have Role = Admin
             options.AddPolicy("AdminOnly", policy =>
-                policy.RequireRole("Admin"));
+            {
+                policy.RequireRole("Admin");
+            });
         });
 
         // Razor Pages conventions
@@ -33,7 +34,7 @@ public static class AppRouting
             options.Conventions.AuthorizePage("/Admin/Index", "AdminOnly");
 
             // Public sections (no authentication required)
-            options.Conventions.AllowAnonymousToPage("/Index");       // Home page
+            options.Conventions.AllowAnonymousToPage("/Index");      // Home page
             options.Conventions.AllowAnonymousToFolder("/Account");  // Login, register, etc.
         });
 
@@ -48,7 +49,7 @@ public static class AppRouting
         // Map all Razor Pages
         app.MapRazorPages();
 
-        // Friendly redirects (optional)
+        // Friendly redirects for convenience
         app.MapGet("/admin", static () => Results.Redirect("/Admin/Index"));
         app.MapGet("/products", static () => Results.Redirect("/Admin/Products/Index"));
         app.MapGet("/users", static () => Results.Redirect("/Admin/Users/Index"));

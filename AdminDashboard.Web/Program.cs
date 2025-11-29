@@ -1,7 +1,6 @@
 using AdminDashboard.Infrastructure;
 using AdminDashboard.Infrastructure.Persistence;
-using AdminDashboard.Infrastructure.Routing;
-
+using AdminDashboard.Routing;
 using AdminDashboardApplication;
 using AdminDashboardApplication.Common;
 using DotNetEnv;
