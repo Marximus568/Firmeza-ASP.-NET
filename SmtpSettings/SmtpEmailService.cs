@@ -1,15 +1,14 @@
 using System.Net;
 using System.Net.Mail;
-using AdminDashboardApplication.Interfaces;
 using Microsoft.Extensions.Options;
 
-namespace AdminDashboard.Infrastructure.Email;
+namespace SmtpSettings;
 
-public class SmtpEmailService : IEmailService
+public class SmtpEmailService
 {
-    private readonly SmtpSettings.SmtpSettings _settings;
+    private readonly SmtpSettings _settings;
 
-    public SmtpEmailService(IOptions<SmtpSettings.SmtpSettings> settings)
+    public SmtpEmailService(IOptions<SmtpSettings> settings)
     {
         _settings = settings.Value;
     }

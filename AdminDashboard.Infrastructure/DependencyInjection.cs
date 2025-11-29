@@ -75,7 +75,8 @@ public static class DependencyInjection
         });
         
         // Register Email Service
-        services.AddScoped<IEmailService, SmtpEmailService>();
+        services.AddScoped<SmtpSettings.SmtpEmailService>();
+        services.AddScoped<IEmailService, SmtpEmailServiceAdapter>();
         
         // Register Password Hasher Service
         services.AddSingleton<IPasswordHasher, PasswordHasher>();
