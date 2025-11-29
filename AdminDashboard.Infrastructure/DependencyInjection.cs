@@ -72,6 +72,7 @@ public static class DependencyInjection
             options.Username = configuration["SMTP_USERNAME"] ?? "";
             options.Password = configuration["SMTP_PASSWORD"] ?? "";
             options.EnableSsl = bool.Parse(configuration["SMTP_ENABLE_SSL"] ?? "true");
+            options.UseStartTls = bool.Parse(configuration["SMTP_USE_STARTTLS"] ?? "false");
         });
         
         // Register Email Service
