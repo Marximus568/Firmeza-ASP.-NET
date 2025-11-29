@@ -65,10 +65,18 @@ export const logout = () => {
  * @returns {import('../types/auth.types').UserData | null} - User data or null
  */
 export const getCurrentUser = () => {
-    const userData = localStorage.getItem(STORAGE_KEYS.USER_DATA);
-    return userData ? JSON.parse(userData) : null;
-};
+    const data = localStorage.getItem(STORAGE_KEYS.USER_DATA);
 
+    if (!data) return null;
+    if (data === "undefined") return null;
+    if (data === "null") return null;
+
+    try {
+        return JSON.parse(data);
+    } catch {
+        return null; 
+    }
+};
 /**
  * Get current token from local storage
  * @returns {string | null} - JWT token or null
