@@ -30,6 +30,11 @@ namespace AdminDashboard.Pages.Admin.Users
         /// </summary>
         public async Task<IActionResult> OnGetAsync(int? id)
         {
+            // Prevent browser caching
+            Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
+            Response.Headers["Pragma"] = "no-cache";
+            Response.Headers["Expires"] = "0";
+
             if (id == null)
             {
                 return NotFound();

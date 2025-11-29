@@ -84,6 +84,10 @@ namespace AdminDashboard.Infrastructure.Services.UsersServices
                 throw new InvalidOperationException(
                     $"Email '{updateUserDto.Email}' is already in use by another user.");
 
+            // Check if role is changing
+            var roleChanged = user.Role != updateUserDto.Role;
+            var oldRole = user.Role;
+
             UpdateEntity(updateUserDto, user);
             
             // Hash password if a new one was provided
@@ -95,7 +99,44 @@ namespace AdminDashboard.Infrastructure.Services.UsersServices
             _context.Users.Update(user);
             await _context.SaveChangesAsync();
 
+            // Sync role with Identity if it changed
+            if (roleChanged)
+            {
+                await SyncRoleWithIdentityAsync(user.Email, oldRole, updateUserDto.Role);
+            }
+
             return MapToDto(user);
+        }
+
+        // --------------------------------------------------------------------------------------------
+        // SYNC ROLE WITH IDENTITY
+        // --------------------------------------------------------------------------------------------
+        private async Task SyncRoleWithIdentityAsync(string email, string oldRole, string newRole)
+        {
+            var identityUser = await _userManager.FindByEmailAsync(email);
+            
+            if (identityUser != null)
+            {
+                // Remove old role
+                if (!string.IsNullOrEmpty(oldRole))
+                {
+                    var isInOldRole = await _userManager.IsInRoleAsync(identityUser, oldRole);
+                    if (isInOldRole)
+                    {
+                        await _userManager.RemoveFromRoleAsync(identityUser, oldRole);
+                    }
+                }
+                
+                // Add new role
+                if (!string.IsNullOrEmpty(newRole))
+                {
+                    var isInNewRole = await _userManager.IsInRoleAsync(identityUser, newRole);
+                    if (!isInNewRole)
+                    {
+                        await _userManager.AddToRoleAsync(identityUser, newRole);
+                    }
+                }
+            }
         }
 
         // --------------------------------------------------------------------------------------------
