@@ -1,5 +1,4 @@
 ﻿
-
 services:
 # DATABASE
   postgres:
@@ -9,11 +8,11 @@ services:
       - .env
     container_name: Firmeza-Postgres
     environment:
-      - POSTGRES_USER=${DB_USER}
-      - POSTGRES_PASSWORD=${DB_PASS}
-      - POSTGRES_DB=${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASS}
+      POSTGRES_DB: ${DB_NAME}
     ports:
-      - "5433:5432"
+      - "${POSTGRES_PORT}:5432"
     volumes:
       - dbdata:/var/lib/postgresql/data
     healthcheck:
@@ -23,6 +22,26 @@ services:
       retries: 5
     networks:
       - firmeza-network
+
+# DB MIGRATOR (Runs migrations and exits)
+  db-migrator:
+    build:
+      context: .
+      dockerfile: Firmeza.WebApi/Dockerfile
+    env_file:
+      - .env
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - RUN_MIGRATIONS=true
+      - ONLY_MIGRATE=true
+      - ConnectionStrings__Default=Host=postgres;Port=5432;Database=${DB_NAME};Username=${DB_USER};Password=${DB_PASS};
+      - DB_CONNECTION=Server=postgres;Port=5432;Database=${DB_NAME};Username=${DB_USER};Password=${DB_PASS};
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - firmeza-network
+
 # TEST
   tests:
     build:
@@ -31,12 +50,14 @@ services:
     env_file:
       - .env
     environment:
-      - ConnectionStrings__Default=Host=postgres;Port=${DB_PORT};Database=${DB_NAME};Username=${DB_USER};Password=${DB_PASS};
+      - ConnectionStrings__Default=Host=postgres;Port=5432;Database=${DB_NAME};Username=${DB_USER};Password=${DB_PASS};
     depends_on:
-      - postgres
+      db-migrator:
+        condition: service_completed_successfully
     command: [ "dotnet", "test", "--logger:trx" ]
     networks:
       - firmeza-network
+
 # API
   api:
     build:
@@ -46,16 +67,18 @@ services:
       - .env
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - RUN_MIGRATIONS=true
+      - RUN_MIGRATIONS=false
       - RUN_SEEDERS=1
-      - ConnectionStrings__Default=Host=postgres;Port=${DB_PORT};Database=${DB_NAME};Username=${DB_USER};Password=${DB_PASS};
-      - DB_CONNECTION=Server=postgres;Port=${DB_PORT};Database=${DB_NAME};Username=${DB_USER};Password=${DB_PASS};
+      - ConnectionStrings__Default=Host=postgres;Port=5432;Database=${DB_NAME};Username=${DB_USER};Password=${DB_PASS};
+      - DB_CONNECTION=Server=postgres;Port=5432;Database=${DB_NAME};Username=${DB_USER};Password=${DB_PASS};
     depends_on:
-      - postgres
+      db-migrator:
+        condition: service_completed_successfully
     ports:
       - "5000:8080"
     networks:
       - firmeza-network
+
 #ADMINDASHBOARD
   admin:
     build:
@@ -68,14 +91,18 @@ services:
       - Jwt__Issuer=${Jwt__Issuer}
       - Jwt__Audience=${Jwt__Audience}
       - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__Default=Host=postgres;Port=${DB_PORT};Database=${DB_NAME};Username=${DB_USER};Password=${DB_PASS};
-      - DB_CONNECTION=Server=postgres;Port=${DB_PORT};Database=${DB_NAME};Username=${DB_USER};Password=${DB_PASS};
+      - ConnectionStrings__Default=Host=postgres;Port=5432;Database=${DB_NAME};Username=${DB_USER};Password=${DB_PASS};
+      - DB_CONNECTION=Server=postgres;Port=5432;Database=${DB_NAME};Username=${DB_USER};Password=${DB_PASS};
     depends_on:
-      - api
+      db-migrator:
+        condition: service_completed_successfully
+      api:
+        condition: service_started
     ports:
       - "5001:8080"
     networks:
       - firmeza-network
+
 #FRONT-END
   front-end:
     build:

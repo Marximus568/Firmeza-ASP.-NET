@@ -146,6 +146,11 @@ app.MapControllers();
 if (Environment.GetEnvironmentVariable("RUN_MIGRATIONS") == "true")
 {
     await app.Services.ApplyMigrationsAsync();
+    
+    if (Environment.GetEnvironmentVariable("ONLY_MIGRATE") == "true")
+    {
+        return;
+    }
 }
 
 // ====================================
