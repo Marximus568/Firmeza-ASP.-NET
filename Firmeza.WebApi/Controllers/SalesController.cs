@@ -56,8 +56,34 @@ namespace Firmeza.WebApi.Controllers
             if (dto == null)
                 return BadRequest(new { message = "Invalid sale data." });
 
-            // 1. Save sale in DB (example: your real logic may vary)
+            // 1. Find or Create Client
+            var client = await _context.Users.FirstOrDefaultAsync(c => c.Email == dto.CustomerEmail);
+            if (client == null)
+            {
+                // Split name into First/Last if possible
+                var names = dto.CustomerName.Split(' ', 2);
+                var firstName = names[0];
+                var lastName = names.Length > 1 ? names[1] : ".";
+
+                client = new Clients
+                {
+                    FirstName = firstName,
+                    LastName = lastName,
+                    Email = dto.CustomerEmail,
+                    PhoneNumber = "0000000000", // Default
+                    Address = "Online Customer", // Default
+                    Role = "Client",
+                    Password = "", // No password for guest checkout
+                    DateOfBirth = DateOnly.FromDateTime(DateTime.UtcNow) // Default valid date
+                };
+                _context.Users.Add(client);
+                await _context.SaveChangesAsync();
+            }
+
+            // 2. Save sale in DB
             var saleEntity = _mapper.Map<Sales>(dto);
+            saleEntity.ClientId = client.Id; // Assign the valid ClientId
+            
             _context.Sales.Add(saleEntity);
             await _context.SaveChangesAsync();
 
