@@ -1,4 +1,13 @@
-import { create } from 'zustand';
+// src/features/cart/stores/cart.store.js
+import { create } from "zustand";
+
+/**
+ * Helper to convert potential strings to numbers safely
+ */
+const toNumber = (v) => {
+    const n = Number(v);
+    return Number.isNaN(n) ? 0 : n;
+};
 
 /**
  * Shopping Cart Store (Zustand)
@@ -8,21 +17,16 @@ const useCartStore = create((set, get) => ({
     // State
     items: [],
 
-    // Computed getters
-    get total() {
-        return get().items.reduce((sum, item) => sum + (item.unitPrice * item.quantity), 0);
-    },
-
-    get itemCount() {
-        return get().items.reduce((sum, item) => sum + item.quantity, 0);
-    },
-
+    // Computed totals (always derived reactively)
     get subtotal() {
-        return get().total;
+        return get().items.reduce((sum, item) => {
+            const price = toNumber(item.unitPrice);
+            const qty = toNumber(item.quantity);
+            return sum + price * qty;
+        }, 0);
     },
 
     get iva() {
-        // 16% IVA (adjust as needed)
         return get().subtotal * 0.16;
     },
 
@@ -30,46 +34,52 @@ const useCartStore = create((set, get) => ({
         return get().subtotal + get().iva;
     },
 
-    // Actions
+    get itemCount() {
+        return get().items.reduce((sum, item) => sum + toNumber(item.quantity), 0);
+    },
 
     /**
-     * Add item to cart
-     * @param {import('../../products/types/products.types').ProductDto} product
+     * Add an item to the cart
      */
     addItem: (product) => {
         set((state) => {
             const existingItem = state.items.find((item) => item.id === product.id);
 
             if (existingItem) {
-                // Increment quantity if item already in cart
+                // Already exists → increment
                 return {
                     items: state.items.map((item) =>
                         item.id === product.id
-                            ? { ...item, quantity: Math.min(item.quantity + 1, product.stock) }
+                            ? {
+                                  ...item,
+                                  quantity: Math.min(
+                                      toNumber(item.quantity) + 1,
+                                      toNumber(product.stock)
+                                  ),
+                              }
                             : item
                     ),
                 };
-            } else {
-                // Add new item
-                return {
-                    items: [
-                        ...state.items,
-                        {
-                            id: product.id,
-                            name: product.name,
-                            unitPrice: product.unitPrice,
-                            quantity: 1,
-                            stock: product.stock,
-                        },
-                    ],
-                };
             }
+
+            // New item
+            return {
+                items: [
+                    ...state.items,
+                    {
+                        id: product.id,
+                        name: product.name,
+                        unitPrice: toNumber(product.unitPrice),
+                        quantity: 1,
+                        stock: toNumber(product.stock),
+                    },
+                ],
+            };
         });
     },
 
     /**
-     * Remove item from cart
-     * @param {number} productId
+     * Remove item by ID
      */
     removeItem: (productId) => {
         set((state) => ({
@@ -79,25 +89,27 @@ const useCartStore = create((set, get) => ({
 
     /**
      * Update item quantity
-     * @param {number} productId
-     * @param {number} quantity
      */
     updateQuantity: (productId, quantity) => {
         set((state) => ({
             items: state.items.map((item) =>
                 item.id === productId
-                    ? { ...item, quantity: Math.min(Math.max(1, quantity), item.stock) }
+                    ? {
+                          ...item,
+                          quantity: Math.min(
+                              Math.max(1, toNumber(quantity)),
+                              toNumber(item.stock)
+                          ),
+                      }
                     : item
             ),
         }));
     },
 
     /**
-     * Clear entire cart
+     * Clear cart
      */
-    clearCart: () => {
-        set({ items: [] });
-    },
+    clearCart: () => set({ items: [] }),
 }));
 
 export default useCartStore;
