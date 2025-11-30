@@ -80,11 +80,11 @@ const Checkout = () => {
             <div className="checkout-container">
                 <div className="checkout-success">
                     <h1 className="text-3xl font-bold text-gray-800 mb-4">
-                        ¡Orden Completada!
+                        ¡Compra Exitosa!
                     </h1>
 
                     <p className="text-lg text-gray-600 mb-6">
-                        Tu pedido ha sido procesado exitosamente.
+                        Tu pedido ha sido procesado exitosamente. Se ha enviado una notificación a tu correo.
                     </p>
 
                     {/* Email confirmation info */}
