@@ -24,3 +24,14 @@ export const getProduct = async (id) => {
     const response = await apiClient.get(API_ENDPOINTS.PRODUCTS.BY_ID(id));
     return response.data;
 };
+
+/**
+ * Update an existing product
+ * @param {number} id - Product ID
+ * @param {import('../types/products.types').CreateProductDto} data - Product data to update
+ * @returns {Promise<void>} - No content on success
+ */
+export const updateProduct = async (id, data) => {
+    const response = await apiClient.put(API_ENDPOINTS.PRODUCTS.BY_ID(id), data);
+    return response.data;
+};

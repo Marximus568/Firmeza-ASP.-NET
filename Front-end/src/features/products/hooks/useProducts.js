@@ -19,7 +19,7 @@ const normalizeProduct = (p) => ({
 
 /**
  * Custom hook for fetching and managing products
- * @returns {Object} - Products data, loading state, and error
+ * @returns {Object} - Products data, loading state, error, and methods
  */
 const useProducts = () => {
     const [products, setProducts] = useState([]);
@@ -53,6 +53,37 @@ const useProducts = () => {
         }
     };
 
+    /**
+     * Fetch a single product by ID
+     * @param {number} id - Product ID
+     * @returns {Promise<Object>} - Normalized product data
+     */
+    const getProduct = async (id) => {
+        try {
+            const data = await productsService.getProduct(id);
+            return normalizeProduct(data);
+        } catch (err) {
+            const errorMessage = err.response?.data?.message || 'Failed to load product';
+            throw new Error(errorMessage);
+        }
+    };
+
+    /**
+     * Update an existing product
+     * @param {number} id - Product ID
+     * @param {Object} productData - Product data to update
+     * @returns {Promise<void>}
+     */
+    const updateProduct = async (id, productData) => {
+        try {
+            await productsService.updateProduct(id, productData);
+            await fetchProducts(); // Refresh products list
+        } catch (err) {
+            const errorMessage = err.response?.data?.message || 'Failed to update product';
+            throw new Error(errorMessage);
+        }
+    };
+
     const refetch = () => {
         fetchProducts();
     };
@@ -62,6 +93,8 @@ const useProducts = () => {
         isLoading,
         error,
         refetch,
+        getProduct,
+        updateProduct,
     };
 };
 

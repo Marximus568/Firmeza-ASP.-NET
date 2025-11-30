@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import useSales from "../hooks/useSales";
 import useCartStore from "../stores/cart.store";
@@ -32,9 +32,20 @@ const Checkout = () => {
     const user = useAuthStore((state) => state.user);
 
     const [customerInfo, setCustomerInfo] = useState({
-        customerName: user ? `${user.firstName} ${user.lastName}` : "",
-        customerEmail: user?.email || "",
+        customerName: "",
+        customerEmail: "",
     });
+
+    // Auto-fill form when user data is available
+    useEffect(() => {
+        if (user) {
+            setCustomerInfo(prev => ({
+                ...prev,
+                customerName: user.firstName && user.lastName ? `${user.firstName} ${user.lastName}` : prev.customerName,
+                customerEmail: user.email || prev.customerEmail
+            }));
+        }
+    }, [user]);
 
     const [orderComplete, setOrderComplete] = useState(false);
     const [pdfUrl, setPdfUrl] = useState(null);

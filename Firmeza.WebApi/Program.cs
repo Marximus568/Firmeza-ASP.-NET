@@ -33,6 +33,9 @@ builder.Services.AddApplication();
 // ====================================
 builder.Services.AddInfrastructure(builder.Configuration);
 
+// Register PDF Service
+builder.Services.AddScoped<Firmeza.WebApi.wwwroot.receipt.IPdfService, Firmeza.WebApi.wwwroot.receipt.PdfService>();
+
 // ====================================
 // Authorization
 // ====================================

@@ -31,11 +31,9 @@ const useSales = () => {
                 customerName: customerInfo.customerName,
                 customerEmail: customerInfo.customerEmail,
                 products: items.map((item) => ({
-                    productId: item.id,
-                    productName: item.name,
-                    quantity: item.quantity,
+                    name: item.name,
+                    qty: item.quantity,
                     unitPrice: item.unitPrice,
-                    total: item.unitPrice * item.quantity,
                 })),
                 subtotal,
                 iva,

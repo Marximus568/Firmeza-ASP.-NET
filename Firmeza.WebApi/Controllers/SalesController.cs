@@ -5,6 +5,7 @@ using AdminDashboard.Domain.Entities;
 using AdminDashboard.Infrastructure.Persistence.Context;
 using AdminDashboardApplication.DTOs.SaleDate;
 using AdminDashboardApplication.DTOs.Sales;
+using AdminDashboardApplication.Interfaces;
 using Firmeza.WebApi.wwwroot.receipt;
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -19,12 +20,14 @@ namespace Firmeza.WebApi.Controllers
         private readonly AppDbContext _context;
         private readonly IMapper _mapper;
         private readonly IPdfService _pdfService;
+        private readonly IEmailService _emailService;
 
-        public SalesController(AppDbContext context, IMapper mapper, IPdfService pdfService)
+        public SalesController(AppDbContext context, IMapper mapper, IPdfService pdfService, IEmailService emailService)
         {
             _context = context;
             _mapper = mapper;
             _pdfService = pdfService;
+            _emailService = emailService;
         }
 
         // =========================================================
@@ -60,6 +63,66 @@ namespace Firmeza.WebApi.Controllers
 
             // 2. Generate PDF
             string pdfUrl = _pdfService.GenerateReceiptPdf(dto);
+
+            // 3. Send email with PDF attachment
+            try
+            {
+                // Extract filename from URL
+                var pdfFilename = pdfUrl.Split('/').Last();
+                var pdfPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "recibos", pdfFilename);
+
+                // Read PDF file as bytes
+                byte[] pdfBytes = await System.IO.File.ReadAllBytesAsync(pdfPath);
+
+                // Create email body
+                var emailBody = $@"
+                    <html>
+                    <body style='font-family: Arial, sans-serif;'>
+                        <h2>¡Gracias por tu compra!</h2>
+                        <p>Hola <strong>{dto.CustomerName}</strong>,</p>
+                        <p>Tu pedido ha sido procesado exitosamente.</p>
+                        <h3>Resumen de la compra:</h3>
+                        <table style='border-collapse: collapse; width: 100%;'>
+                            <thead>
+                                <tr style='background-color: #f2f2f2;'>
+                                    <th style='border: 1px solid #ddd; padding: 8px; text-align: left;'>Producto</th>
+                                    <th style='border: 1px solid #ddd; padding: 8px; text-align: right;'>Cantidad</th>
+                                    <th style='border: 1px solid #ddd; padding: 8px; text-align: right;'>Precio</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {string.Join("", dto.Products.Select(p => $@"
+                                <tr>
+                                    <td style='border: 1px solid #ddd; padding: 8px;'>{p.Name}</td>
+                                    <td style='border: 1px solid #ddd; padding: 8px; text-align: right;'>{p.Qty}</td>
+                                    <td style='border: 1px solid #ddd; padding: 8px; text-align: right;'>${p.UnitPrice:F2}</td>
+                                </tr>"))}
+                            </tbody>
+                        </table>
+                        <p style='margin-top: 20px;'>
+                            <strong>Subtotal:</strong> ${dto.Subtotal:F2}<br/>
+                            <strong>IVA (16%):</strong> ${dto.Iva:F2}<br/>
+                            <strong>Total:</strong> ${dto.Total:F2}
+                        </p>
+                        <p>Adjunto encontrarás el comprobante de compra en formato PDF.</p>
+                        <p>¡Gracias por tu preferencia!</p>
+                    </body>
+                    </html>";
+
+                // Send email
+                await _emailService.SendEmailWithAttachmentAsync(
+                    dto.CustomerEmail,
+                    "Confirmación de Compra - Firmeza",
+                    emailBody,
+                    pdfBytes,
+                    pdfFilename
+                );
+            }
+            catch (Exception ex)
+            {
+                // Log error but don't fail the request
+                Console.WriteLine($"Failed to send email: {ex.Message}");
+            }
 
             return Ok(new
             {
