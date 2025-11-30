@@ -59,9 +59,10 @@ const ProductsCatalog = () => {
                 </div>
             ) : (
                 <div className="products-grid">
-                    {products.map((product, index) => (
-                        <ProductCard key={product.id ?? index} product={product} />
-                    ))}
+                   {products.map((product) => {
+   console.log("PRODUCTO RECIBIDO =>", product);
+   return <ProductCard key={product.id} product={product} />;
+})}
                 </div>
             )}
         </div>
