@@ -44,7 +44,7 @@ namespace Firmeza.WebApi.Controllers
         [HttpPost("register-sale")]
         [SwaggerOperation(
             Summary = "Register a sale and generate PDF receipt",
-            Description = "Creates a sale entry in the system and generates a PDF receipt stored in wwwroot/recibos.",
+            Description = "Creates a sale entry in the system and generates a PDF receipt stored in wwwroot/receipts.",
             OperationId = "RegisterSale",
             Tags = new[] { "Sales" }
         )]
@@ -87,15 +87,15 @@ namespace Firmeza.WebApi.Controllers
             _context.Sales.Add(saleEntity);
             await _context.SaveChangesAsync();
 
-            // 2. Generate PDF
+            // 3. Generate PDF
             string pdfUrl = _pdfService.GenerateReceiptPdf(dto);
 
-            // 3. Send email with PDF attachment
+            // 4. Send email with PDF attachment
             try
             {
                 // Extract filename from URL
                 var pdfFilename = pdfUrl.Split('/').Last();
-                var pdfPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "recibos", pdfFilename);
+                var pdfPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "receipts", pdfFilename);
 
                 // Read PDF file as bytes
                 byte[] pdfBytes = await System.IO.File.ReadAllBytesAsync(pdfPath);
@@ -148,6 +148,7 @@ namespace Firmeza.WebApi.Controllers
             {
                 // Log error but don't fail the request
                 Console.WriteLine($"Failed to send email: {ex.Message}");
+                Console.WriteLine($"Exception details: {ex}");
             }
 
             return Ok(new
@@ -168,13 +169,13 @@ namespace Firmeza.WebApi.Controllers
         [HttpGet("download")]
         [SwaggerOperation(
             Summary = "Download PDF receipt",
-            Description = "Returns a previously generated receipt located in wwwroot/recibos.",
+            Description = "Returns a previously generated receipt located in wwwroot/receipts.",
             OperationId = "DownloadReceipt",
             Tags = new[] { "Sales" }
         )]
         public IActionResult Download([FromQuery] string file)
         {
-            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "recibos", file);
+            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "receipts", file);
 
             if (!System.IO.File.Exists(filePath))
                 return NotFound(new { message = "File not found." });
