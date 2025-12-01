@@ -17,6 +17,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace AdminDashboard.Infrastructure;
 
+// Helper to initial infrastructure
 public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructure(
