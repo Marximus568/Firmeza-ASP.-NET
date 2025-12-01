@@ -16,7 +16,7 @@ public static class MigrationExtensions
 
         try
         {
-            // Migrate AppDbContext (business tables)
+            // IMPORTANT: Execute AppDbContext FIRST (main database with Users, Products, Sales, etc.)
             var appContext = serviceProvider.GetRequiredService<AppDbContext>();
             
             logger.LogInformation("[Migration] Checking for pending AppDbContext migrations...");
@@ -32,7 +32,7 @@ public static class MigrationExtensions
                 logger.LogInformation("[Migration] No pending AppDbContext migrations found.");
             }
 
-            // Migrate IdentityContext (Identity tables)
+            // THEN: Execute IdentityContext (ASP.NET Identity tables that combine with existing Users)
             var identityContext = serviceProvider.GetRequiredService<IdentityContext>();
             
             logger.LogInformation("[Migration] Checking for pending IdentityContext migrations...");
