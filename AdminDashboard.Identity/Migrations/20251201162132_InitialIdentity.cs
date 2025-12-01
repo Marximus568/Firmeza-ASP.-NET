@@ -165,6 +165,87 @@ namespace AdminDashboard.Identity.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            // Seed Roles
+            migrationBuilder.InsertData(
+                table: "IdentityRoles",
+                columns: new[] { "Id", "Name", "NormalizedName", "ConcurrencyStamp" },
+                values: new object[,]
+                {
+                    { "1", "Admin", "ADMIN", "8f7d6c5b-4e3a-2d1c-9a8b-7c6d5e4f3a2b" },
+                    { "2", "Client", "CLIENT", "9e8d7c6b-5f4a-3e2d-1c0b-9a8b7c6d5e4f" }
+                });
+
+            // Seed Users
+            migrationBuilder.InsertData(
+                table: "IdentityUsers",
+                columns: new[] { "Id", "UserName", "NormalizedUserName", "Email", "NormalizedEmail", "EmailConfirmed", 
+                                 "PasswordHash", "SecurityStamp", "ConcurrencyStamp", "PhoneNumber", "PhoneNumberConfirmed", 
+                                 "TwoFactorEnabled", "LockoutEnd", "LockoutEnabled", "AccessFailedCount", 
+                                 "FirstName", "LastName", "Address", "Role", "DateOfBirth", "IsActive", "CreatedAt", "UpdatedAt" },
+                values: new object[,]
+                {
+                    { 
+                        "admin-001", 
+                        "admin@firmeza.com", 
+                        "ADMIN@FIRMEZA.COM", 
+                        "admin@firmeza.com", 
+                        "ADMIN@FIRMEZA.COM", 
+                        true,
+                        "AQAAAAIAAYagAAAAEJZX8sN9dK6fG0zP5vM2yH8xQ7wR6tE5sU4nV3mC2lA1bK0jP9oI8hG7fF6eD5cB4a", // Admin123!
+                        "ADMIN_SECURITY_STAMP",
+                        "admin-concurrency-stamp",
+                        "3001234567",
+                        false,
+                        false,
+                        null,
+                        false,
+                        0,
+                        "System",
+                        "Administrator",
+                        "Calle Principal #123, Bogotá",
+                        "Admin",
+                        new DateTime(1990, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                        true,
+                        new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                        null
+                    },
+                    { 
+                        "client-001", 
+                        "client@firmeza.com", 
+                        "CLIENT@FIRMEZA.COM", 
+                        "client@firmeza.com", 
+                        "CLIENT@FIRMEZA.COM", 
+                        true,
+                        "AQAAAAIAAYagAAAAEJZX8sN9dK6fG0zP5vM2yH8xQ7wR6tE5sU4nV3mC2lA1bK0jP9oI8hG7fF6eD5cB4a", // Admin123!
+                        "CLIENT_SECURITY_STAMP",
+                        "client-concurrency-stamp",
+                        "3109876543",
+                        false,
+                        false,
+                        null,
+                        false,
+                        0,
+                        "Test",
+                        "Client",
+                        "Carrera 10 #45-67, Medellín",
+                        "Client",
+                        new DateTime(1995, 5, 15, 0, 0, 0, 0, DateTimeKind.Utc),
+                        true,
+                        new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                        null
+                    }
+                });
+
+            // Seed UserRoles
+            migrationBuilder.InsertData(
+                table: "IdentityUserRoles",
+                columns: new[] { "UserId", "RoleId" },
+                values: new object[,]
+                {
+                    { "admin-001", "1" },
+                    { "client-001", "2" }
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_IdentityRoleClaims_RoleId",
                 table: "IdentityRoleClaims",

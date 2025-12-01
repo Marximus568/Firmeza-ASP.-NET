@@ -30,7 +30,7 @@ public static class IdentitySeeder
 
     private static async Task SeedAdminUserAsync(UserManager<ApplicationUserIdentity> userManager)
     {
-        const string adminEmail = "admin@admindashboard.com";
+        const string adminEmail = "admin@firmeza.com";
         const string adminPassword = "Admin123!";
 
         var adminUser = await userManager.FindByEmailAsync(adminEmail);
@@ -61,7 +61,7 @@ public static class IdentitySeeder
 
     private static async Task SeedClientUserAsync(UserManager<ApplicationUserIdentity> userManager)
     {
-        const string clientEmail = "client@admindashboard.com";
+        const string clientEmail = "client@firmeza.com";
         const string clientPassword = "Client123!";
 
         var clientUser = await userManager.FindByEmailAsync(clientEmail);
