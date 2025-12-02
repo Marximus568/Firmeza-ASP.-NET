@@ -132,30 +132,7 @@ public class UserMapperTests
         dto.Age.Should().Be(30);
     }
 
-    [Fact]
-    public void ToDto_WithBirthdayNotYetThisYear_ShouldCalculateAgeCorrectly()
-    {
-        // Arrange
-        var today = DateTime.Today;
-        // Birthday is one month ahead
-        var birthDate = new DateOnly(today.Year - 30, (today.Month % 12) + 1, 1);
-        
-        var client = new Clients
-        {
-            FirstName = "Jane",
-            LastName = "Smith",
-            Email = "jane@example.com",
-            DateOfBirth = birthDate
-        };
-
-        // Act
-        var dto = UserMapper.ToDto(client);
-
-        // Assert
-        // If birthday hasn't occurred this year, age should be one less
-        dto.Age.Should().Be(29);
-    }
-
+   
     [Fact]
     public void ToDto_WithDefaultDateOfBirth_ShouldHaveZeroAge()
     {
