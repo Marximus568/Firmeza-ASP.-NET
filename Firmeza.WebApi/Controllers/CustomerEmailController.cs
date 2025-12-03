@@ -1,9 +1,11 @@
 using AdminDashboardApplication.DTOs.CustomersEmail;
 using AdminDashboardApplication.UseCases.Customers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Firmeza.WebApi.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("apiv1/[controller]")]
     public class CustomersController : ControllerBase

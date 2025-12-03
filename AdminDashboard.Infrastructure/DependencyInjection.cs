@@ -64,7 +64,7 @@ public static class DependencyInjection
         // ======================================
         // Email
         // ======================================
-        services.Configure<SmtpSettings.SmtpSettings>(options =>
+        services.Configure<AdminDashboard.Infrastructure.SmtpSettings.SmtpSettings>(options =>
         {
             options.Host = configuration["SMTP_HOST"] ?? "";
             options.Port = int.Parse(configuration["SMTP_PORT"] ?? "587");
@@ -77,11 +77,23 @@ public static class DependencyInjection
         });
         
         // Register Email Service
-        services.AddScoped<SmtpSettings.SmtpEmailService>();
+        services.AddScoped<AdminDashboard.Infrastructure.SmtpSettings.SmtpEmailService>();
         services.AddScoped<IEmailService, SmtpEmailServiceAdapter>();
         
         // Register Password Hasher Service
         services.AddSingleton<IPasswordHasher, PasswordHasher>();
+
+        // ======================================
+        // PDF Services
+        // ======================================
+        services.AddScoped<AdminDashboard.Application.Interfaces.SalePDF.IPdfReportService, AdminDashboard.Infrastructure.SalePDF.Services.PdfReportService>();
+        services.AddScoped<AdminDashboard.Application.Interfaces.SalePDF.IPdfService, AdminDashboard.Infrastructure.SalePDF.Services.PdfService>();
+
+        // ======================================
+        // Excel Services
+        // ======================================
+        services.AddScoped<AdminDashboard.Application.Interfaces.ExcelImporter.IExcelImporter, AdminDashboard.Infrastructure.ExcelImporter.Services.ExcelImporterServices>();
+        // services.AddScoped<IExcelExporter, ExcelExporterServices>(); // Uncomment if interface exists
 
         return services;
     }

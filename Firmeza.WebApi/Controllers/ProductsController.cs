@@ -1,5 +1,6 @@
 using AdminDashboard.Application.Product;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using AdminDashboard.Domain.Entities;
@@ -9,6 +10,7 @@ using Swashbuckle.AspNetCore.Annotations;
 
 namespace Firmeza.WebApi.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("v1/[controller]")]
     public class ProductsController : ControllerBase

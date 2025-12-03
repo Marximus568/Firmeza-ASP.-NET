@@ -6,8 +6,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using SalePDF.DTOs.Reports;
-using SalePDF.Interface;
+using AdminDashboard.Application.DTOs.SalePDF.Reports;
+using AdminDashboard.Application.Interfaces.SalePDF;
 
 namespace AdminDashboard.Pages.Admin.Reports;
 

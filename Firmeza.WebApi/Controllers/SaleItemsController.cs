@@ -6,11 +6,14 @@ using AdminDashboard.Infrastructure.Persistence.Context;
 using AdminDashboardApplication.DTOs.SaleItems;
 using Swashbuckle.AspNetCore.Annotations;
 
+using Microsoft.AspNetCore.Authorization;
+
 namespace Firmeza.WebApi.Controllers
 {
     /// <summary>
     /// Handles CRUD operations for sale items.
     /// </summary>
+    [Authorize]
     [ApiController]
     [Route("v1/[controller]")]
     public class SaleItemsController : ControllerBase

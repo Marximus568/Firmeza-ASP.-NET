@@ -15,7 +15,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\AdminDashboard.Domain\AdminDashboard.Domain.csproj" />
-      <ProjectReference Include="..\SalePDF\SalePDF.csproj" />
     </ItemGroup>
 
     <ItemGroup>

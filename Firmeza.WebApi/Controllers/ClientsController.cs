@@ -1,4 +1,5 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Swashbuckle.AspNetCore.Annotations; 
@@ -8,6 +9,7 @@ using AdminDashboardApplication.DTOs.Users;
 
 namespace Firmeza.WebApi.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("v1/[controller]")]
     [Produces("application/json")]

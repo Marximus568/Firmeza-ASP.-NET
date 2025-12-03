@@ -1,7 +1,7 @@
 using AdminDashboard.Infrastructure.Persistence.Context;
-using ExcelImporter.Interfaces;
-using ExcelImporter.Models;
-using ExcelImporter.Services;
+using AdminDashboard.Application.Interfaces.ExcelImporter;
+using AdminDashboard.Application.DTOs.ExcelImporter;
+using AdminDashboard.Infrastructure.ExcelImporter.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 

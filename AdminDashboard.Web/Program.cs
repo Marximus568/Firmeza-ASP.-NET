@@ -4,9 +4,9 @@ using AdminDashboard.Routing;
 using AdminDashboardApplication;
 using AdminDashboardApplication.Common;
 using DotNetEnv;
-using ExcelImporter.Services;
+
 using OfficeOpenXml;
-using SalePDF.Interface;
+using AdminDashboard.Application.Interfaces.SalePDF;
 
 ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
@@ -32,14 +32,7 @@ builder.Services.AddInfrastructure(builder.Configuration);
 // 3 Application Layer (UseCases + Handlers + AutoMapper)
 builder.Services.AddApplication();
 
-// 3.5 ExcelImporter Services
-builder.Services.AddExcelServices();
 
-// 3.5 ExcelImporter Services
-builder.Services.AddExcelServices();
-
-// 3.6 PDF Services
-builder.Services.AddScoped<IPdfService, SalePDF.Services.PdfService>();
 
 
 // 4 Custom App Routing

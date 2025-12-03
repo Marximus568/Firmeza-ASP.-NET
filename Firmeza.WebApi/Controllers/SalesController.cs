@@ -1,4 +1,5 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using AdminDashboard.Domain.Entities;
@@ -11,6 +12,7 @@ using Swashbuckle.AspNetCore.Annotations;
 
 namespace Firmeza.WebApi.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("v1/[controller]")]
     [Produces("application/json")]
@@ -78,6 +80,25 @@ namespace Firmeza.WebApi.Controllers
                 };
                 _context.Users.Add(client);
                 await _context.SaveChangesAsync();
+            }
+
+            // 1.5 Validate and Deduct Stock
+            foreach (var prodDto in dto.Products)
+            {
+                var product = await _context.Products.FirstOrDefaultAsync(p => p.Name == prodDto.Name);
+                if (product == null)
+                {
+                    return BadRequest(new { message = $"Product '{prodDto.Name}' not found." });
+                }
+
+                if (product.Stock < prodDto.Qty)
+                {
+                    return BadRequest(new { message = $"Insufficient stock for product '{prodDto.Name}'. Available: {product.Stock}, Requested: {prodDto.Qty}" });
+                }
+
+                // Deduct stock
+                product.Stock -= prodDto.Qty;
+                _context.Products.Update(product);
             }
 
             // 2. Save sale in DB

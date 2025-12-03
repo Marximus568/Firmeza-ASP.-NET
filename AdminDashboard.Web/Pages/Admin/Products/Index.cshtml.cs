@@ -1,7 +1,7 @@
 using AdminDashboard.Application.Product;
 using AdminDashboardApplication.DTOs.Products;
 using AdminDashboardApplication.DTOs.Products.Interfaces;
-using ExcelImporter.Interfaces;
+using AdminDashboard.Application.Interfaces.ExcelImporter;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;

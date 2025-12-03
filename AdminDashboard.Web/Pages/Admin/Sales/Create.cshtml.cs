@@ -4,8 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using SalePDF.Interface;
-using SalePDF.DTOs;
+using AdminDashboard.Application.Interfaces.SalePDF;
+using AdminDashboard.Application.DTOs.SalePDF;
 using AdminDashboardApplication.Interfaces;
 
 namespace AdminDashboard.Pages.Admin.Sales;

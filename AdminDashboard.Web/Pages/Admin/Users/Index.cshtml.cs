@@ -2,7 +2,7 @@
 using AdminDashboard.Infrastructure.Security;
 using AdminDashboardApplication.DTOs.Users;
 using AdminDashboardApplication.DTOs.Users.Interface;
-using ExcelImporter.Interfaces;
+using AdminDashboard.Application.Interfaces.ExcelImporter;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
